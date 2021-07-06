@@ -1,0 +1,91 @@
+html {
+  background-color: gray;
+}
+header {
+  position: fixed;
+  right: 12px;
+  display: grid;
+  top: 0;
+  background: white;
+  z-index: 1000;
+}
+
+#sign-in-block {
+  text-align: right;
+  #signup-button {
+    font-weight: bold;
+  }
+}
+
+
+.sign-in-modal {
+  display: flex;
+  flex-direction: corowlumn;
+  z-index: 1000;
+}
+#close-signup-modal-block {
+  text-align: right;
+}
+body {
+
+  #sign-in-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    #sign-in-form {
+      width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+  }
+
+
+  #sign-up {
+    text-align: center;
+    #sign-up-form-1 {
+      display: flex;
+      flex-direction: column;
+      justify-content: left;
+    }
+    #sign-up-form-2 {
+      display: flex;
+      flex-direction: column;
+      justify-content: left;
+    }
+    #sign-up-form-3 {
+      display: flex;
+      flex-direction: column;
+      justify-content: left;
+    }
+    #sign-up-form-email-confirmation {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      #user-info-wrapper {
+        margin-top: 10px;
+        #user-info {
+          width: 300px;
+          margin-left: auto;
+          margin-right: auto;
+          text-align: left;
+        }
+      }
+      #payment-info-wrapper {
+        margin-top: 10px;
+        #payment-info {
+          width: 300px;
+          margin-left: auto;
+          margin-right: auto;
+          text-align: left;
+        }
+      }
+      #back-or-submit {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+  }
+}

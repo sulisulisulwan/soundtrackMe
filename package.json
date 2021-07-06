@@ -4,7 +4,9 @@
   "description": "A web platform connecting filmmakers with composers to bring film/scores to life",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "webpack --watch",
+    "start": "nodemon server.js",
+    "sass": "--watch client/sass_styles/styles.scss client/public/styles.css"
   },
   "repository": {
     "type": "git",

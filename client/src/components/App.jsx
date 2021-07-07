@@ -46,22 +46,16 @@ class App extends React.Component {
       password: password
     })
     .then(result => {
-      let status = result.status
-      if (status === 401 || status === 500) {
-
-        return status;
-      } else {
-        return axios.get(`/signIn/loadProfile?${username}`)
-      }
+      return axios.get(`/signIn/loadProfile?${username}`)
     })
     .then(userData => {
       this.setState({userData: userData})
       this.changePageState('changeToSignedIn');
     })
     .catch(err => {
-      console.log('MADE IT HERE')
-      if (err === 401 || err === 500) {
-        let validationStatus = err === 401 ? 'Username and password did not match' : 'Oops!  Something went wrong on our end!  Try again.';
+      console.log(err.toString().split())
+      if (err.toString() === 'Error: Request failed with status code 401' || "Error: Request failed with status code 500") {
+        let validationStatus = err.toString() === 'Error: Request failed with status code 401' ? 'Username and password did not match' : 'Oops!  Something went wrong on our end!  Try again.';
         this.setState({
           signInValidationStatus: validationStatus
         })

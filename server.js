@@ -65,10 +65,8 @@ app.post('/createNewUser', (req, res) => {
 app.post('/signIn/verifyAccount', (req, res) => {
   let username = req.body.username
   let password = req.body.password
-  console.log('THIS FIRES')
   verifyAccount(username, password)
   .then(result => {
-    console.log(result)
     result ? res.sendStatus(200) : res.sendStatus(401);
   })
   .catch(err => {

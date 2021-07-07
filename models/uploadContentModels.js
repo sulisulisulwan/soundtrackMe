@@ -2,7 +2,7 @@
 const postMovie = (movie) => {
   return new Promise ((resolve, reject) => {
     //TODO:
-    movie = 'goes into a query!'
+    console.log(movie)
     movie ? resolve() : reject() //change this of course
   })
 }

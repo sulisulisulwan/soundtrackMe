@@ -3037,6 +3037,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _components_MyVideos_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/MyVideos.jsx */ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/MyVideos.jsx");
 /* harmony import */ var _components_AddVideoForm_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/AddVideoForm.jsx */ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/AddVideoForm.jsx");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3063,6 +3065,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var FilmmakerView = /*#__PURE__*/function (_React$Component) {
   _inherits(FilmmakerView, _React$Component);
 
@@ -3079,7 +3082,8 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
       videoDescription: '',
       videoLink: '',
       addVideoFormIsOpen: false,
-      addVideoButtonIsHidden: false
+      addVideoButtonIsHidden: false,
+      videoLinkValidation: ''
     };
     _this.handleSubmitAddVideo = _this.handleSubmitAddVideo.bind(_assertThisInitialized(_this));
     _this.openAddVideoForm = _this.openAddVideoForm.bind(_assertThisInitialized(_this));
@@ -3107,10 +3111,39 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "handleSubmitAddVideo",
     value: function handleSubmitAddVideo(e) {
+      var _this2 = this;
+
       e.preventDefault();
-      this.setState({
-        addVideoFormIsOpen: false,
-        addVideoButtonIsHidden: false
+      axios__WEBPACK_IMPORTED_MODULE_3___default().get("/verifyVideoLink?link=".concat(this.state.videoLink)).then(function (result) {
+        console.log(result);
+        return;
+
+        if (result === false) {
+          throw 'link does not exist';
+        }
+
+        var addMovieFields = {
+          username: _this2.props.userData.username,
+          videoTitle: _this2.state.videoTitle,
+          videoDescription: _this2.state.videoDescription,
+          videoLink: _this2.state.videoLink
+        };
+        axios__WEBPACK_IMPORTED_MODULE_3___default().post('/postMovie', addMovieFields).then(function (result) {
+          console.log(result);
+
+          _this2.setState({
+            addVideoFormIsOpen: false,
+            addVideoButtonIsHidden: false
+          });
+        });
+      })["catch"](function (err) {
+        if (err.toString() === 'link does not exist') {
+          _this2.setState({
+            videoLinkValidation: 'This video link isn\'t valid'
+          });
+        }
+
+        console.error(new Error(err));
       });
     }
   }, {
@@ -3121,11 +3154,13 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
       var fields = this.state;
       var addVideoFormIsOpen = this.state.addVideoFormIsOpen;
       var addVideoButtonIsHidden = this.state.addVideoButtonIsHidden;
+      var videoLinkValidation = this.state.videoLinkValidation;
       var openAddVideoForm = this.openAddVideoForm;
       var handleSubmitAddVideo = this.handleSubmitAddVideo;
       var onChangeTextField = this.onChangeTextField;
       var addVideoForm = addVideoFormIsOpen ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_AddVideoForm_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
         fields: fields,
+        videoLinkValidation: videoLinkValidation,
         onChangeTextField: onChangeTextField,
         handleSubmitAddVideo: handleSubmitAddVideo
       }) : '';
@@ -3165,7 +3200,8 @@ __webpack_require__.r(__webpack_exports__);
 var AddVideoForm = function AddVideoForm(_ref) {
   var fields = _ref.fields,
       onChangeTextField = _ref.onChangeTextField,
-      handleSubmitAddVideo = _ref.handleSubmitAddVideo;
+      handleSubmitAddVideo = _ref.handleSubmitAddVideo,
+      videoLinkValidation = _ref.videoLinkValidation;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     id: "add-video-view"
   }, "Add Video", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
@@ -3191,7 +3227,7 @@ var AddVideoForm = function AddVideoForm(_ref) {
     id: "videoLink",
     onChange: onChangeTextField,
     value: fields.videoLink
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+  }), videoLinkValidation)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     id: "add-video-submit"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
     type: "submit",

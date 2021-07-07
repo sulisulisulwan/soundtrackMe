@@ -1,5 +1,5 @@
 import React from 'react';
-const AddVideoForm = ({fields, onChangeTextField, handleSubmitAddVideo}) => {
+const AddVideoForm = ({fields, onChangeTextField, handleSubmitAddVideo, videoLinkValidation}) => {
   return (
     <div id="add-video-view">
       Add Video
@@ -20,10 +20,12 @@ const AddVideoForm = ({fields, onChangeTextField, handleSubmitAddVideo}) => {
           <label>
             Link:
             <input type="text" id="videoLink" onChange={onChangeTextField} value={fields.videoLink}></input>
+            {videoLinkValidation}
           </label>
         </div>
         <div id="add-video-submit">
           <input type="submit" value="Add Video"></input>
+
         </div>
       </form>
     </div>

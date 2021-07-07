@@ -38,7 +38,7 @@ const filmmakerInfoSchema = new mongoose.Schema({
   films: {}
 })
 
-const allFilms = new mongoose.Schema({
+const allFilmsSchema = new mongoose.Schema({
   films: {}
 })
 /*
@@ -61,3 +61,5 @@ const UserInfo = mongoose.model('UserInfo', userInfoSchema);
 module.exports = {
   UserInfo: UserInfo
 }
+
+const AllFilms = mongoose.model('AllFilms', allFilmsSchema)

@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
 const express = require('express');
+const axios = require('axios');
 const app = express();
 const port = 1337;
 const {checkUsernameExists, checkEmailExists, createNewUser} = require('./models/signUpModels.js');
 const {postMovie, postMusic} = require('./models/uploadContentModels.js');
 const {verifyAccount, loadProfile} = require('./models/signInModels.js')
+const API_KEY = require("./youtubeAPIKey/key.js")
 app.listen(port, () => {
   console.log(`listening on ${port}`)
 })
@@ -96,9 +98,31 @@ app.get('/signIn/loadProfile', (req, res) => {
 
 //Upload Content Routes
 
-app.post('./postMovie', (req, res) => {
+app.get('/verifyVideoLink', (req, res) => {
+  let link = req.query.link;
+  let id= link.split('=')[1]
+  let query = `https://www.googleapis.com/youtube/v3/videos?id=${id}`
+  axios.get(query, {
+    headers: {
+      'Authorization': API_KEY
+    }
+  })
+  .then(result => {
+    console.log(result)
+    res.sendStatus(200)
+  })
+  .catch(err => {
+    console.log(err)
+    res.sendStatus(404)
+  })
+
+})
+
+
+
+app.post('/postMovie', (req, res) => {
   //TODO: parse out what gets passed into the model
-  let movie;
+  let movie = req.body
   postMovie(movie)
   .then(_=> {
     res.sendStatus(201);

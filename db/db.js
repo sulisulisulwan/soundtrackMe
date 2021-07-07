@@ -23,6 +23,35 @@ const userInfoSchema = new mongoose.Schema({
   cardCVV: Number,
 })
 
+const composerInfoSchema = new mongoose.Schema({
+  username: String,
+  portfolio: {
+    audioFiles: {},
+  },
+  filmscores: {}
+})
+
+//filmscores will be
+
+const filmmakerInfoSchema = new mongoose.Schema({
+  username: String
+  films: {}
+})
+/*
+films: {
+  westernFlick: {
+    score1: {
+      composer: daffyduck
+      audio: someFileg
+      like: true
+    }
+    score2: false
+    score3: false
+    score4: true
+  }
+}
+*/
+
 const UserInfo = mongoose.model('UserInfo', userInfoSchema);
 
 module.exports = {

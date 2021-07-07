@@ -83,7 +83,7 @@ app.get('/signIn/loadProfile', (req, res) => {
   })
   .catch(err => {
     console.log(new Error(err));
-    res.statsendStatusus(500);
+    res.sendStatus(500);
   })
 })
 

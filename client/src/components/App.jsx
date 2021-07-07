@@ -1,7 +1,7 @@
 import React from 'react';
+import axios from 'axios';
 import Header from './header/Header.jsx'
 import Body from './body/Body.jsx'
-import axios from 'axios';
 
 let pageStates = {
   changeToSignedOut: 'changeToSignedOut',
@@ -18,7 +18,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       pageState: 'changeToSignedOut',
-      signInValidationStatus: '',
+      failedSignInValidationStatus: '',
       userData: {}
     }
     this.changePageState = this.changePageState.bind(this);
@@ -46,9 +46,11 @@ class App extends React.Component {
       password: password
     })
     .then(result => {
+      console.log('made it here')
       return axios.get(`/signIn/loadProfile?${username}`)
     })
     .then(userData => {
+
       this.setState({userData: userData})
       this.changePageState('changeToSignedIn');
     })
@@ -57,7 +59,7 @@ class App extends React.Component {
       if (err.toString() === 'Error: Request failed with status code 401' || "Error: Request failed with status code 500") {
         let validationStatus = err.toString() === 'Error: Request failed with status code 401' ? 'Username and password did not match' : 'Oops!  Something went wrong on our end!  Try again.';
         this.setState({
-          signInValidationStatus: validationStatus
+          failedSignInValidationStatus: validationStatus
         })
       } else {
         console.error(new Error(err))
@@ -67,17 +69,21 @@ class App extends React.Component {
 
   render () {
     let pageState = this.state.pageState;
-    let signInValidationStatus = this.state.signInValidationStatus;
+    let failedSignInValidationStatus = this.state.failedSignInValidationStatus;
     let changePageState = this.changePageState;
     let checkIfUsernameAlreadyExists = this.checkIfUsernameAlreadyExists;
     let checkIfEmailAlreadyExists = this.checkIfEmailAlreadyExists;
     let signIn = this.signIn;
+    let userData =this.state.userData;
 
     if (this.state.pageState === 'changeToSignedIn') {
       return (
         <div>
           <Header changePageState={this.changePageState} pageState={this.state.pageState}/>
-          signed in
+          <Body
+            pageState={pageState}
+            userData={userData}
+          />
         </div>
       )
     }
@@ -87,7 +93,7 @@ class App extends React.Component {
         <Header changePageState={changePageState} pageState={this.state.pageState}/>
         <Body
           pageState={pageState}
-          signInValidationStatus={signInValidationStatus}
+          failedSignInValidationStatus={failedSignInValidationStatus}
           changePageState={changePageState}
           checkIfUsernameAlreadyExists={checkIfUsernameAlreadyExists}
           checkIfEmailAlreadyExists={checkIfEmailAlreadyExists}

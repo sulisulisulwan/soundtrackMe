@@ -8,9 +8,13 @@ class ComposerView extends React.Component {
     }
   }
   render () {
+    let userData = this.props.userData
+
     return (
       <div>
         Composer View
+
+        {JSON.stringify(userData)}
       </div>
     )
   }

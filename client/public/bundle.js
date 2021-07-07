@@ -1845,10 +1845,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _header_Header_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./header/Header.jsx */ "./client/src/components/header/Header.jsx");
-/* harmony import */ var _body_Body_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./body/Body.jsx */ "./client/src/components/body/Body.jsx");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _header_Header_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./header/Header.jsx */ "./client/src/components/header/Header.jsx");
+/* harmony import */ var _body_Body_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./body/Body.jsx */ "./client/src/components/body/Body.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1898,7 +1898,7 @@ var App = /*#__PURE__*/function (_React$Component) {
     _this = _super.call(this, props);
     _this.state = {
       pageState: 'changeToSignedOut',
-      signInValidationStatus: '',
+      failedSignInValidationStatus: '',
       userData: {}
     };
     _this.changePageState = _this.changePageState.bind(_assertThisInitialized(_this));
@@ -1919,23 +1919,24 @@ var App = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "checkIfUsernameAlreadyExists",
     value: function checkIfUsernameAlreadyExists(username) {
-      return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/checkUserNameExists?username=".concat(username));
+      return axios__WEBPACK_IMPORTED_MODULE_1___default().get("/checkUserNameExists?username=".concat(username));
     }
   }, {
     key: "checkIfEmailAlreadyExists",
     value: function checkIfEmailAlreadyExists(email) {
-      return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/checkEmailExists?email=".concat(email));
+      return axios__WEBPACK_IMPORTED_MODULE_1___default().get("/checkEmailExists?email=".concat(email));
     }
   }, {
     key: "signIn",
     value: function signIn(username, password) {
       var _this2 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_3___default().post("/signIn/verifyAccount", {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post("/signIn/verifyAccount", {
         username: username,
         password: password
       }).then(function (result) {
-        return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/signIn/loadProfile?".concat(username));
+        console.log('made it here');
+        return axios__WEBPACK_IMPORTED_MODULE_1___default().get("/signIn/loadProfile?".concat(username));
       }).then(function (userData) {
         _this2.setState({
           userData: userData
@@ -1949,7 +1950,7 @@ var App = /*#__PURE__*/function (_React$Component) {
           var validationStatus = err.toString() === 'Error: Request failed with status code 401' ? 'Username and password did not match' : 'Oops!  Something went wrong on our end!  Try again.';
 
           _this2.setState({
-            signInValidationStatus: validationStatus
+            failedSignInValidationStatus: validationStatus
           });
         } else {
           console.error(new Error(err));
@@ -1960,25 +1961,29 @@ var App = /*#__PURE__*/function (_React$Component) {
     key: "render",
     value: function render() {
       var pageState = this.state.pageState;
-      var signInValidationStatus = this.state.signInValidationStatus;
+      var failedSignInValidationStatus = this.state.failedSignInValidationStatus;
       var changePageState = this.changePageState;
       var checkIfUsernameAlreadyExists = this.checkIfUsernameAlreadyExists;
       var checkIfEmailAlreadyExists = this.checkIfEmailAlreadyExists;
       var signIn = this.signIn;
+      var userData = this.state.userData;
 
       if (this.state.pageState === 'changeToSignedIn') {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_header_Header_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_header_Header_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
           changePageState: this.changePageState,
           pageState: this.state.pageState
-        }), "signed in");
+        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_body_Body_jsx__WEBPACK_IMPORTED_MODULE_3__.default, {
+          pageState: pageState,
+          userData: userData
+        }));
       }
 
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_header_Header_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_header_Header_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
         changePageState: changePageState,
         pageState: this.state.pageState
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_body_Body_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_body_Body_jsx__WEBPACK_IMPORTED_MODULE_3__.default, {
         pageState: pageState,
-        signInValidationStatus: signInValidationStatus,
+        failedSignInValidationStatus: failedSignInValidationStatus,
         changePageState: changePageState,
         checkIfUsernameAlreadyExists: checkIfUsernameAlreadyExists,
         checkIfEmailAlreadyExists: checkIfEmailAlreadyExists,
@@ -2006,9 +2011,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _signUpForms_SignUp_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./signUpForms/SignUp.jsx */ "./client/src/components/body/signUpForms/SignUp.jsx");
-/* harmony import */ var _signIn_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./signIn.jsx */ "./client/src/components/body/signIn.jsx");
+/* harmony import */ var _SignIn_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SignIn.jsx */ "./client/src/components/body/SignIn.jsx");
+/* harmony import */ var _signedIn_SignedInView_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./signedIn/SignedInView.jsx */ "./client/src/components/body/signedIn/SignedInView.jsx");
+/* harmony import */ var _signUpForms_SignUp_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./signUpForms/SignUp.jsx */ "./client/src/components/body/signUpForms/SignUp.jsx");
 /* eslint-disable react/prop-types */
+
 
 
 
@@ -2019,20 +2026,25 @@ var Body = function Body(_ref) {
       checkIfUsernameAlreadyExists = _ref.checkIfUsernameAlreadyExists,
       checkIfEmailAlreadyExists = _ref.checkIfEmailAlreadyExists,
       signIn = _ref.signIn,
-      signInValidationStatus = _ref.signInValidationStatus;
+      failedSignInValidationStatus = _ref.failedSignInValidationStatus,
+      userData = _ref.userData;
 
   if (pageState === 'changeToSignIn') {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("main", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_signIn_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("main", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SignIn_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
       pageState: pageState,
       changePageState: changePageState,
-      signInValidationStatus: signInValidationStatus,
+      failedSignInValidationStatus: failedSignInValidationStatus,
       checkIfUsernameAlreadyExists: checkIfUsernameAlreadyExists,
       checkIfEmailAlreadyExists: checkIfEmailAlreadyExists,
       signIn: signIn
     }));
+  } else if (pageState === 'changeToSignedIn') {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("main", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_signedIn_SignedInView_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
+      userData: userData
+    }));
   }
 
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("main", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_signUpForms_SignUp_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("main", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_signUpForms_SignUp_jsx__WEBPACK_IMPORTED_MODULE_3__.default, {
     pageState: pageState,
     changePageState: changePageState,
     checkIfUsernameAlreadyExists: checkIfUsernameAlreadyExists,
@@ -2045,9 +2057,9 @@ var Body = function Body(_ref) {
 
 /***/ }),
 
-/***/ "./client/src/components/body/signIn.jsx":
+/***/ "./client/src/components/body/SignIn.jsx":
 /*!***********************************************!*\
-  !*** ./client/src/components/body/signIn.jsx ***!
+  !*** ./client/src/components/body/SignIn.jsx ***!
   \***********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -2123,7 +2135,7 @@ var SignIn = /*#__PURE__*/function (_React$Component) {
     value: function render() {
       var username = this.state.username;
       var password = this.state.password;
-      var signInValidationStatus = this.props.signInValidationStatus;
+      var failedSignInValidationStatus = this.props.failedSignInValidationStatus;
       var signInTextFieldOnChange = this.signInTextFieldOnChange;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "sign-in-page"
@@ -2140,7 +2152,7 @@ var SignIn = /*#__PURE__*/function (_React$Component) {
         type: "password",
         onChange: signInTextFieldOnChange,
         value: password
-      })), signInValidationStatus), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+      })), failedSignInValidationStatus), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         type: "submit",
         value: "Next"
       })))));
@@ -2902,6 +2914,170 @@ var SignUpFormConfirmationEmail = function SignUpFormConfirmationEmail(_ref) {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SignUpFormConfirmationEmail);
+
+/***/ }),
+
+/***/ "./client/src/components/body/signedIn/SignedInView.jsx":
+/*!**************************************************************!*\
+  !*** ./client/src/components/body/signedIn/SignedInView.jsx ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _userProfileViews_ComposerView_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./userProfileViews/ComposerView.jsx */ "./client/src/components/body/signedIn/userProfileViews/ComposerView.jsx");
+/* harmony import */ var _userProfileViews_FilmmakerView_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./userProfileViews/FilmmakerView.jsx */ "./client/src/components/body/signedIn/userProfileViews/FilmmakerView.jsx");
+
+
+
+
+var SignedInView = function SignedInView(_ref) {
+  var userData = _ref.userData;
+  var userView;
+  return userData.signedUpAs === 'composer' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_userProfileViews_ComposerView_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
+    userData: userData
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_userProfileViews_FilmmakerView_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
+    userData: userData
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SignedInView);
+
+/***/ }),
+
+/***/ "./client/src/components/body/signedIn/userProfileViews/ComposerView.jsx":
+/*!*******************************************************************************!*\
+  !*** ./client/src/components/body/signedIn/userProfileViews/ComposerView.jsx ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var ComposerView = /*#__PURE__*/function (_React$Component) {
+  _inherits(ComposerView, _React$Component);
+
+  var _super = _createSuper(ComposerView);
+
+  function ComposerView(props) {
+    var _this;
+
+    _classCallCheck(this, ComposerView);
+
+    _this = _super.call(this, props);
+    _this.state = {};
+    return _this;
+  }
+
+  _createClass(ComposerView, [{
+    key: "render",
+    value: function render() {
+      var userData = this.props.userData;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Composer View", JSON.stringify(userData));
+    }
+  }]);
+
+  return ComposerView;
+}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ComposerView);
+
+/***/ }),
+
+/***/ "./client/src/components/body/signedIn/userProfileViews/FilmmakerView.jsx":
+/*!********************************************************************************!*\
+  !*** ./client/src/components/body/signedIn/userProfileViews/FilmmakerView.jsx ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var FilmmakerView = /*#__PURE__*/function (_React$Component) {
+  _inherits(FilmmakerView, _React$Component);
+
+  var _super = _createSuper(FilmmakerView);
+
+  function FilmmakerView(props) {
+    var _this;
+
+    _classCallCheck(this, FilmmakerView);
+
+    _this = _super.call(this, props);
+    _this.state = {};
+    return _this;
+  }
+
+  _createClass(FilmmakerView, [{
+    key: "render",
+    value: function render() {
+      var userData = this.props.userData;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Filmmaker View", JSON.stringify(userData));
+    }
+  }]);
+
+  return FilmmakerView;
+}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FilmmakerView);
 
 /***/ }),
 

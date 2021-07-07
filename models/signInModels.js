@@ -19,18 +19,23 @@ const verifyAccount = (username, password) => {
 
 const loadProfile = (username) => {
   return new Promise ((resolve, reject) => {
-    //query database with username for userData
-    //.then(result => {
-    if (username === 'sulisulisulwan') {
-      resolve(dbResult['1'].userData)
-    } else if (username === 'sulimantekalli') {//delete this
-      resolve(dbResult['2'].userData);
-    }
-    //})
-    // .catch(err=> {
-    //    reject(err)
-    //  })
-  })
+    db.UserInfo.findOne({
+      username: username
+    })
+    .then(userData => {
+      let formattedUserData = {
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        username: userData.username,
+        email: userData.email,
+        signedUpAs: userData.signedUpAs,
+      }
+      resolve(formattedUserData)
+    })
+    .catch(err => {
+      reject(err)
+    });
+  });
 }
 
 module.exports = {

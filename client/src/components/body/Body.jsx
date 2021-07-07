@@ -1,15 +1,16 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import SignUp from './signUpForms/SignUp.jsx'
-import SignIn from './signIn.jsx'
-const Body = ({changePageState, pageState, checkIfUsernameAlreadyExists, checkIfEmailAlreadyExists, signIn, signInValidationStatus}) => {
+import SignIn from './SignIn.jsx';
+import SignedInView from './signedIn/SignedInView.jsx';
+import SignUp from './signUpForms/SignUp.jsx';
+const Body = ({changePageState, pageState, checkIfUsernameAlreadyExists, checkIfEmailAlreadyExists, signIn, failedSignInValidationStatus, userData}) => {
   if (pageState === 'changeToSignIn') {
     return (
       <main>
         <SignIn
           pageState={pageState}
           changePageState={changePageState}
-          signInValidationStatus={signInValidationStatus}
+          failedSignInValidationStatus={failedSignInValidationStatus}
           checkIfUsernameAlreadyExists={checkIfUsernameAlreadyExists}
           checkIfEmailAlreadyExists={checkIfEmailAlreadyExists}
           signIn={signIn}
@@ -17,6 +18,12 @@ const Body = ({changePageState, pageState, checkIfUsernameAlreadyExists, checkIf
       </main>
     )
 
+  } else if (pageState === 'changeToSignedIn') {
+    return (
+      <main>
+        <SignedInView userData={userData}/>
+      </main>
+    )
   }
   return (
     <main>

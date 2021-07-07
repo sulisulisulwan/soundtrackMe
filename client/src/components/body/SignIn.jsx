@@ -28,7 +28,7 @@ class SignIn extends React.Component {
   render () {
     let username = this.state.username
     let password = this.state.password
-    let signInValidationStatus = this.props.signInValidationStatus
+    let failedSignInValidationStatus = this.props.failedSignInValidationStatus
     let signInTextFieldOnChange = this.signInTextFieldOnChange
     return (
       <div id="sign-in-page">
@@ -51,7 +51,7 @@ class SignIn extends React.Component {
                 Password
                 <input id="password" type="password" onChange={signInTextFieldOnChange} value={password} ></input>
               </label>
-              {signInValidationStatus}
+              {failedSignInValidationStatus}
             </div>
             <div>
               <input type="submit" value="Next"></input>

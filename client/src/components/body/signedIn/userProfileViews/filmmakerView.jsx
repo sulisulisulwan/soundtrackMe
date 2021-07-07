@@ -7,10 +7,14 @@ class FilmmakerView extends React.Component {
 
     }
   }
+
   render () {
+    let userData = this.props.userData
     return (
       <div>
         Filmmaker View
+
+        {JSON.stringify(userData)}
       </div>
     )
   }

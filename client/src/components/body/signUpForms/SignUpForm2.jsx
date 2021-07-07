@@ -51,7 +51,9 @@ class SignUpForm2 extends React.Component {
 
       if (currentCardType !== 'invalid') {
         if (!isValidEntry) {
-          if (fields.cardName.length !== 0 && (parseInt(fields.cardNumber)).toString().length === validCardNumberLength && (parseInt(fields.cardCVV)).toString().length === validCVVLength && parseInt(fields.cardCVV).toString() !== 'NaN') {
+
+            cardExpYear: ''
+          if (fields.cardName.length !== 0 && (parseInt(fields.cardNumber)).toString().length === validCardNumberLength && (parseInt(fields.cardCVV)).toString().length === validCVVLength && parseInt(fields.cardCVV).toString() !== 'NaN' && fields.cardExpMonth !== '' && fields.cardExpYear !== '') {
             this.setState({isValidEntry: true})
           }
         }
@@ -90,7 +92,8 @@ class SignUpForm2 extends React.Component {
         Expiration Date:
           <label>
             Month
-            <select name="cardExpMonth" id="cardExpMonth" onChange={fieldInputHandler}>
+            <select name="cardExpMonth" id="cardExpMonth" onChange={fieldInputHandler} required>
+              <option selected disabled>Month</option>
               <option value="1">1 Jan</option>
               <option value="2">2 Feb</option>
               <option value="3">3 Mar</option>
@@ -105,7 +108,8 @@ class SignUpForm2 extends React.Component {
               <option value="12">12 Dec</option>
             </select>
             Year
-            <select name="cardExpYear" id="cardExpYear" onChange={fieldInputHandler}>
+            <select name="cardExpYear" id="cardExpYear" onChange={fieldInputHandler} required>
+              <option selected disabled>Year</option>
               <option value="2021">2021</option>
               <option value="2022">2022</option>
               <option value="2023">2023</option>
@@ -123,7 +127,7 @@ class SignUpForm2 extends React.Component {
           <label>
             CVV
             {`${validCVVLength} digits`}
-            <input id="cardCVV" type="text" minLength={this.state.validCVVLength} maxLength={this.state.validCVVLength} onChange={fieldInputHandler} value={fields.cardCVV}></input>
+            <input id="cardCVV" type="text" minLength={this.state.validCVVLength} maxLength={this.state.validCVVLength} onChange={fieldInputHandler} value={fields.cardCVV} required></input>
           </label>
         </div>
         {isValidEntry}

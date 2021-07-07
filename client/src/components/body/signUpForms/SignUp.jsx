@@ -17,7 +17,7 @@ class SignUp extends React.Component {
       password: '',
       passwordConfirm: '',
       email: '',
-      signUpAs: '',
+      signedUpAs: '',
       cardType: '',
       cardName: '',
       cardNumber: '',
@@ -40,13 +40,14 @@ class SignUp extends React.Component {
   }
 
   textInputHandler (e) {
+    console.log(e.target.id)
     let newState = {}
     newState[e.target.id] = e.target.value;
     this.setState(newState)
   }
   radioInputHandler (e) {
     this.setState({
-      signUpAs: e.target.value
+      signedUpAs: e.target.value
     })
   }
 
@@ -80,24 +81,25 @@ class SignUp extends React.Component {
     let createNewUserInDB = this.createNewUserInDB;
     let signIn = this.props.signIn;
     if (changeTo === 'changeToSignUpForm1') {
-      this.setState({
-        cardType: '',
-        cardName: '',
-        cardNumber: '',
-        cardExpMonth: '',
-        cardExpYear: '',
-        cardCVV: '',
-      })
       changePageState(changeTo);
       return;
     } else if (changeTo === 'changeToSignUpForm2') {
       this.verifyUserInputForm1()
       .then(result => {
         if (Array.isArray(result)) {
+          //email or username already exists
           this.setState({verifySignUpForm1Result: result});
           return;
         } else {
-          this.setState({verifySignUpForm1Result: ['', '']});
+          this.setState({
+            cardType: '',
+            cardName: '',
+            cardNumber: '',
+            cardExpMonth: '',
+            cardExpYear: '',
+            cardCVV: '',
+            verifySignUpForm1Result: ['', '']
+        });
           changePageState(changeTo);
           return
         }
@@ -114,7 +116,7 @@ class SignUp extends React.Component {
         userName: this.state.userName,
         password: this.state.password,
         email: this.state.email,
-        signUpAs: this.state.signUpAs,
+        signedUpAs: this.state.signedUpAs,
         cardType: this.state.cardType,
         cardName: this.state.cardName,
         cardNumber: this.state.cardNumber,

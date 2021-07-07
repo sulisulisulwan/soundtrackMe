@@ -2214,7 +2214,7 @@ var SignUp = /*#__PURE__*/function (_React$Component) {
       password: '',
       passwordConfirm: '',
       email: '',
-      signUpAs: '',
+      signedUpAs: '',
       cardType: '',
       cardName: '',
       cardNumber: '',
@@ -2242,6 +2242,7 @@ var SignUp = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "textInputHandler",
     value: function textInputHandler(e) {
+      console.log(e.target.id);
       var newState = {};
       newState[e.target.id] = e.target.value;
       this.setState(newState);
@@ -2250,7 +2251,7 @@ var SignUp = /*#__PURE__*/function (_React$Component) {
     key: "radioInputHandler",
     value: function radioInputHandler(e) {
       this.setState({
-        signUpAs: e.target.value
+        signedUpAs: e.target.value
       });
     }
   }, {
@@ -2297,19 +2298,12 @@ var SignUp = /*#__PURE__*/function (_React$Component) {
       var signIn = this.props.signIn;
 
       if (changeTo === 'changeToSignUpForm1') {
-        this.setState({
-          cardType: '',
-          cardName: '',
-          cardNumber: '',
-          cardExpMonth: '',
-          cardExpYear: '',
-          cardCVV: ''
-        });
         changePageState(changeTo);
         return;
       } else if (changeTo === 'changeToSignUpForm2') {
         this.verifyUserInputForm1().then(function (result) {
           if (Array.isArray(result)) {
+            //email or username already exists
             _this3.setState({
               verifySignUpForm1Result: result
             });
@@ -2317,6 +2311,12 @@ var SignUp = /*#__PURE__*/function (_React$Component) {
             return;
           } else {
             _this3.setState({
+              cardType: '',
+              cardName: '',
+              cardNumber: '',
+              cardExpMonth: '',
+              cardExpYear: '',
+              cardCVV: '',
               verifySignUpForm1Result: ['', '']
             });
 
@@ -2335,7 +2335,7 @@ var SignUp = /*#__PURE__*/function (_React$Component) {
           userName: this.state.userName,
           password: this.state.password,
           email: this.state.email,
-          signUpAs: this.state.signUpAs,
+          signedUpAs: this.state.signedUpAs,
           cardType: this.state.cardType,
           cardName: this.state.cardName,
           cardNumber: this.state.cardNumber,
@@ -2518,13 +2518,13 @@ var SignUpForm1 = /*#__PURE__*/function (_React$Component) {
         value: fields.email,
         required: true
       })), emailAvailable), "Sign up as:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Film-Maker", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-        name: "signing-up-as",
+        name: "signed-up-as",
         type: "radio",
         onChange: radioInputHandler,
-        value: "film-maker",
+        value: "filmmaker",
         required: true
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Composer", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-        name: "signing-up-as",
+        name: "signed-up-as",
         type: "radio",
         onChange: radioInputHandler,
         value: "composer",
@@ -2638,7 +2638,9 @@ var SignUpForm2 = /*#__PURE__*/function (_React$Component) {
 
         if (currentCardType !== 'invalid') {
           if (!isValidEntry) {
-            if (fields.cardName.length !== 0 && parseInt(fields.cardNumber).toString().length === validCardNumberLength && parseInt(fields.cardCVV).toString().length === validCVVLength && parseInt(fields.cardCVV).toString() !== 'NaN') {
+            cardExpYear: '';
+
+            if (fields.cardName.length !== 0 && parseInt(fields.cardNumber).toString().length === validCardNumberLength && parseInt(fields.cardCVV).toString().length === validCVVLength && parseInt(fields.cardCVV).toString() !== 'NaN' && fields.cardExpMonth !== '' && fields.cardExpYear !== '') {
               this.setState({
                 isValidEntry: true
               });
@@ -2677,8 +2679,12 @@ var SignUpForm2 = /*#__PURE__*/function (_React$Component) {
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Expiration Date:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Month", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("select", {
         name: "cardExpMonth",
         id: "cardExpMonth",
-        onChange: fieldInputHandler
+        onChange: fieldInputHandler,
+        required: true
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+        selected: true,
+        disabled: true
+      }, "Month"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
         value: "1"
       }, "1 Jan"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
         value: "2"
@@ -2705,8 +2711,12 @@ var SignUpForm2 = /*#__PURE__*/function (_React$Component) {
       }, "12 Dec")), "Year", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("select", {
         name: "cardExpYear",
         id: "cardExpYear",
-        onChange: fieldInputHandler
+        onChange: fieldInputHandler,
+        required: true
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
+        selected: true,
+        disabled: true
+      }, "Year"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
         value: "2021"
       }, "2021"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
         value: "2022"
@@ -2736,7 +2746,8 @@ var SignUpForm2 = /*#__PURE__*/function (_React$Component) {
         minLength: this.state.validCVVLength,
         maxLength: this.state.validCVVLength,
         onChange: fieldInputHandler,
-        value: fields.cardCVV
+        value: fields.cardCVV,
+        required: true
       }))), isValidEntry, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
         id: "changeToSignUpForm1",
         type: "button",

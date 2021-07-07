@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:3000/soundtrackMe', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost/soundtrackMe', {useNewUrlParser: true, useUnifiedTopology: true});
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -11,7 +11,7 @@ db.once('open', function() {
 const userInfoSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
-  userName: String,
+  username: String,
   password: String,
   email: String,
   signedUpAs: String,

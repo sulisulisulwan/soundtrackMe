@@ -64,11 +64,11 @@ class SignUpForm1 extends React.Component {
         <div>
           <label>
             Film-Maker
-            <input name="signing-up-as" type="radio" onChange={radioInputHandler} value="film-maker" required></input>
+            <input name="signed-up-as" type="radio" onChange={radioInputHandler} value="filmmaker" required></input>
           </label>
           <label>
             Composer
-            <input name="signing-up-as" type="radio" onChange={radioInputHandler} value="composer" required></input>
+            <input name="signed-up-as" type="radio" onChange={radioInputHandler} value="composer" required></input>
           </label>
           <input name="submit" type="submit" value="Next"></input>
         </div>

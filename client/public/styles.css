@@ -1,20 +1,28 @@
-html {
-  background-color: gray;
-}
-
 header {
-  position: fixed;
   right: 12px;
   display: grid;
   top: 0;
   background: white;
   z-index: 1000;
 }
-
-#sign-in-block {
+header #navbar {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+header #navbar #header-icon-wrapper {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+header #navbar #header-icon-wrapper #header-icon {
+  width: 100px;
+}
+header #navbar #header-icon-wrapper #header-username {
+  font-size: 40px;
+}
+header #navbar #sign-in-block {
   text-align: right;
 }
-#sign-in-block #signup-button {
+header #navbar #sign-in-block #signup-button {
   font-weight: bold;
 }
 
@@ -39,6 +47,24 @@ body #sign-in-page #sign-in-form {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+}
+body #video-upload-view {
+  text-align: center;
+}
+body #my-videos .video-wrapper .video-title {
+  font-size: 20px;
+  font-family: Arial;
+  color: black;
+}
+body #my-videos .video-wrapper .video-link {
+  font-size: 15px;
+  font-family: Arial;
+  color: gray;
+}
+body #my-videos .video-wrapper .video-description {
+  font-size: 15px;
+  font-family: Arial;
+  color: gray;
 }
 body #sign-up {
   text-align: center;

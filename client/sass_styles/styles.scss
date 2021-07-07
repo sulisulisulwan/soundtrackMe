@@ -1,21 +1,34 @@
 html {
-  background-color: gray;
 }
 header {
-  position: fixed;
+  // position: fixed;
   right: 12px;
   display: grid;
   top: 0;
   background: white;
   z-index: 1000;
-}
-
-#sign-in-block {
-  text-align: right;
-  #signup-button {
-    font-weight: bold;
+  #navbar {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    #header-icon-wrapper{
+      grid-column-start: 1;
+      grid-column-end: 3;
+      #header-icon{
+        width: 100px;
+      }
+      #header-username {
+        font-size: 40px;
+      }
+    }
+    #sign-in-block {
+      text-align: right;
+      #signup-button {
+        font-weight: bold;
+      }
+    }
   }
 }
+
 
 
 .sign-in-modal {
@@ -26,6 +39,8 @@ header {
 #close-signup-modal-block {
   text-align: right;
 }
+
+
 body {
 
   #sign-in-page {
@@ -38,6 +53,32 @@ body {
       margin-left: auto;
       margin-right: auto;
       text-align: center;
+    }
+  }
+
+  //filmmaker view
+
+  #video-upload-view {
+    text-align: center
+  }
+
+  #my-videos {
+    .video-wrapper {
+      .video-title {
+        font-size: 20px;
+        font-family: Arial;
+        color: black;
+      }
+      .video-link {
+        font-size: 15px;
+        font-family: Arial;
+        color: gray;
+      }
+      .video-description {
+        font-size: 15px;
+        font-family: Arial;
+        color: gray;
+      }
     }
   }
 

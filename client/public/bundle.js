@@ -1897,9 +1897,15 @@ var App = /*#__PURE__*/function (_React$Component) {
 
     _this = _super.call(this, props);
     _this.state = {
-      pageState: 'changeToSignedOut',
+      pageState: 'changeToSignedIn',
       failedSignInValidationStatus: '',
-      userData: {}
+      userData: {
+        firstName: 'Suliman',
+        lastName: 'Tekalli',
+        username: 'sulimantekalli',
+        email: 'sulimantekalli@gmail.com',
+        signedUpAs: 'filmmaker'
+      }
     };
     _this.changePageState = _this.changePageState.bind(_assertThisInitialized(_this));
     _this.checkIfUsernameAlreadyExists = _this.checkIfUsernameAlreadyExists.bind(_assertThisInitialized(_this));
@@ -1970,11 +1976,13 @@ var App = /*#__PURE__*/function (_React$Component) {
 
       if (this.state.pageState === 'changeToSignedIn') {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_header_Header_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
-          changePageState: this.changePageState,
-          pageState: this.state.pageState
+          pageState: pageState,
+          userData: userData,
+          changePageState: changePageState
         }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_body_Body_jsx__WEBPACK_IMPORTED_MODULE_3__.default, {
           pageState: pageState,
-          userData: userData
+          userData: userData,
+          changePageState: changePageState
         }));
       }
 
@@ -2929,8 +2937,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _userProfileViews_ComposerView_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./userProfileViews/ComposerView.jsx */ "./client/src/components/body/signedIn/userProfileViews/ComposerView.jsx");
-/* harmony import */ var _userProfileViews_FilmmakerView_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./userProfileViews/FilmmakerView.jsx */ "./client/src/components/body/signedIn/userProfileViews/FilmmakerView.jsx");
+/* harmony import */ var _userProfileViews_composerView_ComposerView_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./userProfileViews/composerView/ComposerView.jsx */ "./client/src/components/body/signedIn/userProfileViews/composerView/ComposerView.jsx");
+/* harmony import */ var _userProfileViews_filmmakerView_FilmmakerView_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./userProfileViews/filmmakerView/FilmmakerView.jsx */ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/FilmmakerView.jsx");
 
 
 
@@ -2938,9 +2946,9 @@ __webpack_require__.r(__webpack_exports__);
 var SignedInView = function SignedInView(_ref) {
   var userData = _ref.userData;
   var userView;
-  return userData.signedUpAs === 'composer' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_userProfileViews_ComposerView_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
+  return userData.signedUpAs === 'composer' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_userProfileViews_composerView_ComposerView_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
     userData: userData
-  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_userProfileViews_FilmmakerView_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_userProfileViews_filmmakerView_FilmmakerView_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
     userData: userData
   });
 };
@@ -2949,10 +2957,10 @@ var SignedInView = function SignedInView(_ref) {
 
 /***/ }),
 
-/***/ "./client/src/components/body/signedIn/userProfileViews/ComposerView.jsx":
-/*!*******************************************************************************!*\
-  !*** ./client/src/components/body/signedIn/userProfileViews/ComposerView.jsx ***!
-  \*******************************************************************************/
+/***/ "./client/src/components/body/signedIn/userProfileViews/composerView/ComposerView.jsx":
+/*!********************************************************************************************!*\
+  !*** ./client/src/components/body/signedIn/userProfileViews/composerView/ComposerView.jsx ***!
+  \********************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3015,10 +3023,10 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
 
 /***/ }),
 
-/***/ "./client/src/components/body/signedIn/userProfileViews/FilmmakerView.jsx":
-/*!********************************************************************************!*\
-  !*** ./client/src/components/body/signedIn/userProfileViews/FilmmakerView.jsx ***!
-  \********************************************************************************/
+/***/ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/FilmmakerView.jsx":
+/*!**********************************************************************************************!*\
+  !*** ./client/src/components/body/signedIn/userProfileViews/filmmakerView/FilmmakerView.jsx ***!
+  \**********************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3027,6 +3035,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _components_MyVideos_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/MyVideos.jsx */ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/MyVideos.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3051,6 +3060,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var FilmmakerView = /*#__PURE__*/function (_React$Component) {
   _inherits(FilmmakerView, _React$Component);
 
@@ -3062,15 +3072,37 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
     _classCallCheck(this, FilmmakerView);
 
     _this = _super.call(this, props);
-    _this.state = {};
+    _this.state = {
+      uploadVideoField: ''
+    };
+    _this.onChangeTextField = _this.onChangeTextField.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(FilmmakerView, [{
+    key: "onChangeTextField",
+    value: function onChangeTextField(e) {
+      var field = e.target.id;
+      var fieldValue = e.target.value;
+      var newValue = {
+        field: fieldValue
+      };
+      this.setState(newValue);
+    }
+  }, {
     key: "render",
     value: function render() {
       var userData = this.props.userData;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Filmmaker View", JSON.stringify(userData));
+      var username = userData.username;
+      var uploadVideoField = this.state.uploadVideoField;
+      var onChangeTextField = this.onChangeTextField;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
+        id: "video-upload-view"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Add video link:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        type: "text",
+        onChange: onChangeTextField,
+        value: uploadVideoField
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_MyVideos_jsx__WEBPACK_IMPORTED_MODULE_1__.default, null));
     }
   }]);
 
@@ -3078,6 +3110,126 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
 }(react__WEBPACK_IMPORTED_MODULE_0__.Component);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FilmmakerView);
+
+/***/ }),
+
+/***/ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/MyVideos.jsx":
+/*!****************************************************************************************************!*\
+  !*** ./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/MyVideos.jsx ***!
+  \****************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _Video_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Video.jsx */ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/Video.jsx");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+var MyVideos = /*#__PURE__*/function (_React$Component) {
+  _inherits(MyVideos, _React$Component);
+
+  var _super = _createSuper(MyVideos);
+
+  function MyVideos(props) {
+    var _this;
+
+    _classCallCheck(this, MyVideos);
+
+    _this = _super.call(this, props);
+    _this.state = {
+      videos: [{
+        title: 'Triassic Zoo',
+        link: 'https://www.youtube.com/watch?v=fRwd1zYZEAU',
+        description: 'A wealthy paleo-enthusiast builds a gigantic zoo for dinosaurs on a remote island with dire consequences.'
+      }, {
+        title: 'Galaxy Battle',
+        link: 'https://www.youtube.com/watch?v=YUpl-OSRe5g',
+        description: 'A desperate rebel faction seeks to overthrow a tyrannical interstellar empire.'
+      }]
+    };
+    return _this;
+  }
+
+  _createClass(MyVideos, [{
+    key: "render",
+    value: function render() {
+      var videos = this.state.videos;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "my-videos"
+      }, videos.map(function (video, i) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Video_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
+          key: i,
+          title: video.title,
+          link: video.link,
+          description: video.description
+        });
+      }));
+    }
+  }]);
+
+  return MyVideos;
+}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MyVideos);
+
+/***/ }),
+
+/***/ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/Video.jsx":
+/*!*************************************************************************************************!*\
+  !*** ./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/Video.jsx ***!
+  \*************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+
+var Video = function Video(_ref) {
+  var title = _ref.title,
+      link = _ref.link,
+      description = _ref.description;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "video-wrapper"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "video-title"
+  }, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "video-link"
+  }, link), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "video-description"
+  }, description));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Video);
 
 /***/ }),
 
@@ -3100,13 +3252,50 @@ __webpack_require__.r(__webpack_exports__);
 
 var Header = function Header(_ref) {
   var changePageState = _ref.changePageState,
-      pageState = _ref.pageState;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("header", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    id: "navbar"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SignInArea_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
-    changePageState: changePageState,
-    pageState: pageState
-  })));
+      pageState = _ref.pageState,
+      userData = _ref.userData;
+  var signedOutAssets = {
+    signedOutHeader: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+      id: "header-icon"
+    })
+  };
+  var composerVisualAssets = {
+    signedUpHeader: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      id: "header-icon-wrapper"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+      id: "header-icon",
+      src: "./icons/composerIcon.jpg"
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+      id: "header-username"
+    }, "@", userData.username))
+  };
+  var filmmakerVisualAssets = {
+    signedUpHeader: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      id: "header-icon-wrapper"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+      id: "header-icon",
+      src: "./icons/filmmakerIcon.jpg"
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+      id: "header-username"
+    }, "@", userData.username))
+  };
+  var visualAssets = userData.signedUpAs === 'composer' ? composerVisualAssets : userData.signedUpAs === 'filmmaker' ? filmmakerVisualAssets : signedOutAssets;
+
+  if (pageState === 'changeToSignedIn') {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("header", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      id: "navbar"
+    }, visualAssets.signedUpHeader, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SignInArea_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
+      changePageState: changePageState,
+      pageState: pageState
+    })));
+  } else {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("header", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      id: "navbar"
+    }, visualAssets.signedOutHeader, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SignInArea_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
+      changePageState: changePageState,
+      pageState: pageState
+    })));
+  }
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Header);

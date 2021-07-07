@@ -17,9 +17,16 @@ class App extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      pageState: 'changeToSignedOut',
+      pageState: 'changeToSignedIn',
       failedSignInValidationStatus: '',
-      userData: {}
+      userData: {
+        firstName: 'Suliman',
+        lastName: 'Tekalli',
+        username: 'sulimantekalli',
+        email: 'sulimantekalli@gmail.com',
+        signedUpAs: 'filmmaker',
+
+      }
     }
     this.changePageState = this.changePageState.bind(this);
     this.checkIfUsernameAlreadyExists = this.checkIfUsernameAlreadyExists.bind(this);
@@ -79,10 +86,15 @@ class App extends React.Component {
     if (this.state.pageState === 'changeToSignedIn') {
       return (
         <div>
-          <Header changePageState={this.changePageState} pageState={this.state.pageState}/>
+          <Header
+            pageState={pageState}
+            userData={userData}
+            changePageState={changePageState}
+          />
           <Body
             pageState={pageState}
             userData={userData}
+            changePageState={changePageState}
           />
         </div>
       )

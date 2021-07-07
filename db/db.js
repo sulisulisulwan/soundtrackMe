@@ -34,7 +34,11 @@ const composerInfoSchema = new mongoose.Schema({
 //filmscores will be
 
 const filmmakerInfoSchema = new mongoose.Schema({
-  username: String
+  username: String,
+  films: {}
+})
+
+const allFilms = new mongoose.Schema({
   films: {}
 })
 /*

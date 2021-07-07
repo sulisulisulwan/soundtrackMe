@@ -1,25 +1,30 @@
 const mongoose = require('mongoose');
 const db = require('../db/db.js')
 
-const checkUserNameExists = (username) => {
+const checkUsernameExists = (username) => {
   return new Promise ((resolve, reject) => {
-    //TODO:
+    console.log('username is', username)
     db.UserInfo.findOne({username: username})
-      .then(result => {
-        console.log('this doesnt exist', result);
-      })
-
-    let response = false
-    username ? resolve(response) : reject() //change this of course
+    .then(result => {
+      let response = result === null ? false : true;
+      resolve(response)
+    })
+    .catch(err => {
+      reject(err)
+    });
   })
 }
 
 const checkEmailExists = (email) => {
   return new Promise ((resolve, reject) => {
-    //TODO:
-
-    let response = false
-    email ? resolve(response) : reject() //change this of course
+    db.UserInfo.findOne({email: email})
+    .then(result => {
+      let response = result === null ? false : true;
+      resolve(response);
+    })
+    .catch(err => {
+      reject(err);
+    })
   })
 
 }
@@ -52,7 +57,7 @@ const createNewUser = (userInfo) => {
 }
 
 module.exports = {
-  checkUserNameExists: checkUserNameExists,
+  checkUsernameExists: checkUsernameExists,
   checkEmailExists: checkEmailExists,
   createNewUser: createNewUser
 }

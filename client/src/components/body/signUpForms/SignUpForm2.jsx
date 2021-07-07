@@ -92,8 +92,8 @@ class SignUpForm2 extends React.Component {
         Expiration Date:
           <label>
             Month
-            <select name="cardExpMonth" id="cardExpMonth" onChange={fieldInputHandler} required>
-              <option selected disabled>Month</option>
+            <select defaultValue="DEFAULT" name="cardExpMonth" id="cardExpMonth" onChange={fieldInputHandler} required>
+              <option value="DEFAULT" disabled>Month</option>
               <option value="1">1 Jan</option>
               <option value="2">2 Feb</option>
               <option value="3">3 Mar</option>
@@ -108,8 +108,8 @@ class SignUpForm2 extends React.Component {
               <option value="12">12 Dec</option>
             </select>
             Year
-            <select name="cardExpYear" id="cardExpYear" onChange={fieldInputHandler} required>
-              <option selected disabled>Year</option>
+            <select defaultValue="DEFAULT" name="cardExpYear" id="cardExpYear" onChange={fieldInputHandler} required>
+              <option value="DEFAULT" disabled>Year</option>
               <option value="2021">2021</option>
               <option value="2022">2022</option>
               <option value="2023">2023</option>

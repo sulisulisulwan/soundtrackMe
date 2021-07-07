@@ -37,7 +37,7 @@ class SignUpForm1 extends React.Component {
           <label>
             User Name:
             {/* needs regex */}
-            <input name="username" id="userName" onChange={textInputHandler} value={fields.userName} required></input>
+            <input name="username" id="username" onChange={textInputHandler} value={fields.username} required></input>
             {usernameAvailable}
           </label>
         </div>

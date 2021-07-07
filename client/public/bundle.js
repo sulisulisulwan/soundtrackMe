@@ -1901,7 +1901,7 @@ var App = /*#__PURE__*/function (_React$Component) {
       userData: {}
     };
     _this.changePageState = _this.changePageState.bind(_assertThisInitialized(_this));
-    _this.checkIfUserNameAlreadyExists = _this.checkIfUserNameAlreadyExists.bind(_assertThisInitialized(_this));
+    _this.checkIfUsernameAlreadyExists = _this.checkIfUsernameAlreadyExists.bind(_assertThisInitialized(_this));
     _this.checkIfEmailAlreadyExists = _this.checkIfEmailAlreadyExists.bind(_assertThisInitialized(_this));
     _this.signIn = _this.signIn.bind(_assertThisInitialized(_this));
     return _this;
@@ -1916,9 +1916,9 @@ var App = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
-    key: "checkIfUserNameAlreadyExists",
-    value: function checkIfUserNameAlreadyExists(userName) {
-      return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/checkUserNameExists?username=".concat(userName));
+    key: "checkIfUsernameAlreadyExists",
+    value: function checkIfUsernameAlreadyExists(username) {
+      return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/checkUserNameExists?username=".concat(username));
     }
   }, {
     key: "checkIfEmailAlreadyExists",
@@ -1954,7 +1954,7 @@ var App = /*#__PURE__*/function (_React$Component) {
     value: function render() {
       var pageState = this.state.pageState;
       var changePageState = this.changePageState;
-      var checkIfUserNameAlreadyExists = this.checkIfUserNameAlreadyExists;
+      var checkIfUsernameAlreadyExists = this.checkIfUsernameAlreadyExists;
       var checkIfEmailAlreadyExists = this.checkIfEmailAlreadyExists;
       var signIn = this.signIn;
 
@@ -1971,7 +1971,7 @@ var App = /*#__PURE__*/function (_React$Component) {
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_body_Body_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
         pageState: pageState,
         changePageState: changePageState,
-        checkIfUserNameAlreadyExists: checkIfUserNameAlreadyExists,
+        checkIfUsernameAlreadyExists: checkIfUsernameAlreadyExists,
         checkIfEmailAlreadyExists: checkIfEmailAlreadyExists,
         signIn: signIn
       }));
@@ -2007,7 +2007,7 @@ __webpack_require__.r(__webpack_exports__);
 var Body = function Body(_ref) {
   var changePageState = _ref.changePageState,
       pageState = _ref.pageState,
-      checkIfUserNameAlreadyExists = _ref.checkIfUserNameAlreadyExists,
+      checkIfUsernameAlreadyExists = _ref.checkIfUsernameAlreadyExists,
       checkIfEmailAlreadyExists = _ref.checkIfEmailAlreadyExists,
       signIn = _ref.signIn;
 
@@ -2015,7 +2015,7 @@ var Body = function Body(_ref) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("main", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_signIn_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
       pageState: pageState,
       changePageState: changePageState,
-      checkIfUserNameAlreadyExists: checkIfUserNameAlreadyExists,
+      checkIfUsernameAlreadyExists: checkIfUsernameAlreadyExists,
       checkIfEmailAlreadyExists: checkIfEmailAlreadyExists,
       signIn: signIn
     }));
@@ -2024,7 +2024,7 @@ var Body = function Body(_ref) {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("main", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_signUpForms_SignUp_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
     pageState: pageState,
     changePageState: changePageState,
-    checkIfUserNameAlreadyExists: checkIfUserNameAlreadyExists,
+    checkIfUsernameAlreadyExists: checkIfUsernameAlreadyExists,
     checkIfEmailAlreadyExists: checkIfEmailAlreadyExists,
     signIn: signIn
   }));
@@ -2210,7 +2210,7 @@ var SignUp = /*#__PURE__*/function (_React$Component) {
     _this.state = {
       firstName: '',
       lastName: '',
-      userName: '',
+      username: '',
       password: '',
       passwordConfirm: '',
       email: '',
@@ -2260,22 +2260,23 @@ var SignUp = /*#__PURE__*/function (_React$Component) {
       var _this2 = this;
 
       return new Promise(function (resolve, reject) {
-        var userNameExists = _this2.props.checkIfUserNameAlreadyExists(_this2.state.userName);
+        var usernameExists = _this2.props.checkIfUsernameAlreadyExists(_this2.state.username);
 
         var emailExists = _this2.props.checkIfEmailAlreadyExists(_this2.state.email);
 
-        return Promise.all([userNameExists, emailExists]).then(function (results) {
+        return Promise.all([usernameExists, emailExists]).then(function (results) {
           var _results = results;
 
           var _results2 = _slicedToArray(_results, 2);
 
-          userNameExists = _results2[0];
+          usernameExists = _results2[0];
           emailExists = _results2[1];
 
-          if (userNameExists.data || emailExists.data) {
-            userNameExists = userNameExists.data ? 'Username already exists' : '';
+          if (usernameExists.data || emailExists.data) {
+            console.log(usernameExists.data, emailExists.data);
+            usernameExists = usernameExists.data ? 'Username already exists' : '';
             emailExists = emailExists.data ? 'Email already exists' : '';
-            results = [userNameExists, emailExists];
+            results = [usernameExists, emailExists];
             resolve(results);
           } else {
             resolve('changeToSignUpForm2');
@@ -2332,7 +2333,7 @@ var SignUp = /*#__PURE__*/function (_React$Component) {
         var userInfo = {
           firstName: this.state.firstName,
           lastName: this.state.lastName,
-          userName: this.state.userName,
+          username: this.state.username,
           password: this.state.password,
           email: this.state.email,
           signedUpAs: this.state.signedUpAs,
@@ -2345,7 +2346,7 @@ var SignUp = /*#__PURE__*/function (_React$Component) {
         };
         createNewUserInDB(userInfo).then(function (result) {
           console.log(result);
-          signIn(_this3.state.userName, _this3.state.password);
+          signIn(_this3.state.username, _this3.state.password);
           changePageState(changeTo);
         })["catch"](function (err) {
           console.log(new Error(err));
@@ -2490,9 +2491,9 @@ var SignUpForm1 = /*#__PURE__*/function (_React$Component) {
         value: fields.lastName
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "User Name:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         name: "username",
-        id: "userName",
+        id: "username",
         onChange: textInputHandler,
-        value: fields.userName,
+        value: fields.username,
         required: true
       }), usernameAvailable)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Password (8 characters minimum):", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         name: "password",
@@ -2677,12 +2678,13 @@ var SignUpForm2 = /*#__PURE__*/function (_React$Component) {
         value: fields.cardNumber,
         required: true
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Expiration Date:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Month", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("select", {
+        defaultValue: "DEFAULT",
         name: "cardExpMonth",
         id: "cardExpMonth",
         onChange: fieldInputHandler,
         required: true
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
-        selected: true,
+        value: "DEFAULT",
         disabled: true
       }, "Month"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
         value: "1"
@@ -2709,12 +2711,13 @@ var SignUpForm2 = /*#__PURE__*/function (_React$Component) {
       }, "11 Nov"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
         value: "12"
       }, "12 Dec")), "Year", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("select", {
+        defaultValue: "DEFAULT",
         name: "cardExpYear",
         id: "cardExpYear",
         onChange: fieldInputHandler,
         required: true
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
-        selected: true,
+        value: "DEFAULT",
         disabled: true
       }, "Year"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
         value: "2021"

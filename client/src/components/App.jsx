@@ -21,7 +21,7 @@ class App extends React.Component {
       userData: {}
     }
     this.changePageState = this.changePageState.bind(this);
-    this.checkIfUserNameAlreadyExists = this.checkIfUserNameAlreadyExists.bind(this);
+    this.checkIfUsernameAlreadyExists = this.checkIfUsernameAlreadyExists.bind(this);
     this.checkIfEmailAlreadyExists = this.checkIfEmailAlreadyExists.bind(this);
     this.signIn = this.signIn.bind(this);
   }
@@ -32,8 +32,8 @@ class App extends React.Component {
       pageState: pageStates[pageState]
     });
   }
-  checkIfUserNameAlreadyExists (userName) {
-    return axios.get(`/checkUserNameExists?username=${userName}`)
+  checkIfUsernameAlreadyExists (username) {
+    return axios.get(`/checkUserNameExists?username=${username}`)
   }
   checkIfEmailAlreadyExists (email) {
     return axios.get(`/checkEmailExists?email=${email}`)
@@ -62,7 +62,7 @@ class App extends React.Component {
   render () {
     let pageState = this.state.pageState
     let changePageState = this.changePageState
-    let checkIfUserNameAlreadyExists = this.checkIfUserNameAlreadyExists
+    let checkIfUsernameAlreadyExists = this.checkIfUsernameAlreadyExists
     let checkIfEmailAlreadyExists = this.checkIfEmailAlreadyExists
     let signIn = this.signIn;
 
@@ -81,7 +81,7 @@ class App extends React.Component {
         <Body
           pageState={pageState}
           changePageState={changePageState}
-          checkIfUserNameAlreadyExists={checkIfUserNameAlreadyExists}
+          checkIfUsernameAlreadyExists={checkIfUsernameAlreadyExists}
           checkIfEmailAlreadyExists={checkIfEmailAlreadyExists}
           signIn={signIn}
         />

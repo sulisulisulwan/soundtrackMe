@@ -13,7 +13,7 @@ class SignUp extends React.Component {
     this.state = {
       firstName: '',
       lastName: '',
-      userName: '',
+      username: '',
       password: '',
       passwordConfirm: '',
       email: '',
@@ -53,15 +53,17 @@ class SignUp extends React.Component {
 
   verifyUserInputForm1 () {
     return new Promise((resolve, reject) => {
-      let userNameExists = this.props.checkIfUserNameAlreadyExists(this.state.userName)
+      let usernameExists = this.props.checkIfUsernameAlreadyExists(this.state.username)
       let emailExists = this.props.checkIfEmailAlreadyExists(this.state.email)
-      return Promise.all([userNameExists, emailExists])
+      return Promise.all([usernameExists, emailExists])
       .then(results => {
-        [userNameExists, emailExists] = results;
-        if (userNameExists.data || emailExists.data) {
-          userNameExists = userNameExists.data ? 'Username already exists' : '';
+
+        [usernameExists, emailExists] = results;
+        if (usernameExists.data || emailExists.data) {
+          console.log(usernameExists.data, emailExists.data)
+          usernameExists = usernameExists.data ? 'Username already exists' : '';
           emailExists = emailExists.data ? 'Email already exists' : '';
-          results = [userNameExists, emailExists]
+          results = [usernameExists, emailExists]
           resolve(results)
         } else {
           resolve('changeToSignUpForm2')
@@ -113,7 +115,7 @@ class SignUp extends React.Component {
       let userInfo = {
         firstName: this.state.firstName,
         lastName: this.state.lastName,
-        userName: this.state.userName,
+        username: this.state.username,
         password: this.state.password,
         email: this.state.email,
         signedUpAs: this.state.signedUpAs,
@@ -127,7 +129,7 @@ class SignUp extends React.Component {
       createNewUserInDB(userInfo)
       .then(result => {
         console.log(result)
-        signIn(this.state.userName, this.state.password);
+        signIn(this.state.username, this.state.password);
         changePageState(changeTo)
       })
       .catch(err => {

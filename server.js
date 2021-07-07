@@ -2,7 +2,7 @@
 const express = require('express');
 const app = express();
 const port = 1337;
-const {checkUserNameExists, checkEmailExists, createNewUser} = require('./models/signUpModels.js');
+const {checkUsernameExists, checkEmailExists, createNewUser} = require('./models/signUpModels.js');
 const {postMovie, postMusic} = require('./models/uploadContentModels.js');
 const {verifyAccount, loadProfile} = require('./models/signInModels.js')
 app.listen(port, () => {
@@ -24,8 +24,8 @@ app.get('/', (req, res) => {
  *********************************************/
 
 app.get('/checkUserNameExists', (req, res) => {
-  let userName = req.query.username
-  checkUserNameExists(userName)
+  let username = req.query.username
+  checkUsernameExists(username)
   .then(result=> {
     res.status(200).json(result)
   })

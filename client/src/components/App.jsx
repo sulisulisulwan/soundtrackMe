@@ -3,6 +3,9 @@ import axios from 'axios';
 import Header from './header/Header.jsx'
 import Body from './body/Body.jsx'
 
+
+
+
 let pageStates = {
   changeToSignedOut: 'changeToSignedOut',
   changeToSignedIn: 'changeToSignedIn',
@@ -25,7 +28,6 @@ class App extends React.Component {
         username: 'sulimantekalli',
         email: 'sulimantekalli@gmail.com',
         signedUpAs: 'filmmaker',
-
       }
     }
     this.changePageState = this.changePageState.bind(this);
@@ -54,11 +56,10 @@ class App extends React.Component {
     })
     .then(result => {
       console.log('made it here')
-      return axios.get(`/signIn/loadProfile?${username}`)
+      return axios.get(`/signIn/loadProfile?username=${username}`)
     })
     .then(userData => {
-
-      this.setState({userData: userData})
+      this.setState({userData: userData.data})
       this.changePageState('changeToSignedIn');
     })
     .catch(err => {

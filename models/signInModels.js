@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const db = require('../db/db.js')
+const {UserInfo} = require('../db/db.js')
 
 const verifyAccount = (username, password) => {
   return new Promise ((resolve, reject) => {
-    db.UserInfo.findOne({
+    UserInfo.findOne({
       username: username,
       password: password
     })
@@ -19,7 +19,8 @@ const verifyAccount = (username, password) => {
 
 const loadProfile = (username) => {
   return new Promise ((resolve, reject) => {
-    db.UserInfo.findOne({
+    console.log('MADE IT THIS FAR!')
+    UserInfo.findOne({
       username: username
     })
     .then(userData => {

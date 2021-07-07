@@ -15,6 +15,7 @@ const userInfoSchema = new mongoose.Schema({
   password: String,
   email: String,
   signedUpAs: String,
+  portfolio: {},
   cardType: String,
   cardName: String,
   cardNumber: Number,
@@ -23,24 +24,30 @@ const userInfoSchema = new mongoose.Schema({
   cardCVV: Number,
 })
 
-const composerInfoSchema = new mongoose.Schema({
+// const composerInfoSchema = new mongoose.Schema({
+//   username: String,
+//   scores: {},
+//   filmsAttempted: {}
+// })
+const scoreSchema = new mongoose.Schema({
   username: String,
-  portfolio: {
-    audioFiles: {},
-  },
-  filmscores: {}
+  audioTitle: String,
+  audioDescription: String,
+  audioLink: String
 })
 
-//filmscores will be
-
-const filmmakerInfoSchema = new mongoose.Schema({
+// const filmmakerInfoSchema = new mongoose.Schema({
+//   username: String,
+//   films: {}
+// })
+const filmSchema = new mongoose.Schema({
   username: String,
-  films: {}
+  filmTitle: String,
+  filmDescription: String,
+  filmLink: String,
 })
 
-const allFilmsSchema = new mongoose.Schema({
-  films: {}
-})
+
 /*
 films: {
   westernFlick: {
@@ -57,9 +64,15 @@ films: {
 */
 
 const UserInfo = mongoose.model('UserInfo', userInfoSchema);
+const Film = mongoose.model('Film', filmSchema);
+const Score = mongoose.model('Score', scoreSchema);
+// const FilmmakerInfo = mongoose.model('FilmmakerInfo', filmmakerInfoSchema);
+// const ComposerInfo = mongoose.model('ComposerInfo', composerInfoSchema);
 
 module.exports = {
-  UserInfo: UserInfo
+  UserInfo: UserInfo,
+  Film: Film,
+  Score: Score
+  // FilmmakerInfo: FilmmakerInfo,
+  // ComposerInfo: ComposerInfo,
 }
-
-const AllFilms = mongoose.model('AllFilms', allFilmsSchema)

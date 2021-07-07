@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
-const db = require('../db/db.js')
+const {UserInfo} = require('../db/db.js')
 
 const checkUsernameExists = (username) => {
   return new Promise ((resolve, reject) => {
     console.log('username is', username)
-    db.UserInfo.findOne({username: username})
+    UserInfo.findOne({username: username})
     .then(result => {
       let response = result === null ? false : true;
       resolve(response)
@@ -17,7 +17,7 @@ const checkUsernameExists = (username) => {
 
 const checkEmailExists = (email) => {
   return new Promise ((resolve, reject) => {
-    db.UserInfo.findOne({email: email})
+    UserInfo.findOne({email: email})
     .then(result => {
       let response = result === null ? false : true;
       resolve(response);
@@ -32,7 +32,7 @@ const checkEmailExists = (email) => {
 const createNewUser = (userInfo) => {
   return new Promise ((resolve, reject) => {
 
-    let newUserInfo = new db.UserInfo({
+    let newUserInfo = new UserInfo({
       firstName: userInfo.firstName,
       lastName: userInfo.lastName,
       username: userInfo.username,

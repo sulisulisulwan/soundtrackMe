@@ -57,38 +57,38 @@ body {
   }
 
   //filmmaker view
-  #open-add-video-form {
+  #open-add-film-form {
     text-align: center;
   }
 
-  #add-video-view {
+  #add-film-view {
     display: flex;
     flex-direction: column;
     text-align: center;
-    #video-title {
+    #film-title {
 
     }
-    #video-description {
+    #film-description {
 
     }
-    #video-link {
+    #film-link {
 
     }
   }
 
-  #my-videos {
-    .video-wrapper {
-      .video-title {
+  #my-film {
+    .film-wrapper {
+      .film-title {
         font-size: 20px;
         font-family: Arial;
         color: black;
       }
-      .video-link {
+      .film-link {
         font-size: 15px;
         font-family: Arial;
         color: gray;
       }
-      .video-description {
+      .film-description {
         font-size: 15px;
         font-family: Arial;
         color: gray;

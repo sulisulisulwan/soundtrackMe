@@ -4,9 +4,11 @@ const axios = require('axios');
 const app = express();
 const port = 1337;
 const {checkUsernameExists, checkEmailExists, createNewUser} = require('./models/signUpModels.js');
-const {postMovie, postMusic} = require('./models/uploadContentModels.js');
+const {postFilm, postScore} = require('./models/uploadMediaModels.js');
+const {getAllFilms, getAllScores} = require('./models/getMediaModels.js');
 const {verifyAccount, loadProfile} = require('./models/signInModels.js')
-const API_KEY = require("./youtubeAPIKey/key.js")
+const API_KEY = require('./youtubeAPIKey/key.js')
+const videoExists = require('youtube-video-exists')
 app.listen(port, () => {
   console.log(`listening on ${port}`)
 })
@@ -79,6 +81,7 @@ app.post('/signIn/verifyAccount', (req, res) => {
 
 app.get('/signIn/loadProfile', (req, res) => {
   let username = req.query.username
+  console.log('BACK IN THE SERVER')
   loadProfile(username)
   .then(userData => {
     res.status(200).json(userData);
@@ -98,32 +101,52 @@ app.get('/signIn/loadProfile', (req, res) => {
 
 //Upload Content Routes
 
-app.get('/verifyVideoLink', (req, res) => {
+app.get('/verifyFilmLink', (req, res) => {
+  //this method now allows the main part of the URL to be wrong.
+  //This should be fixed.
   let link = req.query.link;
   let id= link.split('=')[1]
-  let query = `https://www.googleapis.com/youtube/v3/videos?id=${id}`
-  axios.get(query, {
-    headers: {
-      'Authorization': API_KEY
-    }
-  })
-  .then(result => {
-    console.log(result)
-    res.sendStatus(200)
+  //replace this with my own eventually
+  videoExists.getVideoInfo(id)
+  .then(results=> {
+    res.status(200).json([results.existing, id]);
   })
   .catch(err => {
     console.log(err)
-    res.sendStatus(404)
+    res.sendStatus(500)
   })
-
 })
 
 
 
-app.post('/postMovie', (req, res) => {
-  //TODO: parse out what gets passed into the model
-  let movie = req.body
-  postMovie(movie)
+app.get('/getAllFilms', (req, res) => {
+  let username = req.query.username
+  getAllFilms(username)
+  .then(films => {
+    console.log('films in server', films)
+    res.status(200).json(films)
+  })
+  .catch(err => {
+    console.log(err)
+    res.sendStatus(500);
+  });
+})
+
+app.get('/getAllScores', (req, res) => {
+  let username = req.query.username
+  getAllScores(username)
+  .then(scores => {
+    res.status(200).json(scores)
+  })
+  .catch(err => {
+    console.log(err)
+    res.sendStatus(500);
+  });
+})
+
+app.post('/postFilm', (req, res) => {
+  let film = req.body
+  postFilm(film)
   .then(_=> {
     res.sendStatus(201);
   })
@@ -133,7 +156,8 @@ app.post('/postMovie', (req, res) => {
   })
 })
 
-app.post('./postMusic', (req, res) => {
+
+app.post('./postScore', (req, res) => {
   //TODO: parse out what gets passed into the model
   let music;
   postMusic(music)

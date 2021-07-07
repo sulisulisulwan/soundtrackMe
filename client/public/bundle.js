@@ -1942,10 +1942,10 @@ var App = /*#__PURE__*/function (_React$Component) {
         password: password
       }).then(function (result) {
         console.log('made it here');
-        return axios__WEBPACK_IMPORTED_MODULE_1___default().get("/signIn/loadProfile?".concat(username));
+        return axios__WEBPACK_IMPORTED_MODULE_1___default().get("/signIn/loadProfile?username=".concat(username));
       }).then(function (userData) {
         _this2.setState({
-          userData: userData
+          userData: userData.data
         });
 
         _this2.changePageState('changeToSignedIn');
@@ -3035,8 +3035,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _components_MyVideos_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/MyVideos.jsx */ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/MyVideos.jsx");
-/* harmony import */ var _components_AddVideoForm_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/AddVideoForm.jsx */ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/AddVideoForm.jsx");
+/* harmony import */ var _components_MyFilms_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/MyFilms.jsx */ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/MyFilms.jsx");
+/* harmony import */ var _components_AddFilmForm_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/AddFilmForm.jsx */ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/AddFilmForm.jsx");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -3078,15 +3078,16 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
 
     _this = _super.call(this, props);
     _this.state = {
-      videoTitle: '',
-      videoDescription: '',
-      videoLink: '',
-      addVideoFormIsOpen: false,
-      addVideoButtonIsHidden: false,
-      videoLinkValidation: ''
+      filmTitle: '',
+      filmDescription: '',
+      filmLink: '',
+      addFilmFormIsOpen: false,
+      addFilmButtonIsHidden: false,
+      filmLinkValidation: '',
+      myFilms: []
     };
-    _this.handleSubmitAddVideo = _this.handleSubmitAddVideo.bind(_assertThisInitialized(_this));
-    _this.openAddVideoForm = _this.openAddVideoForm.bind(_assertThisInitialized(_this));
+    _this.handleSubmitAddFilm = _this.handleSubmitAddFilm.bind(_assertThisInitialized(_this));
+    _this.openAddFilmForm = _this.openAddFilmForm.bind(_assertThisInitialized(_this));
     _this.onChangeTextField = _this.onChangeTextField.bind(_assertThisInitialized(_this));
     return _this;
   }
@@ -3101,49 +3102,66 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
       this.setState(newValue);
     }
   }, {
-    key: "openAddVideoForm",
-    value: function openAddVideoForm(e) {
+    key: "openAddFilmForm",
+    value: function openAddFilmForm(e) {
       this.setState({
-        addVideoFormIsOpen: true,
-        addVideoButtonIsHidden: true
+        addFilmFormIsOpen: true,
+        addFilmButtonIsHidden: true
       });
     }
   }, {
-    key: "handleSubmitAddVideo",
-    value: function handleSubmitAddVideo(e) {
+    key: "handleSubmitAddFilm",
+    value: function handleSubmitAddFilm(e) {
       var _this2 = this;
 
+      var username = this.props.userData.username;
+      var filmTitle = this.state.filmTitle;
+      var filmDescription = this.state.filmDescription;
+      var filmLink = this.state.filmLink;
       e.preventDefault();
-      axios__WEBPACK_IMPORTED_MODULE_3___default().get("/verifyVideoLink?link=".concat(this.state.videoLink)).then(function (result) {
-        console.log(result);
-        return;
-
-        if (result === false) {
+      axios__WEBPACK_IMPORTED_MODULE_3___default().get("/verifyFilmLink?link=".concat(filmLink)).then(function (result) {
+        if (!result.data[0]) {
           throw 'link does not exist';
         }
 
-        var addMovieFields = {
-          username: _this2.props.userData.username,
-          videoTitle: _this2.state.videoTitle,
-          videoDescription: _this2.state.videoDescription,
-          videoLink: _this2.state.videoLink
+        var addFilmFields = {
+          username: username,
+          filmTitle: filmTitle,
+          filmDescription: filmDescription,
+          filmLink: result.data[1]
         };
-        axios__WEBPACK_IMPORTED_MODULE_3___default().post('/postMovie', addMovieFields).then(function (result) {
-          console.log(result);
+        axios__WEBPACK_IMPORTED_MODULE_3___default().post('/postFilm', addFilmFields);
+      }).then(function (_) {
+        return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/getAllFilms?username=".concat(username));
+      }).then(function (films) {
+        var myFilms = _this2.state.myFilms;
+        myFilms.push(films.data);
 
-          _this2.setState({
-            addVideoFormIsOpen: false,
-            addVideoButtonIsHidden: false
-          });
+        _this2.setState({
+          myFilms: myFilms,
+          addFilmFormIsOpen: false,
+          addFilmButtonIsHidden: false
         });
       })["catch"](function (err) {
         if (err.toString() === 'link does not exist') {
           _this2.setState({
-            videoLinkValidation: 'This video link isn\'t valid'
+            filmLinkValidation: 'This film link isn\'t valid'
           });
         }
 
         console.error(new Error(err));
+      });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this3 = this;
+
+      var username = this.props.userData.username;
+      return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/getAllFilms?username=".concat(username)).then(function (films) {
+        _this3.setState({
+          myFilms: films.data
+        });
       });
     }
   }, {
@@ -3152,27 +3170,30 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
       var userData = this.props.userData;
       var username = userData.username;
       var fields = this.state;
-      var addVideoFormIsOpen = this.state.addVideoFormIsOpen;
-      var addVideoButtonIsHidden = this.state.addVideoButtonIsHidden;
-      var videoLinkValidation = this.state.videoLinkValidation;
-      var openAddVideoForm = this.openAddVideoForm;
-      var handleSubmitAddVideo = this.handleSubmitAddVideo;
+      var myFilms = this.state.myFilms;
+      var addFilmFormIsOpen = this.state.addFilmFormIsOpen;
+      var addFilmButtonIsHidden = this.state.addFilmButtonIsHidden;
+      var filmLinkValidation = this.state.filmLinkValidation;
+      var openAddFilmForm = this.openAddFilmForm;
+      var handleSubmitAddFilm = this.handleSubmitAddFilm;
       var onChangeTextField = this.onChangeTextField;
-      var addVideoForm = addVideoFormIsOpen ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_AddVideoForm_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
+      var addFilmForm = addFilmFormIsOpen ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_AddFilmForm_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
         fields: fields,
-        videoLinkValidation: videoLinkValidation,
+        filmLinkValidation: filmLinkValidation,
         onChangeTextField: onChangeTextField,
-        handleSubmitAddVideo: handleSubmitAddVideo
+        handleSubmitAddFilm: handleSubmitAddFilm
       }) : '';
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "filmmaker-view"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        id: "open-add-video-form"
+        id: "open-add-film-form"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
         type: "button",
-        onClick: openAddVideoForm,
-        hidden: addVideoButtonIsHidden
-      }, "Add Video")), addVideoForm, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_MyVideos_jsx__WEBPACK_IMPORTED_MODULE_1__.default, null));
+        onClick: openAddFilmForm,
+        hidden: addFilmButtonIsHidden
+      }, "Add Film")), addFilmForm, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_MyFilms_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
+        myFilms: myFilms
+      }));
     }
   }]);
 
@@ -3183,10 +3204,10 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
 
 /***/ }),
 
-/***/ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/AddVideoForm.jsx":
-/*!********************************************************************************************************!*\
-  !*** ./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/AddVideoForm.jsx ***!
-  \********************************************************************************************************/
+/***/ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/AddFilmForm.jsx":
+/*!*******************************************************************************************************!*\
+  !*** ./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/AddFilmForm.jsx ***!
+  \*******************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3197,52 +3218,52 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 
-var AddVideoForm = function AddVideoForm(_ref) {
+var AddFilmForm = function AddFilmForm(_ref) {
   var fields = _ref.fields,
       onChangeTextField = _ref.onChangeTextField,
-      handleSubmitAddVideo = _ref.handleSubmitAddVideo,
-      videoLinkValidation = _ref.videoLinkValidation;
+      handleSubmitAddFilm = _ref.handleSubmitAddFilm,
+      filmLinkValidation = _ref.filmLinkValidation;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    id: "add-video-view"
-  }, "Add Video", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
-    onSubmit: handleSubmitAddVideo
+    id: "add-film-view"
+  }, "Add Film", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
+    onSubmit: handleSubmitAddFilm
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    id: "video-title"
+    id: "film-title"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Title:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
     type: "text",
-    id: "videoTitle",
+    id: "filmTitle",
     onChange: onChangeTextField,
-    value: fields.videoTitle
+    value: fields.filmTitle
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    id: "video-description"
+    id: "film-description"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Description:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
     type: "text",
-    id: "videoDescription",
+    id: "filmDescription",
     onChange: onChangeTextField,
-    value: fields.videoDescription
+    value: fields.filmDescription
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    id: "video-link"
+    id: "film-link"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Link:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
     type: "text",
-    id: "videoLink",
+    id: "filmLink",
     onChange: onChangeTextField,
-    value: fields.videoLink
-  }), videoLinkValidation)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    id: "add-video-submit"
+    value: fields.filmLink
+  }), filmLinkValidation)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    id: "add-film-submit"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
     type: "submit",
-    value: "Add Video"
+    value: "Add Film"
   }))));
 };
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AddVideoForm);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AddFilmForm);
 
 /***/ }),
 
-/***/ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/MyVideos.jsx":
-/*!****************************************************************************************************!*\
-  !*** ./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/MyVideos.jsx ***!
-  \****************************************************************************************************/
+/***/ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/Film.jsx":
+/*!************************************************************************************************!*\
+  !*** ./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/Film.jsx ***!
+  \************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3251,7 +3272,40 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _Video_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Video.jsx */ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/Video.jsx");
+
+
+var Film = function Film(_ref) {
+  var title = _ref.title,
+      link = _ref.link,
+      description = _ref.description;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "film-wrapper"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "film-title"
+  }, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "film-link"
+  }, link), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "film-description"
+  }, description));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Film);
+
+/***/ }),
+
+/***/ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/MyFilms.jsx":
+/*!***************************************************************************************************!*\
+  !*** ./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/MyFilms.jsx ***!
+  \***************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _Film_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Film.jsx */ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/Film.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3277,85 +3331,39 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-var MyVideos = /*#__PURE__*/function (_React$Component) {
-  _inherits(MyVideos, _React$Component);
+var MyFilms = /*#__PURE__*/function (_React$Component) {
+  _inherits(MyFilms, _React$Component);
 
-  var _super = _createSuper(MyVideos);
+  var _super = _createSuper(MyFilms);
 
-  function MyVideos(props) {
-    var _this;
+  function MyFilms(props) {
+    _classCallCheck(this, MyFilms);
 
-    _classCallCheck(this, MyVideos);
-
-    _this = _super.call(this, props);
-    _this.state = {
-      videos: [{
-        title: 'Triassic Zoo',
-        link: 'https://www.youtube.com/watch?v=fRwd1zYZEAU',
-        description: 'A wealthy paleo-enthusiast builds a gigantic zoo for dinosaurs on a remote island with dire consequences.'
-      }, {
-        title: 'Galaxy Battle',
-        link: 'https://www.youtube.com/watch?v=YUpl-OSRe5g',
-        description: 'A desperate rebel faction seeks to overthrow a tyrannical interstellar empire.'
-      }]
-    };
-    return _this;
+    return _super.call(this, props);
   }
 
-  _createClass(MyVideos, [{
+  _createClass(MyFilms, [{
     key: "render",
     value: function render() {
-      var videos = this.state.videos;
+      var myFilms = this.props.myFilms;
+      console.log(myFilms);
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        id: "my-videos"
-      }, videos.map(function (video, i) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Video_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
+        id: "my-films"
+      }, myFilms.map(function (film, i) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Film_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
           key: i,
-          title: video.title,
-          link: video.link,
-          description: video.description
+          title: film.filmTitle,
+          link: film.filmLink,
+          description: film.filmDescription
         });
       }));
     }
   }]);
 
-  return MyVideos;
+  return MyFilms;
 }(react__WEBPACK_IMPORTED_MODULE_0__.Component);
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MyVideos);
-
-/***/ }),
-
-/***/ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/Video.jsx":
-/*!*************************************************************************************************!*\
-  !*** ./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/Video.jsx ***!
-  \*************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-
-var Video = function Video(_ref) {
-  var title = _ref.title,
-      link = _ref.link,
-      description = _ref.description;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "video-wrapper"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "video-title"
-  }, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "video-link"
-  }, link), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "video-description"
-  }, description));
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Video);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MyFilms);
 
 /***/ }),
 
@@ -3380,34 +3388,30 @@ var Header = function Header(_ref) {
   var changePageState = _ref.changePageState,
       pageState = _ref.pageState,
       userData = _ref.userData;
-  var signedOutAssets = {
-    signedOutHeader: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-      id: "header-icon"
-    })
-  };
-  var composerVisualAssets = {
-    signedUpHeader: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-      id: "header-icon-wrapper"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-      id: "header-icon",
-      src: "./icons/composerIcon.jpg"
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
-      id: "header-username"
-    }, "@", userData.username))
-  };
-  var filmmakerVisualAssets = {
-    signedUpHeader: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-      id: "header-icon-wrapper"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-      id: "header-icon",
-      src: "./icons/filmmakerIcon.jpg"
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
-      id: "header-username"
-    }, "@", userData.username))
-  };
-  var visualAssets = userData.signedUpAs === 'composer' ? composerVisualAssets : userData.signedUpAs === 'filmmaker' ? filmmakerVisualAssets : signedOutAssets;
+  var visualAssets;
 
   if (pageState === 'changeToSignedIn') {
+    var composerVisualAssets = {
+      signedUpHeader: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "header-icon-wrapper"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        id: "header-icon",
+        src: "./icons/composerIcon.jpg"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        id: "header-username"
+      }, "@", userData.username))
+    };
+    var filmmakerVisualAssets = {
+      signedUpHeader: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "header-icon-wrapper"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        id: "header-icon",
+        src: "./icons/filmmakerIcon.jpg"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        id: "header-username"
+      }, "@", userData.username))
+    };
+    visualAssets = userData.signedUpAs === 'composer' ? composerVisualAssets : filmmakerVisualAssets;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("header", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
       id: "navbar"
     }, visualAssets.signedUpHeader, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SignInArea_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
@@ -3415,6 +3419,11 @@ var Header = function Header(_ref) {
       pageState: pageState
     })));
   } else {
+    visualAssets = {
+      signedOutHeader: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        id: "header-icon"
+      })
+    };
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("header", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
       id: "navbar"
     }, visualAssets.signedOutHeader, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SignInArea_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {

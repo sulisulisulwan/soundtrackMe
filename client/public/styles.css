@@ -48,25 +48,25 @@ body #sign-in-page #sign-in-form {
   margin-right: auto;
   text-align: center;
 }
-body #open-add-video-form {
+body #open-add-film-form {
   text-align: center;
 }
-body #add-video-view {
+body #add-film-view {
   display: flex;
   flex-direction: column;
   text-align: center;
 }
-body #my-videos .video-wrapper .video-title {
+body #my-film .film-wrapper .film-title {
   font-size: 20px;
   font-family: Arial;
   color: black;
 }
-body #my-videos .video-wrapper .video-link {
+body #my-film .film-wrapper .film-link {
   font-size: 15px;
   font-family: Arial;
   color: gray;
 }
-body #my-videos .video-wrapper .video-description {
+body #my-film .film-wrapper .film-description {
   font-size: 15px;
   font-family: Arial;
   color: gray;

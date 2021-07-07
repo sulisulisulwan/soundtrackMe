@@ -1,22 +1,23 @@
 import React from 'react';
-import MyVideos from './components/MyVideos.jsx'
-import AddVideoForm from './components/AddVideoForm.jsx'
+import MyFilms from './components/MyFilms.jsx'
+import AddFilmForm from './components/AddFilmForm.jsx'
 import axios from 'axios';
 
 class FilmmakerView extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      videoTitle: '',
-      videoDescription: '',
-      videoLink: '',
-      addVideoFormIsOpen: false,
-      addVideoButtonIsHidden: false,
-      videoLinkValidation: ''
+      filmTitle: '',
+      filmDescription: '',
+      filmLink: '',
+      addFilmFormIsOpen: false,
+      addFilmButtonIsHidden: false,
+      filmLinkValidation: '',
+      myFilms: []
     }
 
-    this.handleSubmitAddVideo = this.handleSubmitAddVideo.bind(this);
-    this.openAddVideoForm = this.openAddVideoForm.bind(this);
+    this.handleSubmitAddFilm = this.handleSubmitAddFilm.bind(this);
+    this.openAddFilmForm = this.openAddFilmForm.bind(this);
     this.onChangeTextField = this.onChangeTextField.bind(this);
   }
 
@@ -28,44 +29,61 @@ class FilmmakerView extends React.Component {
     this.setState(newValue);
   }
 
-  openAddVideoForm(e) {
+  openAddFilmForm(e) {
     this.setState({
-      addVideoFormIsOpen: true,
-      addVideoButtonIsHidden: true
+      addFilmFormIsOpen: true,
+      addFilmButtonIsHidden: true
     })
   }
 
-  handleSubmitAddVideo (e) {
+  handleSubmitAddFilm (e) {
+    let username = this.props.userData.username;
+    let filmTitle = this.state.filmTitle;
+    let filmDescription = this.state.filmDescription;
+    let filmLink = this.state.filmLink;
     e.preventDefault()
-    axios.get(`/verifyVideoLink?link=${this.state.videoLink}`)
+    axios.get(`/verifyFilmLink?link=${filmLink}`)
     .then(result => {
-      console.log(result)
-      return;
-      if (result === false) {
+      if (!result.data[0]) {
         throw 'link does not exist'
       }
-      let addMovieFields = {
-        username: this.props.userData.username,
-        videoTitle: this.state.videoTitle,
-        videoDescription: this.state.videoDescription,
-        videoLink: this.state.videoLink
+      let addFilmFields = {
+        username: username,
+        filmTitle: filmTitle,
+        filmDescription: filmDescription,
+        filmLink: result.data[1]
       }
-      axios.post('/postMovie', addMovieFields)
-      .then(result => {
-        console.log(result);
-        this.setState({
-          addVideoFormIsOpen: false,
-          addVideoButtonIsHidden: false
-        })
+      axios.post('/postFilm', addFilmFields)
+    })
+    .then(_=> {
+      return axios.get(`/getAllFilms?username=${username}`)
+    })
+    .then(films => {
+      let myFilms = this.state.myFilms
+      myFilms.push(films.data)
+      this.setState({
+        myFilms: myFilms,
+        addFilmFormIsOpen: false,
+        addFilmButtonIsHidden: false
       })
     })
     .catch(err => {
       if (err.toString() === 'link does not exist') {
         this.setState({
-          videoLinkValidation: 'This video link isn\'t valid'
+          filmLinkValidation: 'This film link isn\'t valid'
         })
       }
       console.error(new Error(err))
+    });
+  }
+
+  componentDidMount() {
+    let username = this.props.userData.username
+    return axios.get(`/getAllFilms?username=${username}`)
+    .then(films => {
+      this.setState({
+        myFilms: films.data
+      })
     })
   }
 
@@ -73,25 +91,26 @@ class FilmmakerView extends React.Component {
     let userData = this.props.userData
     let username = userData.username;
     let fields = this.state;
-    let addVideoFormIsOpen = this.state.addVideoFormIsOpen;
-    let addVideoButtonIsHidden = this.state.addVideoButtonIsHidden;
-    let videoLinkValidation = this.state.videoLinkValidation;
-    let openAddVideoForm = this.openAddVideoForm;
-    let handleSubmitAddVideo = this.handleSubmitAddVideo;
+    let myFilms = this.state.myFilms;
+    let addFilmFormIsOpen = this.state.addFilmFormIsOpen;
+    let addFilmButtonIsHidden = this.state.addFilmButtonIsHidden;
+    let filmLinkValidation = this.state.filmLinkValidation;
+    let openAddFilmForm = this.openAddFilmForm;
+    let handleSubmitAddFilm = this.handleSubmitAddFilm;
     let onChangeTextField =  this.onChangeTextField;
-    let addVideoForm = addVideoFormIsOpen ? <AddVideoForm
+    let addFilmForm = addFilmFormIsOpen ? <AddFilmForm
       fields={fields}
-      videoLinkValidation={videoLinkValidation}
+      filmLinkValidation={filmLinkValidation}
       onChangeTextField={onChangeTextField}
-      handleSubmitAddVideo={handleSubmitAddVideo}
+      handleSubmitAddFilm={handleSubmitAddFilm}
     /> : ''
     return (
       <div id="filmmaker-view">
-        <div id="open-add-video-form">
-          <button type="button" onClick={openAddVideoForm} hidden={addVideoButtonIsHidden}>Add Video</button>
+        <div id="open-add-film-form">
+          <button type="button" onClick={openAddFilmForm} hidden={addFilmButtonIsHidden}>Add Film</button>
         </div>
-        {addVideoForm}
-        <MyVideos />
+        {addFilmForm}
+        <MyFilms myFilms={myFilms}/>
       </div>
     )
   }

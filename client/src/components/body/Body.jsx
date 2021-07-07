@@ -2,13 +2,14 @@
 import React from 'react';
 import SignUp from './signUpForms/SignUp.jsx'
 import SignIn from './signIn.jsx'
-const Body = ({changePageState, pageState, checkIfUsernameAlreadyExists, checkIfEmailAlreadyExists, signIn}) => {
+const Body = ({changePageState, pageState, checkIfUsernameAlreadyExists, checkIfEmailAlreadyExists, signIn, signInValidationStatus}) => {
   if (pageState === 'changeToSignIn') {
     return (
       <main>
         <SignIn
           pageState={pageState}
           changePageState={changePageState}
+          signInValidationStatus={signInValidationStatus}
           checkIfUsernameAlreadyExists={checkIfUsernameAlreadyExists}
           checkIfEmailAlreadyExists={checkIfEmailAlreadyExists}
           signIn={signIn}

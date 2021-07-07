@@ -18,6 +18,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       pageState: 'changeToSignedOut',
+      signInValidationStatus: '',
       userData: {}
     }
     this.changePageState = this.changePageState.bind(this);
@@ -38,32 +39,44 @@ class App extends React.Component {
   checkIfEmailAlreadyExists (email) {
     return axios.get(`/checkEmailExists?email=${email}`)
   }
+
   signIn(username, password) {
     axios.post(`/signIn/verifyAccount`, {
       username: username,
       password: password
     })
     .then(result => {
-      if (result === false ) {
-        return `Account for username ${username} unverified in system`
+      let status = result.status
+      if (status === 401 || status === 500) {
+
+        return status;
       } else {
-        axios.get(`/signIn/loadProfile?${username}`)
-        .then(userData => {
-          this.setState({userData: userData})
-          this.changePageState('changeToSignedIn');
-        })
+        return axios.get(`/signIn/loadProfile?${username}`)
       }
     })
+    .then(userData => {
+      this.setState({userData: userData})
+      this.changePageState('changeToSignedIn');
+    })
     .catch(err => {
-      console.error(new Error(err));
+      console.log('MADE IT HERE')
+      if (err === 401 || err === 500) {
+        let validationStatus = err === 401 ? 'Username and password did not match' : 'Oops!  Something went wrong on our end!  Try again.';
+        this.setState({
+          signInValidationStatus: validationStatus
+        })
+      } else {
+        console.error(new Error(err))
+      }
     })
   }
 
   render () {
-    let pageState = this.state.pageState
-    let changePageState = this.changePageState
-    let checkIfUsernameAlreadyExists = this.checkIfUsernameAlreadyExists
-    let checkIfEmailAlreadyExists = this.checkIfEmailAlreadyExists
+    let pageState = this.state.pageState;
+    let signInValidationStatus = this.state.signInValidationStatus;
+    let changePageState = this.changePageState;
+    let checkIfUsernameAlreadyExists = this.checkIfUsernameAlreadyExists;
+    let checkIfEmailAlreadyExists = this.checkIfEmailAlreadyExists;
     let signIn = this.signIn;
 
     if (this.state.pageState === 'changeToSignedIn') {
@@ -80,6 +93,7 @@ class App extends React.Component {
         <Header changePageState={changePageState} pageState={this.state.pageState}/>
         <Body
           pageState={pageState}
+          signInValidationStatus={signInValidationStatus}
           changePageState={changePageState}
           checkIfUsernameAlreadyExists={checkIfUsernameAlreadyExists}
           checkIfEmailAlreadyExists={checkIfEmailAlreadyExists}

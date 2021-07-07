@@ -1898,6 +1898,7 @@ var App = /*#__PURE__*/function (_React$Component) {
     _this = _super.call(this, props);
     _this.state = {
       pageState: 'changeToSignedOut',
+      signInValidationStatus: '',
       userData: {}
     };
     _this.changePageState = _this.changePageState.bind(_assertThisInitialized(_this));
@@ -1934,25 +1935,38 @@ var App = /*#__PURE__*/function (_React$Component) {
         username: username,
         password: password
       }).then(function (result) {
-        if (result === false) {
-          return "Account for username ".concat(username, " unverified in system");
-        } else {
-          axios__WEBPACK_IMPORTED_MODULE_3___default().get("/signIn/loadProfile?".concat(username)).then(function (userData) {
-            _this2.setState({
-              userData: userData
-            });
+        var status = result.status;
 
-            _this2.changePageState('changeToSignedIn');
-          });
+        if (status === 401 || status === 500) {
+          return status;
+        } else {
+          return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/signIn/loadProfile?".concat(username));
         }
+      }).then(function (userData) {
+        _this2.setState({
+          userData: userData
+        });
+
+        _this2.changePageState('changeToSignedIn');
       })["catch"](function (err) {
-        console.error(new Error(err));
+        console.log('MADE IT HERE');
+
+        if (err === 401 || err === 500) {
+          var validationStatus = err === 401 ? 'Username and password did not match' : 'Oops!  Something went wrong on our end!  Try again.';
+
+          _this2.setState({
+            signInValidationStatus: validationStatus
+          });
+        } else {
+          console.error(new Error(err));
+        }
       });
     }
   }, {
     key: "render",
     value: function render() {
       var pageState = this.state.pageState;
+      var signInValidationStatus = this.state.signInValidationStatus;
       var changePageState = this.changePageState;
       var checkIfUsernameAlreadyExists = this.checkIfUsernameAlreadyExists;
       var checkIfEmailAlreadyExists = this.checkIfEmailAlreadyExists;
@@ -1970,6 +1984,7 @@ var App = /*#__PURE__*/function (_React$Component) {
         pageState: this.state.pageState
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_body_Body_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
         pageState: pageState,
+        signInValidationStatus: signInValidationStatus,
         changePageState: changePageState,
         checkIfUsernameAlreadyExists: checkIfUsernameAlreadyExists,
         checkIfEmailAlreadyExists: checkIfEmailAlreadyExists,
@@ -2009,12 +2024,14 @@ var Body = function Body(_ref) {
       pageState = _ref.pageState,
       checkIfUsernameAlreadyExists = _ref.checkIfUsernameAlreadyExists,
       checkIfEmailAlreadyExists = _ref.checkIfEmailAlreadyExists,
-      signIn = _ref.signIn;
+      signIn = _ref.signIn,
+      signInValidationStatus = _ref.signInValidationStatus;
 
   if (pageState === 'changeToSignIn') {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("main", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_signIn_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
       pageState: pageState,
       changePageState: changePageState,
+      signInValidationStatus: signInValidationStatus,
       checkIfUsernameAlreadyExists: checkIfUsernameAlreadyExists,
       checkIfEmailAlreadyExists: checkIfEmailAlreadyExists,
       signIn: signIn
@@ -2087,6 +2104,7 @@ var SignIn = /*#__PURE__*/function (_React$Component) {
       password: ''
     };
     _this.signInTextFieldOnChange = _this.signInTextFieldOnChange.bind(_assertThisInitialized(_this));
+    _this.signInOnSubmit = _this.signInOnSubmit.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -2096,22 +2114,28 @@ var SignIn = /*#__PURE__*/function (_React$Component) {
       var changedState = {};
       var field = e.target.id;
       changedState[field] = e.target.value;
-      this.setState({
-        changedState: changedState
-      });
+      this.setState(changedState);
+    }
+  }, {
+    key: "signInOnSubmit",
+    value: function signInOnSubmit(e) {
+      e.preventDefault();
+      var username = this.state.username;
+      var password = this.state.password;
+      this.props.signIn(username, password);
     }
   }, {
     key: "render",
     value: function render() {
       var username = this.state.username;
       var password = this.state.password;
-      var signIn = this.props.signIn;
+      var signInValidationStatus = this.props.signInValidationStatus;
       var signInTextFieldOnChange = this.signInTextFieldOnChange;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "sign-in-page"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Sign In | Create Account", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Enter your username to get started."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
         id: "sign-in-form",
-        onSubmit: signIn
+        onSubmit: this.signInOnSubmit
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Username", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         id: "username",
         type: "text",
@@ -2122,7 +2146,7 @@ var SignIn = /*#__PURE__*/function (_React$Component) {
         type: "password",
         onChange: signInTextFieldOnChange,
         value: password
-      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+      })), signInValidationStatus), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         type: "submit",
         value: "Next"
       })))));

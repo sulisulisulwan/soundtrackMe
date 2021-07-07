@@ -1,30 +1,19 @@
-let dbResult = {
-  '1': {
-    username: 'sulisulisulwan',
-    password: 'somekindofhash',
-    userData: {
-      signedUpAs: 'composer'
-    }
-  },
-  '2': {
-    username: 'sulimantekalli',
-    password: 'somekindofhash2',
-    userData: {
-      signedUpAs: 'filmmaker'
-    }
-  }
-}
+const mongoose = require('mongoose');
+const db = require('../db/db.js')
 
 const verifyAccount = (username, password) => {
   return new Promise ((resolve, reject) => {
-    //check database for username
-    //query database with username, pull out password
-    // .then(result => {
-    dbResult.password === password ? resolve(true) : resolve(false);
-    // })
-    // .catch(err => {
-    //   reject(err)
-    // })
+    db.UserInfo.findOne({
+      username: username,
+      password: password
+    })
+    .then(result => {
+      let response = result === null ? false : true;
+    resolve(response)
+    })
+    .catch(err => {
+      reject(err)
+    })
   })
 }
 

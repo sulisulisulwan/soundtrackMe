@@ -14,7 +14,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
 app.get('/', (req, res) => {
-  res.status(200)
+  res.sendStatus(200)
 })
 
 /*********************************************
@@ -31,7 +31,7 @@ app.get('/checkUserNameExists', (req, res) => {
   })
   .catch(err => {
     console.error(new Error(err))
-    res.status(500);
+    res.sendStatus(500);
   })
 })
 
@@ -43,7 +43,7 @@ app.get('/checkEmailExists', (req, res) => {
   })
   .catch(err => {
     console.error(new Error(err))
-    res.status(500);
+    res.sendStatus(500);
   })
 })
 
@@ -51,11 +51,11 @@ app.post('/createNewUser', (req, res) => {
   let userInfo = req.body.userInfo;
   createNewUser(userInfo)
   .then(_=> {
-    res.status(201)
+    res.sendStatus(201)
   })
   .catch(err => {
     console.error(new Error(err))
-    res.status(500);
+    res.sendStatus(500);
   })
 })
 
@@ -63,15 +63,17 @@ app.post('/createNewUser', (req, res) => {
 //SIGN IN AND LOAD PROFILE Route
 
 app.post('/signIn/verifyAccount', (req, res) => {
-  let username = req.body.userInfo
+  let username = req.body.username
   let password = req.body.password
+  console.log('THIS FIRES')
   verifyAccount(username, password)
-  .then(_=> {
-    res.status(201);
+  .then(result => {
+    console.log(result)
+    result ? res.sendStatus(200) : res.sendStatus(401);
   })
   .catch(err => {
     console.log(new Error(err));
-    res.status(500)
+    res.sendStatus(500)
   })
 })
 
@@ -83,7 +85,7 @@ app.get('/signIn/loadProfile', (req, res) => {
   })
   .catch(err => {
     console.log(new Error(err));
-    res.status(500);
+    res.statsendStatusus(500);
   })
 })
 
@@ -101,11 +103,11 @@ app.post('./postMovie', (req, res) => {
   let movie;
   postMovie(movie)
   .then(_=> {
-    res.status(201);
+    res.sendStatus(201);
   })
   .catch(err => {
     console.error(new Error(err))
-    res.status(500);
+    res.sendStatus(500);
   })
 })
 
@@ -114,10 +116,10 @@ app.post('./postMusic', (req, res) => {
   let music;
   postMusic(music)
   .then(_=> {
-    res.status(201);
+    res.sendStatus(201);
   })
   .catch(err => {
     console.error(new Error(err))
-    res.status(500);
+    res.sendStatus(500);
   })
 })

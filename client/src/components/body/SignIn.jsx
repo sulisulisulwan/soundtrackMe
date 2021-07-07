@@ -6,24 +6,30 @@ class SignIn extends React.Component {
     super(props)
     this.state = {
       username: '',
-      password: ''
+      password: '',
     }
     this.signInTextFieldOnChange = this.signInTextFieldOnChange.bind(this);
+    this.signInOnSubmit = this.signInOnSubmit.bind(this);
   }
   signInTextFieldOnChange (e) {
     let changedState = {}
     let field = e.target.id
     changedState[field] = e.target.value;
-    this.setState({changedState})
+    this.setState(changedState)
   }
 
+  signInOnSubmit (e) {
+    e.preventDefault();
+    let username = this.state.username
+    let password = this.state.password
+    this.props.signIn(username, password)
+  }
 
   render () {
     let username = this.state.username
     let password = this.state.password
-    let signIn = this.props.signIn;
+    let signInValidationStatus = this.props.signInValidationStatus
     let signInTextFieldOnChange = this.signInTextFieldOnChange
-
     return (
       <div id="sign-in-page">
         <div>
@@ -33,7 +39,7 @@ class SignIn extends React.Component {
           Enter your username to get started.
         </div>
         <div>
-          <form id="sign-in-form" onSubmit={signIn}>
+          <form id="sign-in-form" onSubmit={this.signInOnSubmit}>
             <div>
               <label>
                 Username
@@ -45,6 +51,7 @@ class SignIn extends React.Component {
                 Password
                 <input id="password" type="password" onChange={signInTextFieldOnChange} value={password} ></input>
               </label>
+              {signInValidationStatus}
             </div>
             <div>
               <input type="submit" value="Next"></input>

@@ -20,7 +20,6 @@ class MyVideos extends React.Component {
     }
   }
 
-
   render () {
     let videos = this.state.videos
     return (

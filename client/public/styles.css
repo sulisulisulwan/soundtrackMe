@@ -48,7 +48,12 @@ body #sign-in-page #sign-in-form {
   margin-right: auto;
   text-align: center;
 }
-body #video-upload-view {
+body #open-add-video-form {
+  text-align: center;
+}
+body #add-video-view {
+  display: flex;
+  flex-direction: column;
   text-align: center;
 }
 body #my-videos .video-wrapper .video-title {

@@ -57,9 +57,23 @@ body {
   }
 
   //filmmaker view
+  #open-add-video-form {
+    text-align: center;
+  }
 
-  #video-upload-view {
-    text-align: center
+  #add-video-view {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    #video-title {
+
+    }
+    #video-description {
+
+    }
+    #video-link {
+
+    }
   }
 
   #my-videos {

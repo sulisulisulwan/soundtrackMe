@@ -56,17 +56,25 @@ body #add-film-view {
   flex-direction: column;
   text-align: center;
 }
-body #my-film .film-wrapper .film-title {
+body #my-films .film-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+body #my-films .film-wrapper .film-info-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+body #my-films .film-wrapper .film-info-wrapper .film-title {
   font-size: 20px;
   font-family: Arial;
   color: black;
 }
-body #my-film .film-wrapper .film-link {
+body #my-films .film-wrapper .film-info-wrapper .film-link {
   font-size: 15px;
   font-family: Arial;
   color: gray;
 }
-body #my-film .film-wrapper .film-description {
+body #my-films .film-wrapper .film-info-wrapper .film-description {
   font-size: 15px;
   font-family: Arial;
   color: gray;

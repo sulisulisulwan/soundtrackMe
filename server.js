@@ -4,8 +4,9 @@ const axios = require('axios');
 const app = express();
 const port = 1337;
 const {checkUsernameExists, checkEmailExists, createNewUser} = require('./models/signUpModels.js');
-const {postFilm, postScore} = require('./models/uploadMediaModels.js');
 const {getAllFilms, getAllScores} = require('./models/getMediaModels.js');
+const {postFilm, postScore} = require('./models/uploadMediaModels.js');
+const {deleteFilm, deleteScore} = require('./models/deleteMediaModels.js');
 const {verifyAccount, loadProfile} = require('./models/signInModels.js')
 const API_KEY = require('./youtubeAPIKey/key.js')
 const videoExists = require('youtube-video-exists')
@@ -63,6 +64,13 @@ app.post('/createNewUser', (req, res) => {
   })
 })
 
+/**************************************
+ *
+ *      SIGN IN / LOAD PROFILE ROUTES
+ *
+ *************************************/
+
+
 
 //SIGN IN AND LOAD PROFILE Route
 
@@ -92,14 +100,11 @@ app.get('/signIn/loadProfile', (req, res) => {
   })
 })
 
-
-
-
-
-
-
-
-//Upload Content Routes
+/****************************
+ *
+ *        CRUD Films
+ *
+ ****************************/
 
 app.get('/verifyFilmLink', (req, res) => {
   //this method now allows the main part of the URL to be wrong.
@@ -117,26 +122,10 @@ app.get('/verifyFilmLink', (req, res) => {
   })
 })
 
-
-
 app.get('/getAllFilms', (req, res) => {
-  let username = req.query.username
-  getAllFilms(username)
+  getAllFilms(req.query.username)
   .then(films => {
-    console.log('films in server', films)
     res.status(200).json(films)
-  })
-  .catch(err => {
-    console.log(err)
-    res.sendStatus(500);
-  });
-})
-
-app.get('/getAllScores', (req, res) => {
-  let username = req.query.username
-  getAllScores(username)
-  .then(scores => {
-    res.status(200).json(scores)
   })
   .catch(err => {
     console.log(err)
@@ -154,6 +143,39 @@ app.post('/postFilm', (req, res) => {
     console.error(new Error(err))
     res.sendStatus(500);
   })
+})
+
+app.delete('/deleteFilm', (req, res) => {
+  let id = req.body.id
+  deleteFilm(id)
+  .then(result=>{
+    res.status(200).json(id);
+  })
+  .catch(err => {
+    console.error(err)
+    res.sendStatus(500)
+  })
+})
+
+
+
+/****************************************
+ *
+ *          CRUD Scores
+ *
+ ****************************************/
+
+
+app.get('/getAllScores', (req, res) => {
+  let username = req.query.username
+  getAllScores(username)
+  .then(scores => {
+    res.status(200).json(scores)
+  })
+  .catch(err => {
+    console.log(err)
+    res.sendStatus(500);
+  });
 })
 
 

@@ -3089,6 +3089,7 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
     _this.handleSubmitAddFilm = _this.handleSubmitAddFilm.bind(_assertThisInitialized(_this));
     _this.openAddFilmForm = _this.openAddFilmForm.bind(_assertThisInitialized(_this));
     _this.onChangeTextField = _this.onChangeTextField.bind(_assertThisInitialized(_this));
+    _this.deleteFilmButtonHandler = _this.deleteFilmButtonHandler.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -3133,12 +3134,9 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
         axios__WEBPACK_IMPORTED_MODULE_3___default().post('/postFilm', addFilmFields);
       }).then(function (_) {
         return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/getAllFilms?username=".concat(username));
-      }).then(function (films) {
-        var myFilms = _this2.state.myFilms;
-        myFilms.push(films.data);
-
+      }).then(function (myFilms) {
         _this2.setState({
-          myFilms: myFilms,
+          myFilms: myFilms.data,
           addFilmFormIsOpen: false,
           addFilmButtonIsHidden: false
         });
@@ -3153,14 +3151,32 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
+    key: "deleteFilmButtonHandler",
+    value: function deleteFilmButtonHandler(e) {
       var _this3 = this;
 
-      var username = this.props.userData.username;
-      return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/getAllFilms?username=".concat(username)).then(function (films) {
+      var id = e.target.id;
+      axios__WEBPACK_IMPORTED_MODULE_3___default().delete('/deleteFilm', {
+        data: {
+          id: id
+        }
+      }).then(function (_) {
+        return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/getAllFilms?username=".concat(_this3.props.username));
+      }).then(function (myFilms) {
         _this3.setState({
-          myFilms: films.data
+          myFilms: myFilms.data
+        });
+      });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this4 = this;
+
+      var username = this.props.userData.username;
+      return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/getAllFilms?username=".concat(username)).then(function (myFilms) {
+        _this4.setState({
+          myFilms: myFilms.data
         });
       });
     }
@@ -3177,6 +3193,7 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
       var openAddFilmForm = this.openAddFilmForm;
       var handleSubmitAddFilm = this.handleSubmitAddFilm;
       var onChangeTextField = this.onChangeTextField;
+      var deleteFilmButtonHandler = this.deleteFilmButtonHandler;
       var addFilmForm = addFilmFormIsOpen ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_AddFilmForm_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
         fields: fields,
         filmLinkValidation: filmLinkValidation,
@@ -3192,7 +3209,8 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
         onClick: openAddFilmForm,
         hidden: addFilmButtonIsHidden
       }, "Add Film")), addFilmForm, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_MyFilms_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
-        myFilms: myFilms
+        myFilms: myFilms,
+        deleteFilmButtonHandler: deleteFilmButtonHandler
       }));
     }
   }]);
@@ -3275,18 +3293,26 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Film = function Film(_ref) {
-  var title = _ref.title,
+  var id = _ref.id,
+      title = _ref.title,
       link = _ref.link,
-      description = _ref.description;
+      description = _ref.description,
+      deleteFilmButtonHandler = _ref.deleteFilmButtonHandler;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "film-wrapper"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "film-info-wrapper"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "film-title"
   }, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "film-link"
-  }, link), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "film-description"
-  }, description));
+  }, description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "film-link"
+  }, link)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    id: id,
+    className: "remove-film-button",
+    onClick: deleteFilmButtonHandler
+  }, "X"));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Film);
@@ -3345,16 +3371,19 @@ var MyFilms = /*#__PURE__*/function (_React$Component) {
   _createClass(MyFilms, [{
     key: "render",
     value: function render() {
+      var deleteFilmButtonHandler = this.props.deleteFilmButtonHandler;
       var myFilms = this.props.myFilms;
-      console.log(myFilms);
+      console.log('myFilms in MYfilms.jsx', myFilms);
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "my-films"
       }, myFilms.map(function (film, i) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Film_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
           key: i,
+          id: film._id,
           title: film.filmTitle,
           link: film.filmLink,
-          description: film.filmDescription
+          description: film.filmDescription,
+          deleteFilmButtonHandler: deleteFilmButtonHandler
         });
       }));
     }

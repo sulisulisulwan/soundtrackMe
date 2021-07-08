@@ -19,6 +19,7 @@ class FilmmakerView extends React.Component {
     this.handleSubmitAddFilm = this.handleSubmitAddFilm.bind(this);
     this.openAddFilmForm = this.openAddFilmForm.bind(this);
     this.onChangeTextField = this.onChangeTextField.bind(this);
+    this.deleteFilmButtonHandler = this.deleteFilmButtonHandler.bind(this);
   }
 
   onChangeTextField (e) {
@@ -58,11 +59,9 @@ class FilmmakerView extends React.Component {
     .then(_=> {
       return axios.get(`/getAllFilms?username=${username}`)
     })
-    .then(films => {
-      let myFilms = this.state.myFilms
-      myFilms.push(films.data)
+    .then(myFilms => {
       this.setState({
-        myFilms: myFilms,
+        myFilms: myFilms.data,
         addFilmFormIsOpen: false,
         addFilmButtonIsHidden: false
       })
@@ -77,12 +76,25 @@ class FilmmakerView extends React.Component {
     });
   }
 
+  deleteFilmButtonHandler (e) {
+    let id = e.target.id
+    axios.delete('/deleteFilm', {data: {id: id}})
+    .then(_=> {
+      return axios.get(`/getAllFilms?username=${this.props.username}`)
+    })
+    .then(myFilms => {
+      this.setState({
+        myFilms: myFilms.data
+      })
+    })
+  }
+
   componentDidMount() {
     let username = this.props.userData.username
     return axios.get(`/getAllFilms?username=${username}`)
-    .then(films => {
+    .then(myFilms => {
       this.setState({
-        myFilms: films.data
+        myFilms: myFilms.data
       })
     })
   }
@@ -97,7 +109,8 @@ class FilmmakerView extends React.Component {
     let filmLinkValidation = this.state.filmLinkValidation;
     let openAddFilmForm = this.openAddFilmForm;
     let handleSubmitAddFilm = this.handleSubmitAddFilm;
-    let onChangeTextField =  this.onChangeTextField;
+    let onChangeTextField = this.onChangeTextField;
+    let deleteFilmButtonHandler = this.deleteFilmButtonHandler;
     let addFilmForm = addFilmFormIsOpen ? <AddFilmForm
       fields={fields}
       filmLinkValidation={filmLinkValidation}
@@ -110,7 +123,7 @@ class FilmmakerView extends React.Component {
           <button type="button" onClick={openAddFilmForm} hidden={addFilmButtonIsHidden}>Add Film</button>
         </div>
         {addFilmForm}
-        <MyFilms myFilms={myFilms}/>
+        <MyFilms myFilms={myFilms} deleteFilmButtonHandler={deleteFilmButtonHandler}/>
       </div>
     )
   }

@@ -76,22 +76,28 @@ body {
     }
   }
 
-  #my-film {
+  #my-films {
     .film-wrapper {
-      .film-title {
-        font-size: 20px;
-        font-family: Arial;
-        color: black;
-      }
-      .film-link {
-        font-size: 15px;
-        font-family: Arial;
-        color: gray;
-      }
-      .film-description {
-        font-size: 15px;
-        font-family: Arial;
-        color: gray;
+      display: flex;
+      flex-direction: row;
+      .film-info-wrapper {
+        display: flex;
+        flex-direction: column;
+        .film-title {
+          font-size: 20px;
+          font-family: Arial;
+          color: black;
+        }
+        .film-link {
+          font-size: 15px;
+          font-family: Arial;
+          color: gray;
+        }
+        .film-description {
+          font-size: 15px;
+          font-family: Arial;
+          color: gray;
+        }
       }
     }
   }

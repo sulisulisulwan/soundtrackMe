@@ -7,11 +7,12 @@ class MyFilms extends React.Component {
   }
 
   render () {
-    let myFilms = this.props.myFilms
-    console.log(myFilms)
+    let deleteFilmButtonHandler = this.props.deleteFilmButtonHandler;
+    let myFilms = this.props.myFilms;
+    console.log('myFilms in MYfilms.jsx', myFilms)
     return (
       <div id="my-films">
-        {myFilms.map((film, i)=> <Film key={i} title={film.filmTitle} link={film.filmLink} description={film.filmDescription}/>)}
+        {myFilms.map((film, i)=> <Film key={i} id={film._id} title={film.filmTitle} link={film.filmLink} description={film.filmDescription} deleteFilmButtonHandler={deleteFilmButtonHandler}/>)}
       </div>
     )
   }

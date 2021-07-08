@@ -165,7 +165,21 @@ app.delete('/deleteFilm', (req, res) => {
  *          CRUD Scores
  *
  ****************************************/
-
+ app.get('/verifyScoreLink', (req, res) => {
+  //this method now allows the main part of the URL to be wrong.
+  //This should be fixed.
+  let link = req.query.link;
+  // let id= link.split('=')[1]
+  // videoExists.getVideoInfo(id)
+  scoreExists.somekindofwayofverifying()
+  .then(results=> {
+    res.status(200).json([results.existing, id]);
+  })
+  .catch(err => {
+    console.log(err)
+    res.sendStatus(500)
+  })
+})
 
 app.get('/getAllScores', (req, res) => {
   let username = req.query.username

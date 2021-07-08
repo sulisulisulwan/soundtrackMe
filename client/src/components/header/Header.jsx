@@ -2,21 +2,19 @@
 import React from 'react';
 import SignInArea from './SignInArea.jsx'
 
-const Header = ({changePageState, pageState, userData}) => {
+const Header = ({changePageState, pageState, userData, signOut}) => {
   let visualAssets;
   if (pageState === 'changeToSignedIn') {
     let composerVisualAssets = {
       signedUpHeader:
         <div id="header-icon-wrapper">
           <img id="header-icon" src="./icons/composerIcon.jpg"></img>
-          <span id="header-username">@{userData.username}</span>
         </div>
     }
     let filmmakerVisualAssets = {
       signedUpHeader:
         <div id="header-icon-wrapper">
           <img id="header-icon" src="./icons/filmmakerIcon.jpg"></img>
-          <span id="header-username">@{userData.username}</span>
         </div>
     }
     visualAssets = userData.signedUpAs === 'composer' ? composerVisualAssets : filmmakerVisualAssets
@@ -24,9 +22,12 @@ const Header = ({changePageState, pageState, userData}) => {
       <header>
         <div id="navbar">
           {visualAssets.signedUpHeader}
+          <span id="header-username">@{userData.username}</span>
+          <span id="soundtrack-me-title">SoundTrack Me</span>
           <SignInArea
             changePageState={changePageState}
             pageState={pageState}
+            signOut={signOut}
           />
         </div>
       </header>
@@ -39,6 +40,7 @@ const Header = ({changePageState, pageState, userData}) => {
       <header>
         <div id="navbar">
           {visualAssets.signedOutHeader}
+          <span>SoundTrack Me</span>
           <SignInArea
             changePageState={changePageState}
             pageState={pageState}

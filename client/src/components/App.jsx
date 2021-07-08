@@ -34,6 +34,7 @@ class App extends React.Component {
     this.checkIfUsernameAlreadyExists = this.checkIfUsernameAlreadyExists.bind(this);
     this.checkIfEmailAlreadyExists = this.checkIfEmailAlreadyExists.bind(this);
     this.signIn = this.signIn.bind(this);
+    this.signOut = this.signOut.bind(this);
   }
 
   changePageState (changeTo) {
@@ -73,6 +74,13 @@ class App extends React.Component {
         console.error(new Error(err))
       }
     })
+
+  }
+  signOut (e) {
+    this.changePageState('changeToSignedOut')
+    this.setState({
+      userData: {}
+    })
   }
 
   render () {
@@ -82,6 +90,7 @@ class App extends React.Component {
     let checkIfUsernameAlreadyExists = this.checkIfUsernameAlreadyExists;
     let checkIfEmailAlreadyExists = this.checkIfEmailAlreadyExists;
     let signIn = this.signIn;
+    let signOut = this.signOut;
     let userData =this.state.userData;
 
     if (this.state.pageState === 'changeToSignedIn') {
@@ -91,6 +100,7 @@ class App extends React.Component {
             pageState={pageState}
             userData={userData}
             changePageState={changePageState}
+            signOut={signOut}
           />
           <Body
             pageState={pageState}

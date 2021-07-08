@@ -1,6 +1,10 @@
 import React from 'react';
 
-const SingleFilmComposerDisplay = ({id, title, link, description}) => {
+const SingleFilmComposerDisplay = ({id, title, link, description, addScoreToFilm, openAddScoreForm}) => {
+  let filmData = JSON.stringify({
+    id: id,
+    title: title
+  });
   return (
     <div className="film-wrapper">
       <div className="film-info-wrapper">
@@ -8,6 +12,7 @@ const SingleFilmComposerDisplay = ({id, title, link, description}) => {
         <div className="film-description">{description}</div>
         <div className="film-link">{link}</div>
       </div>
+      <button id={filmData} onClick={openAddScoreForm}>Score It!</button>
     </div>
   )
 }

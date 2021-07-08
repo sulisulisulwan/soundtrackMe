@@ -14,14 +14,21 @@ header #navbar {
   grid-template-columns: auto auto auto;
 }
 header #navbar #header-icon-wrapper {
-  grid-column-start: 1;
-  grid-column-end: 3;
+  grid-column: 1/2;
 }
 header #navbar #header-icon-wrapper #header-icon {
   width: 100px;
 }
-header #navbar #header-icon-wrapper #header-username {
+header #navbar #soundtrack-me-title {
+  grid-column: 2/3;
   font-size: 40px;
+}
+header #navbar #header-username {
+  grid-column: 3/4;
+  font-size: 40px;
+}
+header #navbar #sign-out-block {
+  text-align: right;
 }
 header #navbar #sign-in-block {
   text-align: right;

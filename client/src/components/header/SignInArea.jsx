@@ -30,6 +30,16 @@ class SignInArea extends React.Component {
     this.props.changePageState(e.target.id)
   }
   render () {
+    let pageState = this.props.pageState
+    if (pageState === 'changeToSignedIn') {
+      let signOut = this.props.signOut;
+      return (
+        <div id="sign-out-block" onMouseLeave={this.toggleSignInModal}>
+          <span id="sign-out-button" onClick={signOut}>Sign Out</span>
+
+        </div>
+      )
+    }
     return (
       <div id="sign-in-block" onMouseLeave={this.toggleSignInModal}>
         <span id="sign-in-button" onMouseEnter={this.toggleSignInModal}>Sign In</span>

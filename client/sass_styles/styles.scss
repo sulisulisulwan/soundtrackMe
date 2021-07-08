@@ -11,14 +11,22 @@ header {
     display: grid;
     grid-template-columns: auto auto auto;
     #header-icon-wrapper{
-      grid-column-start: 1;
-      grid-column-end: 3;
+      grid-column: 1/2;
       #header-icon{
         width: 100px;
       }
-      #header-username {
-        font-size: 40px;
-      }
+    }
+    #soundtrack-me-title {
+      grid-column: 2/3;
+      font-size: 40px;
+    }
+    #header-username {
+      grid-column: 3/4;
+      font-size: 40px;
+    }
+
+    #sign-out-block {
+      text-align: right;
     }
     #sign-in-block {
       text-align: right;

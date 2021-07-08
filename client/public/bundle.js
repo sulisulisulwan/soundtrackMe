@@ -1911,6 +1911,7 @@ var App = /*#__PURE__*/function (_React$Component) {
     _this.checkIfUsernameAlreadyExists = _this.checkIfUsernameAlreadyExists.bind(_assertThisInitialized(_this));
     _this.checkIfEmailAlreadyExists = _this.checkIfEmailAlreadyExists.bind(_assertThisInitialized(_this));
     _this.signIn = _this.signIn.bind(_assertThisInitialized(_this));
+    _this.signOut = _this.signOut.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -1964,6 +1965,14 @@ var App = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "signOut",
+    value: function signOut(e) {
+      this.changePageState('changeToSignedOut');
+      this.setState({
+        userData: {}
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       var pageState = this.state.pageState;
@@ -1972,13 +1981,15 @@ var App = /*#__PURE__*/function (_React$Component) {
       var checkIfUsernameAlreadyExists = this.checkIfUsernameAlreadyExists;
       var checkIfEmailAlreadyExists = this.checkIfEmailAlreadyExists;
       var signIn = this.signIn;
+      var signOut = this.signOut;
       var userData = this.state.userData;
 
       if (this.state.pageState === 'changeToSignedIn') {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_header_Header_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
           pageState: pageState,
           userData: userData,
-          changePageState: changePageState
+          changePageState: changePageState,
+          signOut: signOut
         }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_body_Body_jsx__WEBPACK_IMPORTED_MODULE_3__.default, {
           pageState: pageState,
           userData: userData,
@@ -2973,7 +2984,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_MyScores_jsx__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_components_MyScores_jsx__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _components_FilmsDisplay_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/FilmsDisplay.jsx */ "./client/src/components/body/signedIn/userProfileViews/composerView/components/FilmsDisplay.jsx");
 /* harmony import */ var _components_AddScoreForm_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/AddScoreForm.jsx */ "./client/src/components/body/signedIn/userProfileViews/composerView/components/AddScoreForm.jsx");
-/* harmony import */ var _components_AddScoreForm_jsx__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_components_AddScoreForm_jsx__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_4__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -3020,11 +3030,15 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
       scoreDescription: '',
       scoreLink: '',
       addScoreFormIsOpen: false,
-      addScoreButtonIsHidden: false,
+      addScoreButtonIsDisabled: false,
       scoreLinkValidation: '',
+      formFilmId: '',
+      formFilmTitle: '',
       allFilms: [],
       myScores: {}
     };
+    _this.addScoreToFilm = _this.addScoreToFilm.bind(_assertThisInitialized(_this));
+    _this.openAddScoreForm = _this.openAddScoreForm.bind(_assertThisInitialized(_this));
     _this.onChangeTextField = _this.onChangeTextField.bind(_assertThisInitialized(_this));
     return _this;
   }
@@ -3039,12 +3053,67 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
       this.setState(newValue);
     }
   }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
+    key: "openAddScoreForm",
+    value: function openAddScoreForm(e) {
+      var filmData = e.target.id;
+      var id = filmData.id,
+          title = filmData.title;
+      this.setState = {
+        addScoreFormIsOpen: true,
+        formFilmId: id,
+        formFilmTitle: title
+      };
+    }
+  }, {
+    key: "addScoreToFilm",
+    value: function addScoreToFilm(e) {
       var _this2 = this;
 
-      return axios__WEBPACK_IMPORTED_MODULE_4___default().get("/getAllFilms").then(function (allFilms) {
+      var filmId = e.target.id;
+      var scoreTitle = this.state.scoreTitle;
+      var scoreDescription = this.state.scoreDescription;
+      var scoreLink = this.state.scoreLink; //VALIDATE SCORE LINK THROUGH SERVER
+
+      axios__WEBPACK_IMPORTED_MODULE_4___default().get("/verifyScoreLink?link=".concat(scoreLink)).then(function (result) {
+        if (
+        /*Some kind of result boolean*/
+        result) {
+          throw 'link does not exist';
+        }
+
+        var addScoreFields = {
+          username: username,
+          scoreTitle: scoreTitle,
+          scoreDescription: scoreDescription,
+          scoreLink: scoreLink
+        };
+        axios__WEBPACK_IMPORTED_MODULE_4___default().post('/postScore', addScoreFields);
+      }).then(function (_) {// return axios.get(`/getAllFilms?username=${username}`)
+      }).then(function (allFilms) {
+        //ARE WE REALLY TRYING TO GET ALL FILMS?????
+        //DO WE WANT TO BE SHOWING MY FILM SCORES IN SEPARATE LIST?
         _this2.setState({
+          allFilms: allFilms.data,
+          addScoreFormIsOpen: false,
+          addScoreButtonIsDisabled: false
+        });
+      })["catch"](function (err) {
+        if (err.toString() === 'link does not exist') {
+          _this2.setState({
+            scoreLinkValidation: 'This score link isn\'t valid'
+          });
+        }
+
+        console.error(new Error(err));
+      });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this3 = this;
+
+      return axios__WEBPACK_IMPORTED_MODULE_4___default().get("/getAllFilms").then(function (allFilms) {
+        _this3.setState({
           allFilms: allFilms.data
         });
       });
@@ -3052,14 +3121,27 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      var fields = this.state;
+      var formFilmId = this.state.formFilmId;
+      var formFilmTitle = this.state.formFilmTitle;
       var userData = this.props.userData;
       var allFilms = this.state.allFilms;
+      var addScoreFormIsOpen = this.state.addScoreFormIsOpen;
+      var addScoreToFilm = this.addScoreToFilm;
+      var openAddScoreForm = this.openAddScoreForm;
+      var onChangeTextField = this.onChangeTextField;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "composer-view"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "film-feed-title"
       }, "Film Feed"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_FilmsDisplay_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
-        allFilms: allFilms
+        allFilms: allFilms,
+        addScoreFormIsOpen: addScoreFormIsOpen,
+        formFilmTitle: formFilmTitle,
+        formFilmId: formFilmId,
+        fields: fields,
+        addScoreToFilm: addScoreToFilm,
+        onChangeTextField: onChangeTextField
       }));
     }
   }]);
@@ -3075,9 +3157,57 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
 /*!*******************************************************************************************************!*\
   !*** ./client/src/components/body/signedIn/userProfileViews/composerView/components/AddScoreForm.jsx ***!
   \*******************************************************************************************************/
-/***/ (() => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 
+var AddScoreForm = function AddScoreForm(_ref) {
+  var addScoreToFilm = _ref.addScoreToFilm,
+      filmTitle = _ref.filmTitle,
+      filmId = _ref.filmId,
+      fields = _ref.fields,
+      onChangeTextField = _ref.onChangeTextField;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    id: "add-score-view"
+  }, "Add Score to ", filmTitle, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
+    id: filmId,
+    onSubmit: addScoreToFilm
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    id: "score-title"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Title:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+    type: "text",
+    id: "scoreTitle",
+    onChange: onChangeTextField,
+    value: fields.scoreTitle
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    id: "score-description"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Description:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+    type: "text",
+    id: "scoreDescription",
+    onChange: onChangeTextField,
+    value: fields.scoreDescription
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    id: "score-link"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Link:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+    type: "text",
+    id: "filmLink",
+    onChange: onChangeTextField,
+    value: fields.scoreLink
+  }), fields.scoreLinkValidation)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    id: "add-score-submit"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+    type: "submit",
+    value: "Add Score"
+  }))));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AddScoreForm);
 
 /***/ }),
 
@@ -3094,6 +3224,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _SingleFilmComposerDisplay_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SingleFilmComposerDisplay.jsx */ "./client/src/components/body/signedIn/userProfileViews/composerView/components/SingleFilmComposerDisplay.jsx");
+/* harmony import */ var _AddScoreForm_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AddScoreForm.jsx */ "./client/src/components/body/signedIn/userProfileViews/composerView/components/AddScoreForm.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3119,23 +3250,40 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var FilmsComposerDisplay = /*#__PURE__*/function (_React$Component) {
   _inherits(FilmsComposerDisplay, _React$Component);
 
   var _super = _createSuper(FilmsComposerDisplay);
 
   function FilmsComposerDisplay(props) {
+    var _this;
+
     _classCallCheck(this, FilmsComposerDisplay);
 
-    return _super.call(this, props);
+    _this = _super.call(this, props);
+    _this.state = {};
+    return _this;
   }
 
   _createClass(FilmsComposerDisplay, [{
     key: "render",
     value: function render() {
+      var fields = this.props.fields;
+      var formFilmTitle = this.props.formFilmTitle;
+      var formFilmId = this.props.formFilmId;
       var allFilms = this.props.allFilms;
-      console.log(allFilms);
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      var openAddScoreForm = this.props.openAddScoreForm;
+      var addScoreToFilm = this.props.addScoreToFilm;
+      var addScoreFormIsOpen = this.props.addScoreFormIsOpen;
+      var addScoreForm = addScoreFormIsOpen ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_AddScoreForm_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
+        fields: fields,
+        filmTitle: formFilmTitle,
+        filmId: formFilmId,
+        addScoreToFilm: addScoreToFilm,
+        onChangeTextField: onChangeTextField
+      }) : null;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "all-films-composer-display"
       }, allFilms.map(function (film, i) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SingleFilmComposerDisplay_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
@@ -3143,9 +3291,10 @@ var FilmsComposerDisplay = /*#__PURE__*/function (_React$Component) {
           id: film._id,
           title: film.filmTitle,
           link: film.filmLink,
-          description: film.filmDescription
+          description: film.filmDescription,
+          openAddScoreForm: openAddScoreForm
         });
-      }));
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, addScoreForm));
     }
   }]);
 
@@ -3184,7 +3333,13 @@ var SingleFilmComposerDisplay = function SingleFilmComposerDisplay(_ref) {
   var id = _ref.id,
       title = _ref.title,
       link = _ref.link,
-      description = _ref.description;
+      description = _ref.description,
+      addScoreToFilm = _ref.addScoreToFilm,
+      openAddScoreForm = _ref.openAddScoreForm;
+  var filmData = JSON.stringify({
+    id: id,
+    title: title
+  });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "film-wrapper"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -3195,7 +3350,10 @@ var SingleFilmComposerDisplay = function SingleFilmComposerDisplay(_ref) {
     className: "film-description"
   }, description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "film-link"
-  }, link)));
+  }, link)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+    id: filmData,
+    onClick: openAddScoreForm
+  }, "Score It!"));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SingleFilmComposerDisplay);
@@ -3552,7 +3710,6 @@ var MyFilms = /*#__PURE__*/function (_React$Component) {
     value: function render() {
       var deleteFilmButtonHandler = this.props.deleteFilmButtonHandler;
       var myFilms = this.props.myFilms;
-      console.log('myFilms in MYfilms.jsx', myFilms);
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "my-films"
       }, myFilms.map(function (film, i) {
@@ -3595,7 +3752,8 @@ __webpack_require__.r(__webpack_exports__);
 var Header = function Header(_ref) {
   var changePageState = _ref.changePageState,
       pageState = _ref.pageState,
-      userData = _ref.userData;
+      userData = _ref.userData,
+      signOut = _ref.signOut;
   var visualAssets;
 
   if (pageState === 'changeToSignedIn') {
@@ -3605,9 +3763,7 @@ var Header = function Header(_ref) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
         id: "header-icon",
         src: "./icons/composerIcon.jpg"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
-        id: "header-username"
-      }, "@", userData.username))
+      }))
     };
     var filmmakerVisualAssets = {
       signedUpHeader: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -3615,16 +3771,19 @@ var Header = function Header(_ref) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
         id: "header-icon",
         src: "./icons/filmmakerIcon.jpg"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
-        id: "header-username"
-      }, "@", userData.username))
+      }))
     };
     visualAssets = userData.signedUpAs === 'composer' ? composerVisualAssets : filmmakerVisualAssets;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("header", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
       id: "navbar"
-    }, visualAssets.signedUpHeader, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SignInArea_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
+    }, visualAssets.signedUpHeader, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+      id: "header-username"
+    }, "@", userData.username), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+      id: "soundtrack-me-title"
+    }, "SoundTrack Me"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SignInArea_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
       changePageState: changePageState,
-      pageState: pageState
+      pageState: pageState,
+      signOut: signOut
     })));
   } else {
     visualAssets = {
@@ -3634,7 +3793,7 @@ var Header = function Header(_ref) {
     };
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("header", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
       id: "navbar"
-    }, visualAssets.signedOutHeader, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SignInArea_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
+    }, visualAssets.signedOutHeader, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "SoundTrack Me"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SignInArea_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
       changePageState: changePageState,
       pageState: pageState
     })));
@@ -3726,6 +3885,19 @@ var SignInArea = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      var pageState = this.props.pageState;
+
+      if (pageState === 'changeToSignedIn') {
+        var signOut = this.props.signOut;
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          id: "sign-out-block",
+          onMouseLeave: this.toggleSignInModal
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+          id: "sign-out-button",
+          onClick: signOut
+        }, "Sign Out"));
+      }
+
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "sign-in-block",
         onMouseLeave: this.toggleSignInModal

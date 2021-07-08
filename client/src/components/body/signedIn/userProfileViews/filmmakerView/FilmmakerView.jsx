@@ -91,7 +91,7 @@ class FilmmakerView extends React.Component {
 
   componentDidMount() {
     let username = this.props.userData.username
-    return axios.get(`/getAllFilms?username=${username}`)
+    return axios.get(`/getAllFilms/${username}`)
     .then(myFilms => {
       this.setState({
         myFilms: myFilms.data

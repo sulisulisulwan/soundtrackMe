@@ -1,3 +1,7 @@
+html {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 header {
   right: 12px;
   display: grid;
@@ -75,6 +79,34 @@ body #my-films .film-wrapper .film-info-wrapper .film-link {
   color: gray;
 }
 body #my-films .film-wrapper .film-info-wrapper .film-description {
+  font-size: 15px;
+  font-family: Arial;
+  color: gray;
+}
+body #film-feed-title {
+  border-top: grey 1px solid;
+  font-size: 30px;
+  padding-bottom: 20px;
+}
+body #all-films-composer-display .film-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+body #all-films-composer-display .film-wrapper .film-info-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+body #all-films-composer-display .film-wrapper .film-info-wrapper .film-title {
+  font-size: 20px;
+  font-family: Arial;
+  color: black;
+}
+body #all-films-composer-display .film-wrapper .film-info-wrapper .film-link {
+  font-size: 15px;
+  font-family: Arial;
+  color: gray;
+}
+body #all-films-composer-display .film-wrapper .film-info-wrapper .film-description {
   font-size: 15px;
   font-family: Arial;
   color: gray;

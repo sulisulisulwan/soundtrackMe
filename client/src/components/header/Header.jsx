@@ -46,6 +46,7 @@ const Header = ({changePageState, pageState, userData}) => {
         </div>
       </header>
     );
+
   }
 }
 

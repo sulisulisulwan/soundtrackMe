@@ -1,7 +1,7 @@
 html {
+  font-family: Arial, Helvetica, sans-serif;
 }
 header {
-  // position: fixed;
   right: 12px;
   display: grid;
   top: 0;
@@ -101,6 +101,41 @@ body {
       }
     }
   }
+
+
+  //COMPOSER VIEW
+  #film-feed-title {
+    border-top: grey 1px solid;
+    font-size: 30px;
+    padding-bottom: 20px;
+  }
+  #all-films-composer-display {
+    .film-wrapper {
+      display: flex;
+      flex-direction: row;
+      .film-info-wrapper {
+        display: flex;
+        flex-direction: column;
+        .film-title {
+          font-size: 20px;
+          font-family: Arial;
+          color: black;
+        }
+        .film-link {
+          font-size: 15px;
+          font-family: Arial;
+          color: gray;
+        }
+        .film-description {
+          font-size: 15px;
+          font-family: Arial;
+          color: gray;
+        }
+      }
+    }
+  }
+
+
 
 
   #sign-up {

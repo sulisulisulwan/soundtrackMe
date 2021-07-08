@@ -23,11 +23,11 @@ class App extends React.Component {
       pageState: 'changeToSignedIn',
       failedSignInValidationStatus: '',
       userData: {
-        firstName: 'Suliman',
-        lastName: 'Tekalli',
-        username: 'sulimantekalli',
-        email: 'sulimantekalli@gmail.com',
-        signedUpAs: 'filmmaker',
+        firstName: 'Suli',
+        lastName: 'Tekali',
+        username: 'sulisulisulwan',
+        email: 'smtviolin@gmail.com',
+        signedUpAs: 'composer',
       }
     }
     this.changePageState = this.changePageState.bind(this);

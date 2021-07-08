@@ -2982,11 +2982,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _components_MyScores_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/MyScores.jsx */ "./client/src/components/body/signedIn/userProfileViews/composerView/components/MyScores.jsx");
 /* harmony import */ var _components_MyScores_jsx__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_components_MyScores_jsx__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _components_FilmsDisplay_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/FilmsDisplay.jsx */ "./client/src/components/body/signedIn/userProfileViews/composerView/components/FilmsDisplay.jsx");
-/* harmony import */ var _components_AddScoreForm_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/AddScoreForm.jsx */ "./client/src/components/body/signedIn/userProfileViews/composerView/components/AddScoreForm.jsx");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _components_Score_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Score.jsx */ "./client/src/components/body/signedIn/userProfileViews/composerView/components/Score.jsx");
+/* harmony import */ var _components_FilmsDisplay_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/FilmsDisplay.jsx */ "./client/src/components/body/signedIn/userProfileViews/composerView/components/FilmsDisplay.jsx");
+/* harmony import */ var _components_AddScoreForm_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/AddScoreForm.jsx */ "./client/src/components/body/signedIn/userProfileViews/composerView/components/AddScoreForm.jsx");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_5__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3007,6 +3020,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 
 
 
@@ -3035,10 +3049,11 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
       formFilmId: '',
       formFilmTitle: '',
       allFilms: [],
-      myScores: {}
+      myScores: []
     };
     _this.addScoreToFilm = _this.addScoreToFilm.bind(_assertThisInitialized(_this));
     _this.openAddScoreForm = _this.openAddScoreForm.bind(_assertThisInitialized(_this));
+    _this.closeAddScoreForm = _this.closeAddScoreForm.bind(_assertThisInitialized(_this));
     _this.onChangeTextField = _this.onChangeTextField.bind(_assertThisInitialized(_this));
     return _this;
   }
@@ -3055,47 +3070,68 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "openAddScoreForm",
     value: function openAddScoreForm(e) {
-      var filmData = e.target.id;
-      var id = filmData.id,
-          title = filmData.title;
-      this.setState = {
+      var filmData = JSON.parse(e.target.id);
+      var id = filmData.id;
+      var title = filmData.title;
+      this.setState({
         addScoreFormIsOpen: true,
         formFilmId: id,
         formFilmTitle: title
-      };
+      });
+    }
+  }, {
+    key: "closeAddScoreForm",
+    value: function closeAddScoreForm(e) {
+      this.setState({
+        addScoreFormIsOpen: false,
+        formFilmId: '',
+        formFilmTitle: ''
+      });
     }
   }, {
     key: "addScoreToFilm",
     value: function addScoreToFilm(e) {
       var _this2 = this;
 
+      e.preventDefault();
+      var username = this.props.userData.username;
       var filmId = e.target.id;
       var scoreTitle = this.state.scoreTitle;
       var scoreDescription = this.state.scoreDescription;
-      var scoreLink = this.state.scoreLink; //VALIDATE SCORE LINK THROUGH SERVER
-
-      axios__WEBPACK_IMPORTED_MODULE_4___default().get("/verifyScoreLink?link=".concat(scoreLink)).then(function (result) {
-        if (
-        /*Some kind of result boolean*/
-        result) {
+      var scoreLink = this.state.scoreLink;
+      axios__WEBPACK_IMPORTED_MODULE_5___default().get("/verifyScoreLink?link=".concat(scoreLink)).then(function (result) {
+        if (result.data === false) {
           throw 'link does not exist';
         }
 
+        return axios__WEBPACK_IMPORTED_MODULE_5___default().get("/getFilm?id=".concat(filmId));
+      }).then(function (film) {
+        console.log(film);
+        var _film$data = film.data,
+            filmDescription = _film$data.filmDescription,
+            filmLink = _film$data.filmLink,
+            filmTitle = _film$data.filmTitle;
+        var filmmaker = film.data.username;
         var addScoreFields = {
           username: username,
           scoreTitle: scoreTitle,
           scoreDescription: scoreDescription,
-          scoreLink: scoreLink
+          scoreLink: scoreLink,
+          filmId: filmId,
+          filmmaker: filmmaker,
+          filmTitle: filmTitle,
+          filmDescription: filmDescription,
+          filmLink: filmLink
         };
-        axios__WEBPACK_IMPORTED_MODULE_4___default().post('/postScore', addScoreFields);
-      }).then(function (_) {// return axios.get(`/getAllFilms?username=${username}`)
-      }).then(function (allFilms) {
-        //ARE WE REALLY TRYING TO GET ALL FILMS?????
-        //DO WE WANT TO BE SHOWING MY FILM SCORES IN SEPARATE LIST?
+        axios__WEBPACK_IMPORTED_MODULE_5___default().post('/postScore', addScoreFields);
+      }).then(function (_) {
+        return axios__WEBPACK_IMPORTED_MODULE_5___default().get("/getAllScores?username=".concat(username));
+      }).then(function (allScores) {
+        console.log(allScores);
+
         _this2.setState({
-          allFilms: allFilms.data,
-          addScoreFormIsOpen: false,
-          addScoreButtonIsDisabled: false
+          myScores: allScores.data,
+          addScoreFormIsOpen: false
         });
       })["catch"](function (err) {
         if (err.toString() === 'link does not exist') {
@@ -3112,9 +3148,17 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
     value: function componentDidMount() {
       var _this3 = this;
 
-      return axios__WEBPACK_IMPORTED_MODULE_4___default().get("/getAllFilms").then(function (allFilms) {
+      var username = this.props.userData.username;
+      var getAllFilms = axios__WEBPACK_IMPORTED_MODULE_5___default().get("/getAllFilms");
+      var getAllScores = axios__WEBPACK_IMPORTED_MODULE_5___default().get("/getAllScores?username=".concat(username));
+      Promise.all([getAllFilms, getAllScores]).then(function (allFilmsAndScores) {
+        var _allFilmsAndScores = _slicedToArray(allFilmsAndScores, 2),
+            allFilms = _allFilmsAndScores[0],
+            myScores = _allFilmsAndScores[1];
+
         _this3.setState({
-          allFilms: allFilms.data
+          allFilms: allFilms.data,
+          myScores: myScores.data
         });
       });
     }
@@ -3126,23 +3170,52 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
       var formFilmTitle = this.state.formFilmTitle;
       var userData = this.props.userData;
       var allFilms = this.state.allFilms;
+      var myScores = this.state.myScores;
       var addScoreFormIsOpen = this.state.addScoreFormIsOpen;
       var addScoreToFilm = this.addScoreToFilm;
       var openAddScoreForm = this.openAddScoreForm;
+      var closeAddScoreForm = this.closeAddScoreForm;
       var onChangeTextField = this.onChangeTextField;
+      var rightPanel;
+
+      if (addScoreFormIsOpen) {
+        rightPanel = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_AddScoreForm_jsx__WEBPACK_IMPORTED_MODULE_4__.default, {
+          fields: fields,
+          filmTitle: formFilmTitle,
+          filmId: formFilmId,
+          addScoreToFilm: addScoreToFilm,
+          onChangeTextField: onChangeTextField,
+          closeAddScoreForm: closeAddScoreForm
+        });
+      } else {
+        rightPanel = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          id: "my-scored-films"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          id: "my-scored-films-title"
+        }, "My Scored Films"), myScores.map(function (score) {
+          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_Score_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
+            key: score._id,
+            scoreData: score
+          });
+        }));
+      }
+
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "composer-view"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "all-films-wrapper"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "film-feed-title"
-      }, "Film Feed"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_FilmsDisplay_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
+      }, "Film Feed"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_FilmsDisplay_jsx__WEBPACK_IMPORTED_MODULE_3__.default, {
         allFilms: allFilms,
         addScoreFormIsOpen: addScoreFormIsOpen,
         formFilmTitle: formFilmTitle,
         formFilmId: formFilmId,
         fields: fields,
+        openAddScoreForm: openAddScoreForm,
         addScoreToFilm: addScoreToFilm,
         onChangeTextField: onChangeTextField
-      }));
+      })), rightPanel);
     }
   }]);
 
@@ -3172,7 +3245,8 @@ var AddScoreForm = function AddScoreForm(_ref) {
       filmTitle = _ref.filmTitle,
       filmId = _ref.filmId,
       fields = _ref.fields,
-      onChangeTextField = _ref.onChangeTextField;
+      onChangeTextField = _ref.onChangeTextField,
+      closeAddScoreForm = _ref.closeAddScoreForm;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     id: "add-score-view"
   }, "Add Score to ", filmTitle, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
@@ -3196,12 +3270,15 @@ var AddScoreForm = function AddScoreForm(_ref) {
     id: "score-link"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Link:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
     type: "text",
-    id: "filmLink",
+    id: "scoreLink",
     onChange: onChangeTextField,
     value: fields.scoreLink
   }), fields.scoreLinkValidation)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     id: "add-score-submit"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+    type: "button",
+    onClick: closeAddScoreForm
+  }, "Back"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
     type: "submit",
     value: "Add Score"
   }))));
@@ -3275,26 +3352,19 @@ var FilmsComposerDisplay = /*#__PURE__*/function (_React$Component) {
       var allFilms = this.props.allFilms;
       var openAddScoreForm = this.props.openAddScoreForm;
       var addScoreToFilm = this.props.addScoreToFilm;
-      var addScoreFormIsOpen = this.props.addScoreFormIsOpen;
-      var addScoreForm = addScoreFormIsOpen ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_AddScoreForm_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
-        fields: fields,
-        filmTitle: formFilmTitle,
-        filmId: formFilmId,
-        addScoreToFilm: addScoreToFilm,
-        onChangeTextField: onChangeTextField
-      }) : null;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "all-films-composer-display"
       }, allFilms.map(function (film, i) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SingleFilmComposerDisplay_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
           key: i,
           id: film._id,
+          filmmaker: film.username,
           title: film.filmTitle,
           link: film.filmLink,
           description: film.filmDescription,
           openAddScoreForm: openAddScoreForm
         });
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, addScoreForm));
+      })));
     }
   }]);
 
@@ -3315,6 +3385,60 @@ var FilmsComposerDisplay = /*#__PURE__*/function (_React$Component) {
 
 /***/ }),
 
+/***/ "./client/src/components/body/signedIn/userProfileViews/composerView/components/Score.jsx":
+/*!************************************************************************************************!*\
+  !*** ./client/src/components/body/signedIn/userProfileViews/composerView/components/Score.jsx ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+
+var Score = function Score(_ref) {
+  var scoreData = _ref.scoreData;
+  var id = scoreData._id;
+  var username = scoreData.username;
+  var scoreDescription = scoreData.scoreDescription;
+  var scoreLink = scoreData.scoreLink;
+  var scoreTitle = scoreData.scoreTitle;
+  var filmId = scoreData.filmId;
+  var filmmaker = scoreData.filmmaker;
+  var filmTitle = scoreData.filmTitle;
+  var filmDescription = scoreData.filmDescription;
+  var filmLink = scoreData.filmLink;
+  console.log(filmLink);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "score-wrapper"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "score"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "score-title"
+  }, scoreTitle), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "score-description"
+  }, scoreDescription), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "score-link"
+  }, scoreLink)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "score-film"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "score-film-title"
+  }, filmTitle), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "score-filmmaker"
+  }, "@", filmmaker), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "score-film-description"
+  }, filmDescription), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "score-film-link"
+  }, filmLink))));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Score);
+
+/***/ }),
+
 /***/ "./client/src/components/body/signedIn/userProfileViews/composerView/components/SingleFilmComposerDisplay.jsx":
 /*!********************************************************************************************************************!*\
   !*** ./client/src/components/body/signedIn/userProfileViews/composerView/components/SingleFilmComposerDisplay.jsx ***!
@@ -3332,6 +3456,7 @@ __webpack_require__.r(__webpack_exports__);
 var SingleFilmComposerDisplay = function SingleFilmComposerDisplay(_ref) {
   var id = _ref.id,
       title = _ref.title,
+      filmmaker = _ref.filmmaker,
       link = _ref.link,
       description = _ref.description,
       addScoreToFilm = _ref.addScoreToFilm,
@@ -3347,6 +3472,8 @@ var SingleFilmComposerDisplay = function SingleFilmComposerDisplay(_ref) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "film-title"
   }, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "filmmaker"
+  }, "@", filmmaker), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "film-description"
   }, description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "film-link"
@@ -3793,7 +3920,9 @@ var Header = function Header(_ref) {
     };
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("header", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
       id: "navbar"
-    }, visualAssets.signedOutHeader, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "SoundTrack Me"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SignInArea_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
+    }, visualAssets.signedOutHeader, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+      id: "soundtrack-me-title"
+    }, "SoundTrack Me"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SignInArea_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
       changePageState: changePageState,
       pageState: pageState
     })));

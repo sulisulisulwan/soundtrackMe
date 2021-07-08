@@ -4,8 +4,8 @@ const axios = require('axios');
 const app = express();
 const port = 1337;
 const {checkUsernameExists, checkEmailExists, createNewUser} = require('./models/signUpModels.js');
-const {getAllFilms, getAllScores} = require('./models/getMediaModels.js');
-const {postFilm, postScore} = require('./models/uploadMediaModels.js');
+const {getAllFilms, getFilm, getAllScores} = require('./models/getMediaModels.js');
+const {postFilm, postScore} = require('./models/postMediaModels.js');
 const {deleteFilm, deleteScore} = require('./models/deleteMediaModels.js');
 const {verifyAccount, loadProfile} = require('./models/signInModels.js')
 const API_KEY = require('./youtubeAPIKey/key.js')
@@ -134,6 +134,17 @@ app.get('/getAllFilms', (req, res) => {
   });
 })
 
+app.get('/getFilm', (req, res) => {
+  getFilm(req.query.id)
+  .then(film => {
+    res.status(200).json(film)
+  })
+  .catch(err => {
+    console.log(err);
+    res.sendStatus(500);
+  })
+})
+
 app.post('/postFilm', (req, res) => {
   let film = req.body
   postFilm(film)
@@ -166,20 +177,25 @@ app.delete('/deleteFilm', (req, res) => {
  *
  ****************************************/
  app.get('/verifyScoreLink', (req, res) => {
-  //this method now allows the main part of the URL to be wrong.
-  //This should be fixed.
   let link = req.query.link;
-  // let id= link.split('=')[1]
-  // videoExists.getVideoInfo(id)
-  scoreExists.somekindofwayofverifying()
-  .then(results=> {
-    res.status(200).json([results.existing, id]);
+
+  verifyScoreLink(link)
+  .then(result=> {
+    res.status(200).json(result);
   })
   .catch(err => {
     console.log(err)
     res.sendStatus(500)
   })
 })
+
+
+const verifyScoreLink = (link) => {
+  return new Promise ((resolve,reject) => {
+    let isValid = link ? true : false;
+    resolve(isValid)
+  })
+}
 
 app.get('/getAllScores', (req, res) => {
   let username = req.query.username
@@ -194,10 +210,11 @@ app.get('/getAllScores', (req, res) => {
 })
 
 
-app.post('./postScore', (req, res) => {
-  //TODO: parse out what gets passed into the model
-  let music;
-  postMusic(music)
+
+
+app.post('/postScore', (req, res) => {
+  let scoreData = (req.body);
+  postScore(scoreData)
   .then(_=> {
     res.sendStatus(201);
   })

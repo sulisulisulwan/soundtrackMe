@@ -40,7 +40,7 @@ const Header = ({changePageState, pageState, userData, signOut}) => {
       <header>
         <div id="navbar">
           {visualAssets.signedOutHeader}
-          <span>SoundTrack Me</span>
+          <span id="soundtrack-me-title">SoundTrack Me</span>
           <SignInArea
             changePageState={changePageState}
             pageState={pageState}

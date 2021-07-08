@@ -16,15 +16,6 @@ class FilmsComposerDisplay extends React.Component {
     let allFilms = this.props.allFilms;
     let openAddScoreForm = this.props.openAddScoreForm
     let addScoreToFilm = this.props.addScoreToFilm;
-    let addScoreFormIsOpen = this.props.addScoreFormIsOpen;
-    let addScoreForm = addScoreFormIsOpen ?
-      <AddScoreForm
-        fields={fields}
-        filmTitle={formFilmTitle}
-        filmId={formFilmId}
-        addScoreToFilm={addScoreToFilm}
-        onChangeTextField={onChangeTextField}
-      /> : null
 
     return (
       <div>
@@ -33,13 +24,13 @@ class FilmsComposerDisplay extends React.Component {
             <SingleFilmComposerDisplay
               key={i}
               id={film._id}
+              filmmaker={film.username}
               title={film.filmTitle}
               link={film.filmLink}
               description={film.filmDescription}
               openAddScoreForm={openAddScoreForm}
             />)}
         </div>
-        <div>{addScoreForm}</div>
       </div>
     )
   }

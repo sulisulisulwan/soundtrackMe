@@ -18,27 +18,30 @@ header {
     }
     #soundtrack-me-title {
       grid-column: 2/3;
+      grid-row: 1;
       font-size: 40px;
     }
     #header-username {
-      grid-column: 3/4;
+      grid-column: 3;
+      grid-row: 1;
       font-size: 40px;
     }
 
     #sign-out-block {
       text-align: right;
+      grid-row: 1;
+      grid-column: 3;
     }
     #sign-in-block {
       text-align: right;
+      grid-row: 1;
+      grid-column: 3;
       #signup-button {
         font-weight: bold;
       }
     }
   }
 }
-
-
-
 .sign-in-modal {
   display: flex;
   flex-direction: corowlumn;
@@ -63,12 +66,10 @@ body {
       text-align: center;
     }
   }
-
   //filmmaker view
   #open-add-film-form {
     text-align: center;
   }
-
   #add-film-view {
     display: flex;
     flex-direction: column;
@@ -83,7 +84,6 @@ body {
 
     }
   }
-
   #my-films {
     .film-wrapper {
       display: flex;
@@ -112,36 +112,99 @@ body {
 
 
   //COMPOSER VIEW
-  #film-feed-title {
-    border-top: grey 1px solid;
-    font-size: 30px;
-    padding-bottom: 20px;
-  }
-  #all-films-composer-display {
-    .film-wrapper {
-      display: flex;
-      flex-direction: row;
-      .film-info-wrapper {
+  #composer-view {
+    display: flex;
+    flex-direction: row;
+    #all-films-wrapper {
+      border-top: 1px solid gray;
+      border-right: .5px solid black;
+      padding-right: 50px;
+      #film-feed-title {
+        font-size: 30px;
+        padding-bottom: 20px;
+      }
+      #all-films-composer-display {
+        .film-wrapper {
+          display: flex;
+          flex-direction: row;
+          .film-info-wrapper {
+            display: flex;
+            flex-direction: column;
+            .film-title {
+              font-size: 20px;
+              font-family: Arial;
+              color: black;
+            }
+            .film-link {
+              font-size: 15px;
+              font-family: Arial;
+              color: gray;
+            }
+            .film-description {
+              font-size: 15px;
+              font-family: Arial;
+              color: gray;
+            }
+          }
+        }
+      }
+    }
+    #my-scored-films {
+      border-top: 1px solid gray;
+      border-left: .5px solid black;
+      padding-left: 50px;
+      #my-scored-films-title {
+        font-size: 30px;
+        padding-bottom: 20px;
+      }
+      .score-wrapper{
         display: flex;
-        flex-direction: column;
-        .film-title {
-          font-size: 20px;
-          font-family: Arial;
-          color: black;
+        flex-direction: row;
+        border-top: gray 1px solid;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        .score {
+          display: flex;
+          flex-direction: column;
+          padding-right: 12px;
+          .score-title {
+            font-size: 20px;
+          }
+          .score-description  {
+            font-size: 15px;
+            color: gray
+          }
+          .score-link {
+            font-size: 15px;
+            color: gray
+          }
         }
-        .film-link {
-          font-size: 15px;
-          font-family: Arial;
-          color: gray;
-        }
-        .film-description {
-          font-size: 15px;
-          font-family: Arial;
-          color: gray;
+        .score-film {
+          border-left: gray solid 1px;
+          padding-left: 20px;
+          display: flex;
+          flex-direction: column;
+          .score-film-title {
+            font-size: 18px;
+            color: black;
+          }
+          .score-filmmaker {
+            font-size: 15px;
+            color: black;
+          }
+          .score-film-description {
+            font-size: 15px;
+            color: gray
+          }
+          .score-film-link {
+            font-size: 15px;
+            color: gray
+          }
         }
       }
     }
   }
+
 
 
 

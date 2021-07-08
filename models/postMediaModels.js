@@ -14,13 +14,23 @@ const postFilm = ({username, filmTitle, filmDescription, filmLink}) => {
   })
 }
 
-const postScore = (music) => {
+const postScore = ({username, scoreTitle, scoreDescription, scoreLink, filmId, filmmaker, filmTitle, filmDescription, filmLink}) => {
   return new Promise ((resolve, reject) => {
-    //TODO:
-    music = 'goes into a query!'
-    music ? resolve() : reject() //change this of course
+    let newScore = new Score({
+      username: username,
+      scoreTitle: scoreTitle,
+      scoreDescription: scoreDescription,
+      scoreLink: scoreLink,
+      filmId: filmId,
+      filmmaker: filmmaker,
+      filmTitle: filmTitle,
+      filmDescription: filmDescription,
+      filmLink: filmLink
+    })
+    newScore.save((err, result) => {
+      err ? reject(err) : resolve(result);
+    })
   })
-
 }
 
 module.exports = {

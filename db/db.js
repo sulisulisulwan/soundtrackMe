@@ -24,22 +24,18 @@ const userInfoSchema = new mongoose.Schema({
   cardCVV: Number,
 })
 
-// const composerInfoSchema = new mongoose.Schema({
-//   username: String,
-//   scores: {},
-//   filmsAttempted: {}
-// })
 const scoreSchema = new mongoose.Schema({
   username: String,
-  audioTitle: String,
-  audioDescription: String,
-  audioLink: String
+  scoreTitle: String,
+  scoreDescription: String,
+  scoreLink: String,
+  filmId: String,
+  filmmaker: String,
+  filmTitle: String,
+  filmDescription: String,
+  filmLink: String
 })
 
-// const filmmakerInfoSchema = new mongoose.Schema({
-//   username: String,
-//   films: {}
-// })
 const filmSchema = new mongoose.Schema({
   username: String,
   filmTitle: String,
@@ -47,32 +43,12 @@ const filmSchema = new mongoose.Schema({
   filmLink: String,
 })
 
-
-/*
-films: {
-  westernFlick: {
-    score1: {
-      composer: daffyduck
-      audio: someFileg
-      like: true
-    }
-    score2: false
-    score3: false
-    score4: true
-  }
-}
-*/
-
 const UserInfo = mongoose.model('UserInfo', userInfoSchema);
 const Film = mongoose.model('Film', filmSchema);
 const Score = mongoose.model('Score', scoreSchema);
-// const FilmmakerInfo = mongoose.model('FilmmakerInfo', filmmakerInfoSchema);
-// const ComposerInfo = mongoose.model('ComposerInfo', composerInfoSchema);
 
 module.exports = {
   UserInfo: UserInfo,
   Film: Film,
   Score: Score
-  // FilmmakerInfo: FilmmakerInfo,
-  // ComposerInfo: ComposerInfo,
 }

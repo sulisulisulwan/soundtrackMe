@@ -32,10 +32,10 @@ class SignIn extends React.Component {
     let signInTextFieldOnChange = this.signInTextFieldOnChange
     return (
       <div id="sign-in-page">
-        <div>
+        <div id="sign-in-create-account">
           Sign In | Create Account<br></br>
         </div>
-        <div>
+        <div id="enter-your-username">
           Enter your username to get started.
         </div>
         <div>
@@ -54,7 +54,7 @@ class SignIn extends React.Component {
               {failedSignInValidationStatus}
             </div>
             <div>
-              <input type="submit" value="Next"></input>
+              <input id="sign-in-submit" type="submit" value="Next"></input>
             </div>
           </form>
         </div>

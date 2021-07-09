@@ -5,15 +5,20 @@ const SingleFilmComposerDisplay = ({id, title, filmmaker, link, description, add
     id: id,
     title: title
   });
+  let filmFile = 'uploads/' + id + '.mp4';
   return (
     <div className="film-wrapper">
       <div className="film-info-wrapper">
-        <div className="film-title">{title}</div>
         <div className="filmmaker">@{filmmaker}</div>
+        <div className="film-title">{title}</div>
         <div className="film-description">{description}</div>
-        <div className="film-link">{link}</div>
+        <div className="film-video-wrapper">
+          <video className="film-video" controls>
+            <source src={filmFile}></source>
+          </video>
+        </div>
+        <button id={filmData} className="score-it-button" onClick={openAddScoreForm}>Score It!</button>
       </div>
-      <button id={filmData} onClick={openAddScoreForm}>Score It!</button>
     </div>
   )
 }

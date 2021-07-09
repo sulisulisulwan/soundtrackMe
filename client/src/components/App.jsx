@@ -20,14 +20,10 @@ class App extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      pageState: 'changeToSignedIn',
+      pageState: 'changeToSignedOut',
+      // pageState: 'changeToSignedIn',
       failedSignInValidationStatus: '',
       userData: {
-        firstName: 'Suli',
-        lastName: 'Tekali',
-        username: 'sulisulisulwan',
-        email: 'smtviolin@gmail.com',
-        signedUpAs: 'composer',
       }
     }
     this.changePageState = this.changePageState.bind(this);

@@ -1,7 +1,7 @@
 import React from 'react';
-const AddFilmForm = ({fields, onChangeTextField, handleSubmitAddFilm, filmLinkValidation}) => {
+const AddFilmForm = ({fields, onChangeTextField, handleSubmitAddFilm, onFileChange, closeAddFilmForm}) => {
   return (
-    <div id="add-film-view">
+    <div id="add-film-form">
       Add Film
       <form onSubmit={handleSubmitAddFilm}>
         <div id="film-title">
@@ -16,16 +16,14 @@ const AddFilmForm = ({fields, onChangeTextField, handleSubmitAddFilm, filmLinkVa
             <input type="text" id="filmDescription" onChange={onChangeTextField} value={fields.filmDescription}></input>
           </label>
         </div>
-        <div id="film-link">
+        <div id="film-file">
           <label>
-            Link:
-            <input type="text" id="filmLink" onChange={onChangeTextField} value={fields.filmLink}></input>
-            {filmLinkValidation}
+            Upload Video:
+            <input type="file" id="uploadFile" onChange={onFileChange}></input>
           </label>
         </div>
         <div id="add-film-submit">
-          <input type="submit" value="Add Film"></input>
-
+          <input id="submit-add-film-form" type="submit" value="Add Film"></input>
         </div>
       </form>
     </div>

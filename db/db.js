@@ -26,6 +26,7 @@ const userInfoSchema = new mongoose.Schema({
 
 const scoreSchema = new mongoose.Schema({
   username: String,
+  email: String,
   scoreTitle: String,
   scoreDescription: String,
   scoreLink: String,
@@ -33,7 +34,7 @@ const scoreSchema = new mongoose.Schema({
   filmmaker: String,
   filmTitle: String,
   filmDescription: String,
-  filmLink: String
+  isFavorite: Boolean
 })
 
 const filmSchema = new mongoose.Schema({
@@ -41,6 +42,7 @@ const filmSchema = new mongoose.Schema({
   filmTitle: String,
   filmDescription: String,
   filmLink: String,
+  filmScores: []
 })
 
 const UserInfo = mongoose.model('UserInfo', userInfoSchema);

@@ -1,15 +1,32 @@
 /* eslint-disable no-unused-vars */
 const express = require('express');
 const axios = require('axios');
+const multer = require('multer');
 const app = express();
 const port = 1337;
 const {checkUsernameExists, checkEmailExists, createNewUser} = require('./models/signUpModels.js');
 const {getAllFilms, getFilm, getAllScores} = require('./models/getMediaModels.js');
-const {postFilm, postScore} = require('./models/postMediaModels.js');
+const {postFilmInfo, postScoreInfo} = require('./models/postMediaModels.js');
 const {deleteFilm, deleteScore} = require('./models/deleteMediaModels.js');
 const {verifyAccount, loadProfile} = require('./models/signInModels.js')
-const API_KEY = require('./youtubeAPIKey/key.js')
-const videoExists = require('youtube-video-exists')
+const {putFavoriteOnScore} = require('./models/putMediaModels.js')
+
+let idTransfer;
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'client/public/uploads');
+  },
+  filename: (req, file, cb) => {
+    const { originalname } = file;
+    let splitFileName = originalname.split('.')
+    let suffix = splitFileName[splitFileName.length - 1]
+    let newFileName = idTransfer + '.' + suffix
+    cb(null, newFileName)
+  }
+})
+
+const upload = multer({ storage: storage})
+
 app.listen(port, () => {
   console.log(`listening on ${port}`)
 })
@@ -74,6 +91,8 @@ app.post('/createNewUser', (req, res) => {
 
 //SIGN IN AND LOAD PROFILE Route
 
+
+
 app.post('/signIn/verifyAccount', (req, res) => {
   let username = req.body.username
   let password = req.body.password
@@ -106,26 +125,12 @@ app.get('/signIn/loadProfile', (req, res) => {
  *
  ****************************/
 
-app.get('/verifyFilmLink', (req, res) => {
-  //this method now allows the main part of the URL to be wrong.
-  //This should be fixed.
-  let link = req.query.link;
-  let id= link.split('=')[1]
-  //replace this with my own eventually
-  videoExists.getVideoInfo(id)
-  .then(results=> {
-    res.status(200).json([results.existing, id]);
-  })
-  .catch(err => {
-    console.log(err)
-    res.sendStatus(500)
-  })
-})
-
 
 app.get('/getAllFilms', (req, res) => {
+  console.log(' QUERY!!!!!', req.query.username)
   getAllFilms(req.query.username)
   .then(films => {
+    console.log(films)
     res.status(200).json(films)
   })
   .catch(err => {
@@ -145,16 +150,23 @@ app.get('/getFilm', (req, res) => {
   })
 })
 
-app.post('/postFilm', (req, res) => {
+app.post('/postFilmInfo', (req, res) => {
+  //this isn't restful neither is postScore.  fix that later
   let film = req.body
-  postFilm(film)
-  .then(_=> {
-    res.sendStatus(201);
+  postFilmInfo(film)
+  .then(result=> {
+    console.log(result._id)
+    idTransfer = result._id
+    res.status(201).json(result);
   })
   .catch(err => {
     console.error(new Error(err))
     res.sendStatus(500);
   })
+})
+
+app.post('/postFilmFile', upload.single('filmFile'), (req, res) => {
+  res.sendStatus(201)
 })
 
 app.delete('/deleteFilm', (req, res) => {
@@ -176,26 +188,7 @@ app.delete('/deleteFilm', (req, res) => {
  *          CRUD Scores
  *
  ****************************************/
- app.get('/verifyScoreLink', (req, res) => {
-  let link = req.query.link;
 
-  verifyScoreLink(link)
-  .then(result=> {
-    res.status(200).json(result);
-  })
-  .catch(err => {
-    console.log(err)
-    res.sendStatus(500)
-  })
-})
-
-
-const verifyScoreLink = (link) => {
-  return new Promise ((resolve,reject) => {
-    let isValid = link ? true : false;
-    resolve(isValid)
-  })
-}
 
 app.get('/getAllScores', (req, res) => {
   let username = req.query.username
@@ -210,16 +203,40 @@ app.get('/getAllScores', (req, res) => {
 })
 
 
-
-
-app.post('/postScore', (req, res) => {
+app.post('/postScoreInfo', (req, res) => {
   let scoreData = (req.body);
-  postScore(scoreData)
-  .then(_=> {
-    res.sendStatus(201);
+  postScoreInfo(scoreData)
+  .then(scoreResult => {
+    idTransfer = scoreResult._id
+    res.status(201).json(scoreResult);
   })
   .catch(err => {
     console.error(new Error(err))
     res.sendStatus(500);
   })
+})
+
+app.put('/favoriteAScore', (req, res) => {
+  let id = req.body.id
+  putFavoriteOnScore(id)
+  .then(result => {
+    res.sendStatus(201);
+  })
+  .catch(err => {
+    res.sendStatus(500);
+  })
+})
+app.put('/updateMyFilms', (req, res) => {
+  let myFilms = req.body.myFilms
+  putFavoriteOnScore(myFilms)
+  .then(result => {
+    res.sendStatus(201);
+  })
+  .catch(err => {
+    res.sendStatus(500);
+  })
+})
+
+app.post('/postScoreFile', upload.single('scoreFile'), (req, res) => {
+  res.sendStatus(201)
 })

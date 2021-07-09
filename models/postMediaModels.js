@@ -1,6 +1,6 @@
 const {Film, Score} = require('../db/db.js')
 
-const postFilm = ({username, filmTitle, filmDescription, filmLink}) => {
+const postFilmInfo = ({username, filmTitle, filmDescription, filmLink}) => {
   return new Promise ((resolve, reject) => {
     let newFilm = new Film({
       username: username,
@@ -14,26 +14,54 @@ const postFilm = ({username, filmTitle, filmDescription, filmLink}) => {
   })
 }
 
-const postScore = ({username, scoreTitle, scoreDescription, scoreLink, filmId, filmmaker, filmTitle, filmDescription, filmLink}) => {
+const updateFilmWithNewScore = (filmId, scoreId) => {
+  return new Promise ((resolve, reject) => {
+    Film.update(
+      { _id: filmId },
+      { $push: { filmScores: scoreId } },
+       (err, result) => {
+       err ? reject(err) : resolve(result);
+     });
+  })
+}
+
+const postScoreInfo = ({username, scoreTitle, scoreDescription, filmId, filmmaker, filmTitle, filmDescription, filmLink, email}) => {
   return new Promise ((resolve, reject) => {
     let newScore = new Score({
       username: username,
+      email: email,
       scoreTitle: scoreTitle,
       scoreDescription: scoreDescription,
-      scoreLink: scoreLink,
       filmId: filmId,
       filmmaker: filmmaker,
       filmTitle: filmTitle,
       filmDescription: filmDescription,
-      filmLink: filmLink
     })
     newScore.save((err, result) => {
-      err ? reject(err) : resolve(result);
+      if (err) {
+        reject(err)
+      } else {
+        let scoreInfo = {
+          scoreId: result._id,
+          email: result.email,
+          username: username,
+          scoreTitle: scoreTitle,
+          scoreDescription: scoreDescription,
+        }
+        Promise.all([result, updateFilmWithNewScore(filmId, scoreInfo)])
+        .then(allData => {
+          console.log(allData[1])
+          resolve(allData[0]);
+        })
+        .catch(err => {
+          reject(err)
+        })
+      }
     })
   })
 }
 
 module.exports = {
-  postFilm: postFilm,
-  postScore: postScore
+  postFilmInfo: postFilmInfo,
+  postScoreInfo: postScoreInfo
 }

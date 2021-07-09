@@ -1,21 +1,28 @@
 import React from 'react';
 import Film from './Film.jsx'
+import AddFilmForm from './AddFilmForm.jsx'
+const MyFilms = ({fields, myFilms, onFileChange, handleFavorite, handleEmailComposer, onChangeTextField, handleSubmitAddFilm, deleteFilmButtonHandler}) => {
 
-class MyFilms extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
-  render () {
-    let deleteFilmButtonHandler = this.props.deleteFilmButtonHandler;
-    let myFilms = this.props.myFilms;
-    return (
+  return (
+    <div id="filmmaker-view">
       <div id="my-films">
-        {myFilms.map((film, i)=> <Film key={i} id={film._id} title={film.filmTitle} link={film.filmLink} description={film.filmDescription} deleteFilmButtonHandler={deleteFilmButtonHandler}/>)}
+        {myFilms.map((film, i)=> <Film
+          key={i}
+          filmData={film}
+          handleEmailComposer={handleEmailComposer}
+          handleFavorite={handleFavorite}
+          deleteFilmButtonHandler={deleteFilmButtonHandler}/>)}
       </div>
-    )
-  }
-
+      <AddFilmForm
+    fields={fields}
+    onFileChange={onFileChange}
+    onChangeTextField={onChangeTextField}
+    handleSubmitAddFilm={handleSubmitAddFilm}
+    />
+    </div>
+  )
 }
+
+
 
 export default MyFilms

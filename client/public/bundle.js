@@ -1897,15 +1897,10 @@ var App = /*#__PURE__*/function (_React$Component) {
 
     _this = _super.call(this, props);
     _this.state = {
-      pageState: 'changeToSignedIn',
+      pageState: 'changeToSignedOut',
+      // pageState: 'changeToSignedIn',
       failedSignInValidationStatus: '',
-      userData: {
-        firstName: 'Suli',
-        lastName: 'Tekali',
-        username: 'sulisulisulwan',
-        email: 'smtviolin@gmail.com',
-        signedUpAs: 'composer'
-      }
+      userData: {}
     };
     _this.changePageState = _this.changePageState.bind(_assertThisInitialized(_this));
     _this.checkIfUsernameAlreadyExists = _this.checkIfUsernameAlreadyExists.bind(_assertThisInitialized(_this));
@@ -2158,7 +2153,11 @@ var SignIn = /*#__PURE__*/function (_React$Component) {
       var signInTextFieldOnChange = this.signInTextFieldOnChange;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "sign-in-page"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Sign In | Create Account", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Enter your username to get started."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "sign-in-create-account"
+      }, "Sign In | Create Account", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "enter-your-username"
+      }, "Enter your username to get started."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
         id: "sign-in-form",
         onSubmit: this.signInOnSubmit
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Username", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
@@ -2172,6 +2171,7 @@ var SignIn = /*#__PURE__*/function (_React$Component) {
         onChange: signInTextFieldOnChange,
         value: password
       })), failedSignInValidationStatus), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        id: "sign-in-submit",
         type: "submit",
         value: "Next"
       })))));
@@ -2839,7 +2839,7 @@ var SignUpForm3 = function SignUpForm3(_ref) {
       submitHandler = _ref.submitHandler;
   var firstName = formValues.firstName;
   var lastName = formValues.lastName;
-  var userName = formValues.userName;
+  var username = formValues.username;
   var email = formValues.email;
   var signUpAs = formValues.signUpAs;
   var cardName = formValues.cardName;
@@ -2866,7 +2866,7 @@ var SignUpForm3 = function SignUpForm3(_ref) {
     style: {
       fontWeight: 'bold'
     }
-  }, "Username: "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, userName)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
+  }, "Username: "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", null, username)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("td", {
     style: {
       fontWeight: 'bold'
     }
@@ -3042,10 +3042,9 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
     _this.state = {
       scoreTitle: '',
       scoreDescription: '',
-      scoreLink: '',
+      scoreFile: '',
       addScoreFormIsOpen: false,
       addScoreButtonIsDisabled: false,
-      scoreLinkValidation: '',
       formFilmId: '',
       formFilmTitle: '',
       allFilms: [],
@@ -3054,11 +3053,19 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
     _this.addScoreToFilm = _this.addScoreToFilm.bind(_assertThisInitialized(_this));
     _this.openAddScoreForm = _this.openAddScoreForm.bind(_assertThisInitialized(_this));
     _this.closeAddScoreForm = _this.closeAddScoreForm.bind(_assertThisInitialized(_this));
+    _this.onFileChange = _this.onFileChange.bind(_assertThisInitialized(_this));
     _this.onChangeTextField = _this.onChangeTextField.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(ComposerView, [{
+    key: "onFileChange",
+    value: function onFileChange(e) {
+      this.setState({
+        scoreFile: e.target.files[0]
+      });
+    }
+  }, {
     key: "onChangeTextField",
     value: function onChangeTextField(e) {
       var field = e.target.id;
@@ -3095,35 +3102,32 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
 
       e.preventDefault();
       var username = this.props.userData.username;
+      var email = this.props.userData.email;
       var filmId = e.target.id;
       var scoreTitle = this.state.scoreTitle;
       var scoreDescription = this.state.scoreDescription;
-      var scoreLink = this.state.scoreLink;
-      axios__WEBPACK_IMPORTED_MODULE_5___default().get("/verifyScoreLink?link=".concat(scoreLink)).then(function (result) {
-        if (result.data === false) {
-          throw 'link does not exist';
-        }
-
-        return axios__WEBPACK_IMPORTED_MODULE_5___default().get("/getFilm?id=".concat(filmId));
-      }).then(function (film) {
-        console.log(film);
+      axios__WEBPACK_IMPORTED_MODULE_5___default().get("/getFilm?id=".concat(filmId)).then(function (film) {
         var _film$data = film.data,
             filmDescription = _film$data.filmDescription,
-            filmLink = _film$data.filmLink,
             filmTitle = _film$data.filmTitle;
         var filmmaker = film.data.username;
         var addScoreFields = {
           username: username,
+          email: email,
           scoreTitle: scoreTitle,
           scoreDescription: scoreDescription,
-          scoreLink: scoreLink,
           filmId: filmId,
           filmmaker: filmmaker,
           filmTitle: filmTitle,
-          filmDescription: filmDescription,
-          filmLink: filmLink
+          filmDescription: filmDescription
         };
-        axios__WEBPACK_IMPORTED_MODULE_5___default().post('/postScore', addScoreFields);
+        return axios__WEBPACK_IMPORTED_MODULE_5___default().post('/postScoreInfo', addScoreFields);
+      }).then(function (res) {
+        var id = res.data._id;
+        var scoreFile = _this2.state.scoreFile;
+        var formData = new FormData();
+        formData.append('scoreFile', scoreFile);
+        axios__WEBPACK_IMPORTED_MODULE_5___default().post('/postScoreFile', formData, {});
       }).then(function (_) {
         return axios__WEBPACK_IMPORTED_MODULE_5___default().get("/getAllScores?username=".concat(username));
       }).then(function (allScores) {
@@ -3134,12 +3138,6 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
           addScoreFormIsOpen: false
         });
       })["catch"](function (err) {
-        if (err.toString() === 'link does not exist') {
-          _this2.setState({
-            scoreLinkValidation: 'This score link isn\'t valid'
-          });
-        }
-
         console.error(new Error(err));
       });
     }
@@ -3176,6 +3174,7 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
       var openAddScoreForm = this.openAddScoreForm;
       var closeAddScoreForm = this.closeAddScoreForm;
       var onChangeTextField = this.onChangeTextField;
+      var onFileChange = this.onFileChange;
       var rightPanel;
 
       if (addScoreFormIsOpen) {
@@ -3185,6 +3184,7 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
           filmId: formFilmId,
           addScoreToFilm: addScoreToFilm,
           onChangeTextField: onChangeTextField,
+          onFileChange: onFileChange,
           closeAddScoreForm: closeAddScoreForm
         });
       } else {
@@ -3246,7 +3246,9 @@ var AddScoreForm = function AddScoreForm(_ref) {
       filmId = _ref.filmId,
       fields = _ref.fields,
       onChangeTextField = _ref.onChangeTextField,
-      closeAddScoreForm = _ref.closeAddScoreForm;
+      closeAddScoreForm = _ref.closeAddScoreForm,
+      onFileChange = _ref.onFileChange;
+  console.log();
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     id: "add-score-view"
   }, "Add Score to ", filmTitle, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
@@ -3267,18 +3269,19 @@ var AddScoreForm = function AddScoreForm(_ref) {
     onChange: onChangeTextField,
     value: fields.scoreDescription
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    id: "score-link"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Link:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-    type: "text",
-    id: "scoreLink",
-    onChange: onChangeTextField,
-    value: fields.scoreLink
-  }), fields.scoreLinkValidation)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    id: "upload-score"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Upload Audio:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+    type: "file",
+    id: "uploadFile",
+    onChange: onFileChange
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     id: "add-score-submit"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+    id: "back-button",
     type: "button",
     onClick: closeAddScoreForm
   }, "Back"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+    id: "submit-button",
     type: "submit",
     value: "Add Score"
   }))));
@@ -3404,25 +3407,38 @@ var Score = function Score(_ref) {
   var id = scoreData._id;
   var username = scoreData.username;
   var scoreDescription = scoreData.scoreDescription;
-  var scoreLink = scoreData.scoreLink;
+  var scoreLink = './uploads/' + scoreData._id + '.mp3';
   var scoreTitle = scoreData.scoreTitle;
+  var isFavorite = scoreData.isFavorite;
   var filmId = scoreData.filmId;
   var filmmaker = scoreData.filmmaker;
   var filmTitle = scoreData.filmTitle;
   var filmDescription = scoreData.filmDescription;
-  var filmLink = scoreData.filmLink;
-  console.log(filmLink);
+  var filmLink = './uploads/' + scoreData.filmId + '.mp4';
+  var favoriteStatus = '';
+
+  if (isFavorite) {
+    favoriteStatus = 'YOUR SCORE HAS BEEN FAVORITED!';
+  }
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "score-wrapper"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "score"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "favorite-status"
+  }, favoriteStatus), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "score-title"
   }, scoreTitle), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "score-description"
   }, scoreDescription), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "score-link"
-  }, scoreLink)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("audio", {
+    controls: true
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("source", {
+    src: scoreLink,
+    type: "audio/mp3"
+  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "score-film"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "score-film-title"
@@ -3432,7 +3448,12 @@ var Score = function Score(_ref) {
     className: "score-film-description"
   }, filmDescription), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "score-film-link"
-  }, filmLink))));
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("video", {
+    height: "250px",
+    controls: true
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("source", {
+    src: filmLink
+  }))))));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Score);
@@ -3465,22 +3486,29 @@ var SingleFilmComposerDisplay = function SingleFilmComposerDisplay(_ref) {
     id: id,
     title: title
   });
+  var filmFile = 'uploads/' + id + '.mp4';
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "film-wrapper"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "film-info-wrapper"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "film-title"
-  }, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "filmmaker"
   }, "@", filmmaker), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "film-title"
+  }, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "film-description"
   }, description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "film-link"
-  }, link)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+    className: "film-video-wrapper"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("video", {
+    className: "film-video",
+    controls: true
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("source", {
+    src: filmFile
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
     id: filmData,
+    className: "score-it-button",
     onClick: openAddScoreForm
-  }, "Score It!"));
+  }, "Score It!")));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SingleFilmComposerDisplay);
@@ -3500,9 +3528,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _components_MyFilms_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/MyFilms.jsx */ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/MyFilms.jsx");
-/* harmony import */ var _components_AddFilmForm_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/AddFilmForm.jsx */ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/AddFilmForm.jsx");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3529,7 +3556,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
 var FilmmakerView = /*#__PURE__*/function (_React$Component) {
   _inherits(FilmmakerView, _React$Component);
 
@@ -3544,20 +3570,60 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
     _this.state = {
       filmTitle: '',
       filmDescription: '',
-      filmLink: '',
-      addFilmFormIsOpen: false,
-      addFilmButtonIsHidden: false,
-      filmLinkValidation: '',
+      filmFile: '',
       myFilms: []
     };
+    _this.handleFavorite = _this.handleFavorite.bind(_assertThisInitialized(_this));
+    _this.handleEmailComposer = _this.handleEmailComposer.bind(_assertThisInitialized(_this));
     _this.handleSubmitAddFilm = _this.handleSubmitAddFilm.bind(_assertThisInitialized(_this));
-    _this.openAddFilmForm = _this.openAddFilmForm.bind(_assertThisInitialized(_this));
     _this.onChangeTextField = _this.onChangeTextField.bind(_assertThisInitialized(_this));
     _this.deleteFilmButtonHandler = _this.deleteFilmButtonHandler.bind(_assertThisInitialized(_this));
+    _this.onFileChange = _this.onFileChange.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(FilmmakerView, [{
+    key: "handleEmailComposer",
+    value: function handleEmailComposer(e) {
+      var email = e.target.id;
+      alert("You loved this score so much you decided to email the composer at ".concat(email, "!  Or at least we assumed so."));
+    }
+  }, {
+    key: "handleFavorite",
+    value: function handleFavorite(e) {
+      var _this2 = this;
+
+      var id = e.target.id;
+      var myFilms = this.state.myFilms;
+      axios__WEBPACK_IMPORTED_MODULE_2___default().put('favoriteAScore', {
+        id: id
+      }).then(function (result) {
+        for (var i = 0; i < myFilms.length; i++) {
+          var film = myFilms[i];
+
+          if (film.filmScores.some(function (score) {
+            if (score.scoreId === id) {
+              score.isFavorite = true;
+              return true;
+            }
+
+            return false;
+          })) {
+            break;
+          }
+        } //   axios.put('/updateMyFilms', {myFilms: myFilms})
+        // })
+        // .then(_ => {
+
+
+        _this2.setState({
+          myFilms: myFilms
+        });
+      })["catch"](function (err) {
+        console.error(new Error(err));
+      });
+    }
+  }, {
     key: "onChangeTextField",
     value: function onChangeTextField(e) {
       var field = e.target.id;
@@ -3567,67 +3633,62 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
       this.setState(newValue);
     }
   }, {
-    key: "openAddFilmForm",
-    value: function openAddFilmForm(e) {
+    key: "onFileChange",
+    value: function onFileChange(e) {
       this.setState({
-        addFilmFormIsOpen: true,
-        addFilmButtonIsHidden: true
+        filmFile: e.target.files[0]
       });
     }
   }, {
     key: "handleSubmitAddFilm",
     value: function handleSubmitAddFilm(e) {
-      var _this2 = this;
+      var _this3 = this;
 
+      e.preventDefault();
       var username = this.props.userData.username;
       var filmTitle = this.state.filmTitle;
       var filmDescription = this.state.filmDescription;
       var filmLink = this.state.filmLink;
-      e.preventDefault();
-      axios__WEBPACK_IMPORTED_MODULE_3___default().get("/verifyFilmLink?link=".concat(filmLink)).then(function (result) {
-        if (!result.data[0]) {
-          throw 'link does not exist';
-        }
-
-        var addFilmFields = {
-          username: username,
-          filmTitle: filmTitle,
-          filmDescription: filmDescription,
-          filmLink: result.data[1]
-        };
-        axios__WEBPACK_IMPORTED_MODULE_3___default().post('/postFilm', addFilmFields);
+      var addFilmFields = {
+        username: username,
+        filmTitle: filmTitle,
+        filmDescription: filmDescription
+      };
+      return axios__WEBPACK_IMPORTED_MODULE_2___default().post('/postFilmInfo', addFilmFields).then(function (res) {
+        var id = res.data._id;
+        var filmFile = _this3.state.filmFile;
+        var formData = new FormData();
+        formData.append('filmFile', filmFile);
+        axios__WEBPACK_IMPORTED_MODULE_2___default().post('/postFilmFile', formData, {});
       }).then(function (_) {
-        return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/getAllFilms?username=".concat(username));
+        return axios__WEBPACK_IMPORTED_MODULE_2___default().get("/getAllFilms?username=".concat(username));
       }).then(function (myFilms) {
-        _this2.setState({
+        _this3.setState({
           myFilms: myFilms.data,
-          addFilmFormIsOpen: false,
-          addFilmButtonIsHidden: false
+          filmTitle: '',
+          filmDescription: '',
+          filmFile: ''
         });
       })["catch"](function (err) {
-        if (err.toString() === 'link does not exist') {
-          _this2.setState({
-            filmLinkValidation: 'This film link isn\'t valid'
-          });
-        }
-
         console.error(new Error(err));
       });
     }
   }, {
     key: "deleteFilmButtonHandler",
     value: function deleteFilmButtonHandler(e) {
-      var _this3 = this;
+      var _this4 = this;
 
       var id = e.target.id;
-      axios__WEBPACK_IMPORTED_MODULE_3___default().delete('/deleteFilm', {
+      axios__WEBPACK_IMPORTED_MODULE_2___default().delete('/deleteFilm', {
         data: {
           id: id
         }
       }).then(function (_) {
-        return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/getAllFilms?username=".concat(_this3.props.username));
+        return axios__WEBPACK_IMPORTED_MODULE_2___default().get("/getAllFilms?username=".concat(_this4.props.userData.username));
       }).then(function (myFilms) {
-        _this3.setState({
+        console.log(myFilms.data);
+
+        _this4.setState({
           myFilms: myFilms.data
         });
       });
@@ -3635,11 +3696,11 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this4 = this;
+      var _this5 = this;
 
       var username = this.props.userData.username;
-      return axios__WEBPACK_IMPORTED_MODULE_3___default().get("/getAllFilms/".concat(username)).then(function (myFilms) {
-        _this4.setState({
+      return axios__WEBPACK_IMPORTED_MODULE_2___default().get("/getAllFilms?username=".concat(username)).then(function (myFilms) {
+        _this5.setState({
           myFilms: myFilms.data
         });
       });
@@ -3651,29 +3712,22 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
       var username = userData.username;
       var fields = this.state;
       var myFilms = this.state.myFilms;
-      var addFilmFormIsOpen = this.state.addFilmFormIsOpen;
-      var addFilmButtonIsHidden = this.state.addFilmButtonIsHidden;
-      var filmLinkValidation = this.state.filmLinkValidation;
-      var openAddFilmForm = this.openAddFilmForm;
+      var handleFavorite = this.handleFavorite;
+      var handleEmailComposer = this.handleEmailComposer;
+      var onFileChange = this.onFileChange;
       var handleSubmitAddFilm = this.handleSubmitAddFilm;
       var onChangeTextField = this.onChangeTextField;
       var deleteFilmButtonHandler = this.deleteFilmButtonHandler;
-      var addFilmForm = addFilmFormIsOpen ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_AddFilmForm_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
-        fields: fields,
-        filmLinkValidation: filmLinkValidation,
-        onChangeTextField: onChangeTextField,
-        handleSubmitAddFilm: handleSubmitAddFilm
-      }) : '';
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        id: "filmmaker-view"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        id: "open-add-film-form"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
-        type: "button",
-        onClick: openAddFilmForm,
-        hidden: addFilmButtonIsHidden
-      }, "Add Film")), addFilmForm, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_MyFilms_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
+        id: "filmmaker-view-wrapper"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_MyFilms_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
+        fields: fields,
         myFilms: myFilms,
+        onFileChange: onFileChange,
+        handleEmailComposer: handleEmailComposer,
+        handleFavorite: handleFavorite,
+        onChangeTextField: onChangeTextField,
+        handleSubmitAddFilm: handleSubmitAddFilm,
         deleteFilmButtonHandler: deleteFilmButtonHandler
       }));
     }
@@ -3704,9 +3758,10 @@ var AddFilmForm = function AddFilmForm(_ref) {
   var fields = _ref.fields,
       onChangeTextField = _ref.onChangeTextField,
       handleSubmitAddFilm = _ref.handleSubmitAddFilm,
-      filmLinkValidation = _ref.filmLinkValidation;
+      onFileChange = _ref.onFileChange,
+      closeAddFilmForm = _ref.closeAddFilmForm;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    id: "add-film-view"
+    id: "add-film-form"
   }, "Add Film", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
     onSubmit: handleSubmitAddFilm
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -3724,15 +3779,15 @@ var AddFilmForm = function AddFilmForm(_ref) {
     onChange: onChangeTextField,
     value: fields.filmDescription
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    id: "film-link"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Link:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-    type: "text",
-    id: "filmLink",
-    onChange: onChangeTextField,
-    value: fields.filmLink
-  }), filmLinkValidation)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    id: "film-file"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Upload Video:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+    type: "file",
+    id: "uploadFile",
+    onChange: onFileChange
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     id: "add-film-submit"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+    id: "submit-add-film-form",
     type: "submit",
     value: "Add Film"
   }))));
@@ -3757,12 +3812,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Film = function Film(_ref) {
-  var id = _ref.id,
-      title = _ref.title,
-      link = _ref.link,
-      description = _ref.description,
-      deleteFilmButtonHandler = _ref.deleteFilmButtonHandler;
+  var filmData = _ref.filmData,
+      deleteFilmButtonHandler = _ref.deleteFilmButtonHandler,
+      handleEmailComposer = _ref.handleEmailComposer,
+      handleFavorite = _ref.handleFavorite;
+  var id = filmData._id;
+  var title = filmData.filmTitle;
+  var description = filmData.filmDescription;
+  var filmScores = filmData.filmScores;
+  console.log('IS THIS EMAIL???', filmScores);
+  var filmFile = './uploads/' + id + '.mp4';
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "my-film-wrapper"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "film-wrapper"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "film-info-wrapper"
@@ -3771,12 +3833,51 @@ var Film = function Film(_ref) {
   }, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "film-description"
   }, description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "film-link"
-  }, link)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "film-video-wrapper"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("video", {
+    className: "film-video",
+    controls: true
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("source", {
+    src: filmFile
+  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     id: id,
     className: "remove-film-button",
     onClick: deleteFilmButtonHandler
-  }, "X"));
+  }, "X"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "scores-wrapper"
+  }, filmScores.map(function (score) {
+    var candidateLink = './uploads/' + score.scoreId + '.mp3';
+    var composer = score.username;
+    var scoreTitle = score.scoreTitle;
+    var scoreDescription = score.scoreDescription;
+    var favoriteIcon = score.isFavorite ? "icons/favorited.png" : "icons/checkmark.png";
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      key: score.scoreId,
+      className: "candidate-score"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      className: "candidate-composer"
+    }, "@", composer), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      className: "candidate-score-title"
+    }, scoreTitle), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      className: "candidate-score-description"
+    }, scoreDescription), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("audio", {
+      controls: true
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("source", {
+      src: candidateLink
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      className: "interact-with-candidate"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+      id: score.scoreId,
+      className: "favorite",
+      src: favoriteIcon,
+      onClick: handleFavorite
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+      id: score.email,
+      className: "contact",
+      src: "icons/email.png",
+      onClick: handleEmailComposer
+    })));
+  }))));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Film);
@@ -3796,64 +3897,39 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _Film_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Film.jsx */ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/Film.jsx");
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+/* harmony import */ var _AddFilmForm_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AddFilmForm.jsx */ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/AddFilmForm.jsx");
 
 
 
 
-var MyFilms = /*#__PURE__*/function (_React$Component) {
-  _inherits(MyFilms, _React$Component);
-
-  var _super = _createSuper(MyFilms);
-
-  function MyFilms(props) {
-    _classCallCheck(this, MyFilms);
-
-    return _super.call(this, props);
-  }
-
-  _createClass(MyFilms, [{
-    key: "render",
-    value: function render() {
-      var deleteFilmButtonHandler = this.props.deleteFilmButtonHandler;
-      var myFilms = this.props.myFilms;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        id: "my-films"
-      }, myFilms.map(function (film, i) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Film_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
-          key: i,
-          id: film._id,
-          title: film.filmTitle,
-          link: film.filmLink,
-          description: film.filmDescription,
-          deleteFilmButtonHandler: deleteFilmButtonHandler
-        });
-      }));
-    }
-  }]);
-
-  return MyFilms;
-}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+var MyFilms = function MyFilms(_ref) {
+  var fields = _ref.fields,
+      myFilms = _ref.myFilms,
+      onFileChange = _ref.onFileChange,
+      handleFavorite = _ref.handleFavorite,
+      handleEmailComposer = _ref.handleEmailComposer,
+      onChangeTextField = _ref.onChangeTextField,
+      handleSubmitAddFilm = _ref.handleSubmitAddFilm,
+      deleteFilmButtonHandler = _ref.deleteFilmButtonHandler;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    id: "filmmaker-view"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    id: "my-films"
+  }, myFilms.map(function (film, i) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Film_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
+      key: i,
+      filmData: film,
+      handleEmailComposer: handleEmailComposer,
+      handleFavorite: handleFavorite,
+      deleteFilmButtonHandler: deleteFilmButtonHandler
+    });
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_AddFilmForm_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
+    fields: fields,
+    onFileChange: onFileChange,
+    onChangeTextField: onChangeTextField,
+    handleSubmitAddFilm: handleSubmitAddFilm
+  }));
+};
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MyFilms);
 

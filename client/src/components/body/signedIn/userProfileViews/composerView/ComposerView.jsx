@@ -11,10 +11,9 @@ class ComposerView extends React.Component {
     this.state = {
       scoreTitle: '',
       scoreDescription: '',
-      scoreLink: '',
+      scoreFile: '',
       addScoreFormIsOpen: false,
       addScoreButtonIsDisabled: false,
-      scoreLinkValidation: '',
       formFilmId: '',
       formFilmTitle: '',
       allFilms: [],
@@ -23,10 +22,13 @@ class ComposerView extends React.Component {
     this.addScoreToFilm = this.addScoreToFilm.bind(this);
     this.openAddScoreForm = this.openAddScoreForm.bind(this);
     this.closeAddScoreForm = this.closeAddScoreForm.bind(this);
+    this.onFileChange = this.onFileChange.bind(this);
     this.onChangeTextField = this.onChangeTextField.bind(this);
   }
 
-
+  onFileChange (e) {
+    this.setState({scoreFile: e.target.files[0]});
+  }
   onChangeTextField (e) {
     let field = e.target.id;
     let fieldValue = e.target.value;
@@ -44,7 +46,6 @@ class ComposerView extends React.Component {
       formFilmTitle: title
     });
   }
-
   closeAddScoreForm (e) {
     this.setState({
       addScoreFormIsOpen: false,
@@ -56,35 +57,34 @@ class ComposerView extends React.Component {
   addScoreToFilm (e) {
     e.preventDefault();
     let username = this.props.userData.username;
+    let email = this.props.userData.email;
     let filmId = e.target.id
     let scoreTitle = this.state.scoreTitle;
     let scoreDescription = this.state.scoreDescription;
-    let scoreLink = this.state.scoreLink;
-    axios.get(`/verifyScoreLink?link=${scoreLink}`)
-    .then(result => {
-      if (result.data === false) {
-        throw 'link does not exist'
-      }
-      return axios.get(`/getFilm?id=${filmId}`)
-    })
+    axios.get(`/getFilm?id=${filmId}`)
     .then(film => {
-      console.log(film)
-      let {filmDescription, filmLink, filmTitle} = film.data
+      let {filmDescription, filmTitle} = film.data
       let filmmaker = film.data.username
       let addScoreFields = {
         username: username,
+        email: email,
         scoreTitle: scoreTitle,
         scoreDescription: scoreDescription,
-        scoreLink: scoreLink,
         filmId: filmId,
         filmmaker: filmmaker,
         filmTitle: filmTitle,
-        filmDescription: filmDescription,
-        filmLink: filmLink
+        filmDescription: filmDescription
       }
-      axios.post('/postScore', addScoreFields)
+      return axios.post('/postScoreInfo', addScoreFields)
     })
-    .then(_=> {
+    .then(res => {
+      let id = res.data._id
+      let scoreFile = this.state.scoreFile
+      const formData = new FormData()
+      formData.append('scoreFile', scoreFile);
+      axios.post('/postScoreFile', formData, {})
+    })
+    .then(_ => {
       return axios.get(`/getAllScores?username=${username}`)
     })
     .then(allScores => {
@@ -95,11 +95,6 @@ class ComposerView extends React.Component {
       })
     })
     .catch(err => {
-      if (err.toString() === 'link does not exist') {
-        this.setState({
-          scoreLinkValidation: 'This score link isn\'t valid'
-        })
-      }
       console.error(new Error(err))
     });
   }
@@ -131,6 +126,7 @@ class ComposerView extends React.Component {
     let openAddScoreForm = this.openAddScoreForm
     let closeAddScoreForm = this.closeAddScoreForm;
     let onChangeTextField = this.onChangeTextField
+    let onFileChange = this.onFileChange;
     let rightPanel;
     if (addScoreFormIsOpen) {
       rightPanel = <AddScoreForm
@@ -139,6 +135,7 @@ class ComposerView extends React.Component {
         filmId={formFilmId}
         addScoreToFilm={addScoreToFilm}
         onChangeTextField={onChangeTextField}
+        onFileChange={onFileChange}
         closeAddScoreForm={closeAddScoreForm}
       />
     } else {

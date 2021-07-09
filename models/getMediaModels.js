@@ -8,6 +8,7 @@ const getAllFilms = (username) => {
       });
     }
     Film.find({username: username}, (err, films) => {
+      console.log(films)
       err ? reject(err) : resolve(films);
     });
   });

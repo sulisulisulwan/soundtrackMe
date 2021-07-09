@@ -1,11 +1,25 @@
 html {
+  margin: auto;
   font-family: Arial, Helvetica, sans-serif;
+  height: 100px;
+  max-width: 1300px;
+};
+label {
+  font-size: 15px;
 }
+
+
+input[type=text], [type=password] {
+  padding: 7px;
+  margin: 7px;
+}
+
 header {
   right: 12px;
   display: grid;
   top: 0;
   background: white;
+  border-bottom: gray solid 1px;
   z-index: 1000;
   #navbar {
     display: grid;
@@ -19,12 +33,14 @@ header {
     #soundtrack-me-title {
       grid-column: 2/3;
       grid-row: 1;
-      font-size: 40px;
+      font-size: 80px;
     }
     #header-username {
       grid-column: 3;
       grid-row: 1;
       font-size: 40px;
+      text-align: right;
+      margin-right: 80px;
     }
 
     #sign-out-block {
@@ -36,15 +52,20 @@ header {
       text-align: right;
       grid-row: 1;
       grid-column: 3;
+      font-size: 20px;
+      #sign-in-button {
+      }
       #signup-button {
         font-weight: bold;
       }
     }
   }
 }
+
 .sign-in-modal {
+  font-size: 20px;
   display: flex;
-  flex-direction: corowlumn;
+  flex-direction: column;
   z-index: 1000;
 }
 #close-signup-modal-block {
@@ -55,71 +76,181 @@ header {
 body {
 
   #sign-in-page {
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
+    #sign-in-create-account {
+      font-size: 30px;
+      margin-bottom: 20px;
+    }
+    #enter-your-username {
+      color: gray;
+      margin-bottom: 30px;
+    }
     #sign-in-form {
       width: 300px;
       margin-left: auto;
       margin-right: auto;
       text-align: center;
+      margin-bottom: 10px;
+      #username {
+        font-size: 15px;
+        margin-bottom: 10px;
+      }
+      #password {
+        font-size: 15px;
+        margin-bottom: 30px;
+      }
+      #sign-in-submit {
+
+      }
     }
   }
-  //filmmaker view
-  #open-add-film-form {
-    text-align: center;
-  }
-  #add-film-view {
+  //FILMMAKER VIEW
+ #filmmaker-view {
+   display:flex;
+   flex-direction: row;
+   #my-films {
+     padding-top: 30px;
+     .my-film-wrapper {
+       display: flex;
+       flex-direction: column;
+       margin-bottom: 20px;
+       .film-wrapper {
+         display: flex;
+         flex-direction: row;
+
+         .film-info-wrapper {
+           width: 510px;
+           display: flex;
+           flex-direction: column;
+           .film-title {
+             font-size: 30px;
+             font-family: Arial;
+             color: black;
+             margin-bottom: 10px;
+           }
+           .film-description {
+             font-size: 15px;
+             font-family: Arial;
+             color: gray;
+             margin-bottom: 20px;
+           }
+           .film-video-wrapper {
+             .film-video {
+               width: 500px;
+             }
+           }
+
+         }
+       }
+       .scores-wrapper {
+         max-height: 366.25px;
+         margin-left: 20px;
+         display: flex;
+         flex-direction: column;
+         overflow: scroll;
+         .candidate-score {
+           .candidate-composer {
+             font-size: 20px;
+           }
+           .candidate-score-title {
+             margin-top: 5px;
+             font-size: 20px;
+           }
+           .candidate-score-description {
+             font-size: 15px;
+             color: gray;
+           }
+
+           .interact-with-candidate {
+             display: flex;
+             flex-direction: row;
+             justify-content: flex-end;
+             .favorite {
+               opacity: .5;
+               width: 30px;
+             }
+             .favorite:hover {
+               transform: scale(1.2);
+               opacity: 1;
+               transition: 250ms;
+             }
+              .contact {
+                margin-left: 12px;
+                margin-right: 12px;
+                width: 30px;
+                opacity: .5;
+              }
+              .contact:hover {
+                margin-left: 12px;
+                transform: scale(1.2);
+                transition: 250ms;
+                opacity: 1;
+              }
+            }
+         }
+       }
+     }
+   }
+
+  #add-film-form {
+    transform: translate(250%, 30%);
+    position: fixed;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 30px;
+    font-size: 30px;
     display: flex;
     flex-direction: column;
     text-align: center;
     #film-title {
-
+      margin-top: 10px;
+      font-size: 15px;
     }
     #film-description {
-
+      margin-top: 10px;
+      font-size: 15px;
     }
-    #film-link {
-
+    #film-file {
+      margin-top: 10px;
+      font-size: 15px;
     }
-  }
-  #my-films {
-    .film-wrapper {
-      display: flex;
-      flex-direction: row;
-      .film-info-wrapper {
-        display: flex;
-        flex-direction: column;
-        .film-title {
-          font-size: 20px;
-          font-family: Arial;
-          color: black;
-        }
-        .film-link {
-          font-size: 15px;
-          font-family: Arial;
-          color: gray;
-        }
-        .film-description {
-          font-size: 15px;
-          font-family: Arial;
-          color: gray;
-        }
+    #add-film-submit {
+      #close-add-film-form {
+        margin-right: 5px;
+        font-size: 15px;
       }
+      #submit-add-film-form {
+        margin-left: 5px;
+        font-size: 15px;
+      }
+
     }
   }
+  #open-add-film-form-button-inner-wrapper {
+    #open-add-film-form-button-inner-wrapper {
+      position: fixed;
+      margin: 0;
+      text-align: center;
+    }
+  }
+}
 
 
-  //COMPOSER VIEW
+    //COMPOSER VIEW
   #composer-view {
     display: flex;
     flex-direction: row;
+
     #all-films-wrapper {
-      border-top: 1px solid gray;
+      overflow: scroll;
       border-right: .5px solid black;
       padding-right: 50px;
       #film-feed-title {
+        margin-top: 10px;
         font-size: 30px;
         padding-bottom: 20px;
       }
@@ -128,32 +259,68 @@ body {
           display: flex;
           flex-direction: row;
           .film-info-wrapper {
+            width: 510px;
             display: flex;
             flex-direction: column;
             .film-title {
-              font-size: 20px;
-              font-family: Arial;
-              color: black;
-            }
-            .film-link {
-              font-size: 15px;
-              font-family: Arial;
-              color: gray;
+              font-size: 30px;
+             font-family: Arial;
+             color: black;
+             margin-bottom: 10px;
             }
             .film-description {
               font-size: 15px;
               font-family: Arial;
               color: gray;
+              margin-bottom: 20px;
+            }
+            .film-video {
+              width: 500px;
+            }
+            .score-it-button {
+              font-weight: bold;
+              height: 40px;
+              width: 500px;
             }
           }
         }
       }
     }
+    #add-score-view {
+      padding-top: 15px;
+      margin-left: 20px;
+      font-size: 30px;
+      text-align: center;
+      #score-title {
+        margin: 20px;
+        font-size: 25px;
+      }
+      #score-description {
+        margin: 20px;
+        font-size: 25px;
+      }
+      #upload-score {
+        margin: 20px;
+        font-size: 25px;
+      }
+      #upload-file {
+        margin: 10px;
+        font-size: 25px;
+      }
+      #back-button {
+        margin: 10px;
+        font-size: 25px;
+      }
+      #submit-button {
+        margin: 10px;
+        font-size: 25px;
+      }
+    }
+
     #my-scored-films {
-      border-top: 1px solid gray;
-      border-left: .5px solid black;
       padding-left: 50px;
       #my-scored-films-title {
+        margin-top: 10px;
         font-size: 30px;
         padding-bottom: 20px;
       }
@@ -167,10 +334,16 @@ body {
           display: flex;
           flex-direction: column;
           padding-right: 12px;
+          .favorite-status {
+            background-color: greenyellow;
+            font-size: 40px;
+          }
           .score-title {
+            padding-top: 15px;
             font-size: 20px;
           }
           .score-description  {
+            padding-top: 10px;
             font-size: 15px;
             color: gray
           }
@@ -181,33 +354,29 @@ body {
         }
         .score-film {
           border-left: gray solid 1px;
+          padding-top: 15px;
           padding-left: 20px;
           display: flex;
           flex-direction: column;
           .score-film-title {
-            font-size: 18px;
+            font-size: 20px;
+            padding-top: 10px;
             color: black;
           }
           .score-filmmaker {
-            font-size: 15px;
+            font-size: 18px;
+            padding-top: 10px;
             color: black;
           }
           .score-film-description {
             font-size: 15px;
-            color: gray
-          }
-          .score-film-link {
-            font-size: 15px;
+            padding-top: 10px;
             color: gray
           }
         }
       }
     }
   }
-
-
-
-
 
   #sign-up {
     text-align: center;

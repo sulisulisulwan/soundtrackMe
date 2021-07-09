@@ -1,5 +1,6 @@
 import React from 'react';
-const AddScoreForm = ({addScoreToFilm, filmTitle, filmId, fields, onChangeTextField, closeAddScoreForm}) => {
+const AddScoreForm = ({addScoreToFilm, filmTitle, filmId, fields, onChangeTextField, closeAddScoreForm, onFileChange}) => {
+  console.log()
   return (
 
     <div id="add-score-view">
@@ -17,16 +18,15 @@ const AddScoreForm = ({addScoreToFilm, filmTitle, filmId, fields, onChangeTextFi
             <input type="text" id="scoreDescription" onChange={onChangeTextField} value={fields.scoreDescription}></input>
           </label>
         </div>
-        <div id="score-link">
+        <div id="upload-score">
           <label>
-            Link:
-            <input type="text" id="scoreLink" onChange={onChangeTextField} value={fields.scoreLink}></input>
-            {fields.scoreLinkValidation}
+            Upload Audio:
+            <input type="file" id="uploadFile" onChange={onFileChange}></input>
           </label>
         </div>
         <div id="add-score-submit">
-          <button type="button" onClick={closeAddScoreForm}>Back</button>
-          <input type="submit" value="Add Score"></input>
+          <button id="back-button" type="button" onClick={closeAddScoreForm}>Back</button>
+          <input id="submit-button" type="submit" value="Add Score"></input>
         </div>
       </form>
     </div>

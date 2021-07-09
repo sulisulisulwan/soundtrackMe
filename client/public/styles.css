@@ -1,5 +1,17 @@
 html {
+  margin: auto;
   font-family: Arial, Helvetica, sans-serif;
+  height: 100px;
+  max-width: 1300px;
+}
+
+label {
+  font-size: 15px;
+}
+
+input[type=text], [type=password] {
+  padding: 7px;
+  margin: 7px;
 }
 
 header {
@@ -7,6 +19,7 @@ header {
   display: grid;
   top: 0;
   background: white;
+  border-bottom: gray solid 1px;
   z-index: 1000;
 }
 header #navbar {
@@ -22,12 +35,14 @@ header #navbar #header-icon-wrapper #header-icon {
 header #navbar #soundtrack-me-title {
   grid-column: 2/3;
   grid-row: 1;
-  font-size: 40px;
+  font-size: 80px;
 }
 header #navbar #header-username {
   grid-column: 3;
   grid-row: 1;
   font-size: 40px;
+  text-align: right;
+  margin-right: 80px;
 }
 header #navbar #sign-out-block {
   text-align: right;
@@ -38,14 +53,16 @@ header #navbar #sign-in-block {
   text-align: right;
   grid-row: 1;
   grid-column: 3;
+  font-size: 20px;
 }
 header #navbar #sign-in-block #signup-button {
   font-weight: bold;
 }
 
 .sign-in-modal {
+  font-size: 20px;
   display: flex;
-  flex-direction: corowlumn;
+  flex-direction: column;
   z-index: 1000;
 }
 
@@ -54,58 +71,162 @@ header #navbar #sign-in-block #signup-button {
 }
 
 body #sign-in-page {
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: center;
+}
+body #sign-in-page #sign-in-create-account {
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+body #sign-in-page #enter-your-username {
+  color: gray;
+  margin-bottom: 30px;
 }
 body #sign-in-page #sign-in-form {
   width: 300px;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+  margin-bottom: 10px;
 }
-body #open-add-film-form {
-  text-align: center;
+body #sign-in-page #sign-in-form #username {
+  font-size: 15px;
+  margin-bottom: 10px;
 }
-body #add-film-view {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
+body #sign-in-page #sign-in-form #password {
+  font-size: 15px;
+  margin-bottom: 30px;
 }
-body #my-films .film-wrapper {
+body #filmmaker-view {
   display: flex;
   flex-direction: row;
 }
-body #my-films .film-wrapper .film-info-wrapper {
+body #filmmaker-view #my-films {
+  padding-top: 30px;
+}
+body #filmmaker-view #my-films .my-film-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+body #filmmaker-view #my-films .my-film-wrapper .film-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+body #filmmaker-view #my-films .my-film-wrapper .film-wrapper .film-info-wrapper {
+  width: 510px;
   display: flex;
   flex-direction: column;
 }
-body #my-films .film-wrapper .film-info-wrapper .film-title {
-  font-size: 20px;
+body #filmmaker-view #my-films .my-film-wrapper .film-wrapper .film-info-wrapper .film-title {
+  font-size: 30px;
   font-family: Arial;
   color: black;
+  margin-bottom: 10px;
 }
-body #my-films .film-wrapper .film-info-wrapper .film-link {
+body #filmmaker-view #my-films .my-film-wrapper .film-wrapper .film-info-wrapper .film-description {
   font-size: 15px;
   font-family: Arial;
   color: gray;
+  margin-bottom: 20px;
 }
-body #my-films .film-wrapper .film-info-wrapper .film-description {
+body #filmmaker-view #my-films .my-film-wrapper .film-wrapper .film-info-wrapper .film-video-wrapper .film-video {
+  width: 500px;
+}
+body #filmmaker-view #my-films .my-film-wrapper .scores-wrapper {
+  max-height: 366.25px;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+}
+body #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .candidate-composer {
+  font-size: 20px;
+}
+body #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .candidate-score-title {
+  margin-top: 5px;
+  font-size: 20px;
+}
+body #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .candidate-score-description {
   font-size: 15px;
-  font-family: Arial;
   color: gray;
+}
+body #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .interact-with-candidate {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+body #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .interact-with-candidate .favorite {
+  opacity: 0.5;
+  width: 30px;
+}
+body #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .interact-with-candidate .favorite:hover {
+  transform: scale(1.2);
+  opacity: 1;
+  transition: 250ms;
+}
+body #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .interact-with-candidate .contact {
+  margin-left: 12px;
+  margin-right: 12px;
+  width: 30px;
+  opacity: 0.5;
+}
+body #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .interact-with-candidate .contact:hover {
+  margin-left: 12px;
+  transform: scale(1.2);
+  transition: 250ms;
+  opacity: 1;
+}
+body #filmmaker-view #add-film-form {
+  transform: translate(250%, 30%);
+  position: fixed;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 30px;
+  font-size: 30px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+body #filmmaker-view #add-film-form #film-title {
+  margin-top: 10px;
+  font-size: 15px;
+}
+body #filmmaker-view #add-film-form #film-description {
+  margin-top: 10px;
+  font-size: 15px;
+}
+body #filmmaker-view #add-film-form #film-file {
+  margin-top: 10px;
+  font-size: 15px;
+}
+body #filmmaker-view #add-film-form #add-film-submit #close-add-film-form {
+  margin-right: 5px;
+  font-size: 15px;
+}
+body #filmmaker-view #add-film-form #add-film-submit #submit-add-film-form {
+  margin-left: 5px;
+  font-size: 15px;
+}
+body #filmmaker-view #open-add-film-form-button-inner-wrapper #open-add-film-form-button-inner-wrapper {
+  position: fixed;
+  margin: 0;
+  text-align: center;
 }
 body #composer-view {
   display: flex;
   flex-direction: row;
 }
 body #composer-view #all-films-wrapper {
-  border-top: 1px solid gray;
+  overflow: scroll;
   border-right: 0.5px solid black;
   padding-right: 50px;
 }
 body #composer-view #all-films-wrapper #film-feed-title {
+  margin-top: 10px;
   font-size: 30px;
   padding-bottom: 20px;
 }
@@ -114,30 +235,65 @@ body #composer-view #all-films-wrapper #all-films-composer-display .film-wrapper
   flex-direction: row;
 }
 body #composer-view #all-films-wrapper #all-films-composer-display .film-wrapper .film-info-wrapper {
+  width: 510px;
   display: flex;
   flex-direction: column;
 }
 body #composer-view #all-films-wrapper #all-films-composer-display .film-wrapper .film-info-wrapper .film-title {
-  font-size: 20px;
+  font-size: 30px;
   font-family: Arial;
   color: black;
-}
-body #composer-view #all-films-wrapper #all-films-composer-display .film-wrapper .film-info-wrapper .film-link {
-  font-size: 15px;
-  font-family: Arial;
-  color: gray;
+  margin-bottom: 10px;
 }
 body #composer-view #all-films-wrapper #all-films-composer-display .film-wrapper .film-info-wrapper .film-description {
   font-size: 15px;
   font-family: Arial;
   color: gray;
+  margin-bottom: 20px;
+}
+body #composer-view #all-films-wrapper #all-films-composer-display .film-wrapper .film-info-wrapper .film-video {
+  width: 500px;
+}
+body #composer-view #all-films-wrapper #all-films-composer-display .film-wrapper .film-info-wrapper .score-it-button {
+  font-weight: bold;
+  height: 40px;
+  width: 500px;
+}
+body #composer-view #add-score-view {
+  padding-top: 15px;
+  margin-left: 20px;
+  font-size: 30px;
+  text-align: center;
+}
+body #composer-view #add-score-view #score-title {
+  margin: 20px;
+  font-size: 25px;
+}
+body #composer-view #add-score-view #score-description {
+  margin: 20px;
+  font-size: 25px;
+}
+body #composer-view #add-score-view #upload-score {
+  margin: 20px;
+  font-size: 25px;
+}
+body #composer-view #add-score-view #upload-file {
+  margin: 10px;
+  font-size: 25px;
+}
+body #composer-view #add-score-view #back-button {
+  margin: 10px;
+  font-size: 25px;
+}
+body #composer-view #add-score-view #submit-button {
+  margin: 10px;
+  font-size: 25px;
 }
 body #composer-view #my-scored-films {
-  border-top: 1px solid gray;
-  border-left: 0.5px solid black;
   padding-left: 50px;
 }
 body #composer-view #my-scored-films #my-scored-films-title {
+  margin-top: 10px;
   font-size: 30px;
   padding-bottom: 20px;
 }
@@ -153,10 +309,16 @@ body #composer-view #my-scored-films .score-wrapper .score {
   flex-direction: column;
   padding-right: 12px;
 }
+body #composer-view #my-scored-films .score-wrapper .score .favorite-status {
+  background-color: greenyellow;
+  font-size: 40px;
+}
 body #composer-view #my-scored-films .score-wrapper .score .score-title {
+  padding-top: 15px;
   font-size: 20px;
 }
 body #composer-view #my-scored-films .score-wrapper .score .score-description {
+  padding-top: 10px;
   font-size: 15px;
   color: gray;
 }
@@ -166,24 +328,24 @@ body #composer-view #my-scored-films .score-wrapper .score .score-link {
 }
 body #composer-view #my-scored-films .score-wrapper .score-film {
   border-left: gray solid 1px;
+  padding-top: 15px;
   padding-left: 20px;
   display: flex;
   flex-direction: column;
 }
 body #composer-view #my-scored-films .score-wrapper .score-film .score-film-title {
-  font-size: 18px;
+  font-size: 20px;
+  padding-top: 10px;
   color: black;
 }
 body #composer-view #my-scored-films .score-wrapper .score-film .score-filmmaker {
-  font-size: 15px;
+  font-size: 18px;
+  padding-top: 10px;
   color: black;
 }
 body #composer-view #my-scored-films .score-wrapper .score-film .score-film-description {
   font-size: 15px;
-  color: gray;
-}
-body #composer-view #my-scored-films .score-wrapper .score-film .score-film-link {
-  font-size: 15px;
+  padding-top: 10px;
   color: gray;
 }
 body #sign-up {

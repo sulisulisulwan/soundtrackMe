@@ -4,7 +4,7 @@ import React from 'react';
 const SignUpForm3 = ( {formValues, submitHandler} ) => {
   let firstName = formValues.firstName
   let lastName = formValues.lastName
-  let userName = formValues.userName
+  let username = formValues.username
   let email = formValues.email
   let signUpAs = formValues.signUpAs
   let cardName = formValues.cardName
@@ -30,7 +30,7 @@ const SignUpForm3 = ( {formValues, submitHandler} ) => {
             </tr>
             <tr>
               <td style={{fontWeight: 'bold'}}>Username: </td>
-              <td>{userName}</td>
+              <td>{username}</td>
             </tr>
             <tr>
               <td style={{fontWeight: 'bold'}}>Email: </td>

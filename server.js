@@ -9,7 +9,7 @@ const {getAllFilms, getFilm, getAllScores} = require('./models/getMediaModels.js
 const {postFilmInfo, postScoreInfo} = require('./models/postMediaModels.js');
 const {deleteFilm, deleteScore} = require('./models/deleteMediaModels.js');
 const {verifyAccount, loadProfile} = require('./models/signInModels.js')
-const {putFavoriteOnScore} = require('./models/putMediaModels.js')
+const {putFavoriteOnScore, putUpdateOnMyFilms} = require('./models/putMediaModels.js')
 
 let idTransfer;
 const storage = multer.diskStorage({
@@ -101,20 +101,19 @@ app.post('/signIn/verifyAccount', (req, res) => {
     result ? res.sendStatus(200) : res.sendStatus(401);
   })
   .catch(err => {
-    console.log(new Error(err));
+    console.error(new Error(err));
     res.sendStatus(500)
   })
 })
 
 app.get('/signIn/loadProfile', (req, res) => {
   let username = req.query.username
-  console.log('BACK IN THE SERVER')
   loadProfile(username)
   .then(userData => {
     res.status(200).json(userData);
   })
   .catch(err => {
-    console.log(new Error(err));
+    console.error(new Error(err));
     res.sendStatus(500);
   })
 })
@@ -127,14 +126,13 @@ app.get('/signIn/loadProfile', (req, res) => {
 
 
 app.get('/getAllFilms', (req, res) => {
-  console.log(' QUERY!!!!!', req.query.username)
   getAllFilms(req.query.username)
   .then(films => {
-    console.log(films)
+    console.error(films)
     res.status(200).json(films)
   })
   .catch(err => {
-    console.log(err)
+    console.error(err)
     res.sendStatus(500);
   });
 })
@@ -145,7 +143,7 @@ app.get('/getFilm', (req, res) => {
     res.status(200).json(film)
   })
   .catch(err => {
-    console.log(err);
+    console.error(err);
     res.sendStatus(500);
   })
 })
@@ -155,7 +153,6 @@ app.post('/postFilmInfo', (req, res) => {
   let film = req.body
   postFilmInfo(film)
   .then(result=> {
-    console.log(result._id)
     idTransfer = result._id
     res.status(201).json(result);
   })
@@ -197,7 +194,7 @@ app.get('/getAllScores', (req, res) => {
     res.status(200).json(scores)
   })
   .catch(err => {
-    console.log(err)
+    console.error(err)
     res.sendStatus(500);
   });
 })
@@ -226,9 +223,10 @@ app.put('/favoriteAScore', (req, res) => {
     res.sendStatus(500);
   })
 })
+
 app.put('/updateMyFilms', (req, res) => {
   let myFilms = req.body.myFilms
-  putFavoriteOnScore(myFilms)
+  putUpdateOnMyFilms(myFilms)
   .then(result => {
     res.sendStatus(201);
   })

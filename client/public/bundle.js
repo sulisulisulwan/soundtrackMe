@@ -1897,10 +1897,13 @@ var App = /*#__PURE__*/function (_React$Component) {
 
     _this = _super.call(this, props);
     _this.state = {
-      pageState: 'changeToSignedOut',
-      // pageState: 'changeToSignedIn',
+      // pageState: 'changeToSignedOut',
+      pageState: 'changeToSignedIn',
       failedSignInValidationStatus: '',
-      userData: {}
+      userData: {
+        username: 'sulisulisulwan',
+        signedUpAs: 'composer'
+      }
     };
     _this.changePageState = _this.changePageState.bind(_assertThisInitialized(_this));
     _this.checkIfUsernameAlreadyExists = _this.checkIfUsernameAlreadyExists.bind(_assertThisInitialized(_this));
@@ -1937,7 +1940,6 @@ var App = /*#__PURE__*/function (_React$Component) {
         username: username,
         password: password
       }).then(function (result) {
-        console.log('made it here');
         return axios__WEBPACK_IMPORTED_MODULE_1___default().get("/signIn/loadProfile?username=".concat(username));
       }).then(function (userData) {
         _this2.setState({
@@ -1946,8 +1948,6 @@ var App = /*#__PURE__*/function (_React$Component) {
 
         _this2.changePageState('changeToSignedIn');
       })["catch"](function (err) {
-        console.log(err.toString().split());
-
         if (err.toString() === 'Error: Request failed with status code 401' || "Error: Request failed with status code 500") {
           var validationStatus = err.toString() === 'Error: Request failed with status code 401' ? 'Username and password did not match' : 'Oops!  Something went wrong on our end!  Try again.';
 
@@ -2025,10 +2025,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _SignIn_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SignIn.jsx */ "./client/src/components/body/SignIn.jsx");
-/* harmony import */ var _signedIn_SignedInView_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./signedIn/SignedInView.jsx */ "./client/src/components/body/signedIn/SignedInView.jsx");
-/* harmony import */ var _signUpForms_SignUp_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./signUpForms/SignUp.jsx */ "./client/src/components/body/signUpForms/SignUp.jsx");
+/* harmony import */ var _signInView_SignIn_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./signInView/SignIn.jsx */ "./client/src/components/body/signInView/SignIn.jsx");
+/* harmony import */ var _signUpForms_SignUp_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./signUpForms/SignUp.jsx */ "./client/src/components/body/signUpForms/SignUp.jsx");
+/* harmony import */ var _signedInViews_composerView_ComposerView_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./signedInViews/composerView/ComposerView.jsx */ "./client/src/components/body/signedInViews/composerView/ComposerView.jsx");
+/* harmony import */ var _signedInViews_filmmakerView_FilmmakerView_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./signedInViews/filmmakerView/FilmmakerView.jsx */ "./client/src/components/body/signedInViews/filmmakerView/FilmmakerView.jsx");
 /* eslint-disable react/prop-types */
+
 
 
 
@@ -2044,7 +2046,7 @@ var Body = function Body(_ref) {
       userData = _ref.userData;
 
   if (pageState === 'changeToSignIn') {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("main", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_SignIn_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("main", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_signInView_SignIn_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
       pageState: pageState,
       changePageState: changePageState,
       failedSignInValidationStatus: failedSignInValidationStatus,
@@ -2053,12 +2055,15 @@ var Body = function Body(_ref) {
       signIn: signIn
     }));
   } else if (pageState === 'changeToSignedIn') {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("main", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_signedIn_SignedInView_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
+    var signedInView = userData.signedUpAs === 'composer' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_signedInViews_composerView_ComposerView_jsx__WEBPACK_IMPORTED_MODULE_3__.default, {
       userData: userData
-    }));
+    }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_signedInViews_filmmakerView_FilmmakerView_jsx__WEBPACK_IMPORTED_MODULE_4__.default, {
+      userData: userData
+    });
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("main", null, signedInView);
   }
 
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("main", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_signUpForms_SignUp_jsx__WEBPACK_IMPORTED_MODULE_3__.default, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("main", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_signUpForms_SignUp_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
     pageState: pageState,
     changePageState: changePageState,
     checkIfUsernameAlreadyExists: checkIfUsernameAlreadyExists,
@@ -2071,10 +2076,10 @@ var Body = function Body(_ref) {
 
 /***/ }),
 
-/***/ "./client/src/components/body/SignIn.jsx":
-/*!***********************************************!*\
-  !*** ./client/src/components/body/SignIn.jsx ***!
-  \***********************************************/
+/***/ "./client/src/components/body/signInView/SignIn.jsx":
+/*!**********************************************************!*\
+  !*** ./client/src/components/body/signInView/SignIn.jsx ***!
+  \**********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -2291,7 +2296,6 @@ var SignUp = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "textInputHandler",
     value: function textInputHandler(e) {
-      console.log(e.target.id);
       var newState = {};
       newState[e.target.id] = e.target.value;
       this.setState(newState);
@@ -2322,7 +2326,6 @@ var SignUp = /*#__PURE__*/function (_React$Component) {
           emailExists = _results2[1];
 
           if (usernameExists.data || emailExists.data) {
-            console.log(usernameExists.data, emailExists.data);
             usernameExists = usernameExists.data ? 'Username already exists' : '';
             emailExists = emailExists.data ? 'Email already exists' : '';
             results = [usernameExists, emailExists];
@@ -2394,11 +2397,10 @@ var SignUp = /*#__PURE__*/function (_React$Component) {
           cardCVV: this.state.cardCVV
         };
         createNewUserInDB(userInfo).then(function (result) {
-          console.log(result);
           signIn(_this3.state.username, _this3.state.password);
           changePageState(changeTo);
         })["catch"](function (err) {
-          console.log(new Error(err));
+          console.error(new Error(err));
         });
       }
     }
@@ -2936,10 +2938,10 @@ var SignUpFormConfirmationEmail = function SignUpFormConfirmationEmail(_ref) {
 
 /***/ }),
 
-/***/ "./client/src/components/body/signedIn/SignedInView.jsx":
-/*!**************************************************************!*\
-  !*** ./client/src/components/body/signedIn/SignedInView.jsx ***!
-  \**************************************************************/
+/***/ "./client/src/components/body/signedInViews/composerView/ComposerView.jsx":
+/*!********************************************************************************!*\
+  !*** ./client/src/components/body/signedInViews/composerView/ComposerView.jsx ***!
+  \********************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -2948,43 +2950,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _userProfileViews_composerView_ComposerView_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./userProfileViews/composerView/ComposerView.jsx */ "./client/src/components/body/signedIn/userProfileViews/composerView/ComposerView.jsx");
-/* harmony import */ var _userProfileViews_filmmakerView_FilmmakerView_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./userProfileViews/filmmakerView/FilmmakerView.jsx */ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/FilmmakerView.jsx");
-
-
-
-
-var SignedInView = function SignedInView(_ref) {
-  var userData = _ref.userData;
-  var userView;
-  return userData.signedUpAs === 'composer' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_userProfileViews_composerView_ComposerView_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
-    userData: userData
-  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_userProfileViews_filmmakerView_FilmmakerView_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
-    userData: userData
-  });
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SignedInView);
-
-/***/ }),
-
-/***/ "./client/src/components/body/signedIn/userProfileViews/composerView/ComposerView.jsx":
-/*!********************************************************************************************!*\
-  !*** ./client/src/components/body/signedIn/userProfileViews/composerView/ComposerView.jsx ***!
-  \********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _components_MyScores_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/MyScores.jsx */ "./client/src/components/body/signedIn/userProfileViews/composerView/components/MyScores.jsx");
+/* harmony import */ var _components_MyScores_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/MyScores.jsx */ "./client/src/components/body/signedInViews/composerView/components/MyScores.jsx");
 /* harmony import */ var _components_MyScores_jsx__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_components_MyScores_jsx__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _components_Score_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Score.jsx */ "./client/src/components/body/signedIn/userProfileViews/composerView/components/Score.jsx");
-/* harmony import */ var _components_FilmsDisplay_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/FilmsDisplay.jsx */ "./client/src/components/body/signedIn/userProfileViews/composerView/components/FilmsDisplay.jsx");
-/* harmony import */ var _components_AddScoreForm_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/AddScoreForm.jsx */ "./client/src/components/body/signedIn/userProfileViews/composerView/components/AddScoreForm.jsx");
+/* harmony import */ var _components_Score_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Score.jsx */ "./client/src/components/body/signedInViews/composerView/components/Score.jsx");
+/* harmony import */ var _components_FilmsDisplay_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/FilmsDisplay.jsx */ "./client/src/components/body/signedInViews/composerView/components/FilmsDisplay.jsx");
+/* harmony import */ var _components_AddScoreForm_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/AddScoreForm.jsx */ "./client/src/components/body/signedInViews/composerView/components/AddScoreForm.jsx");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_5__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -3050,6 +3020,7 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
       allFilms: [],
       myScores: []
     };
+    _this.refreshFilmFeed = _this.refreshFilmFeed.bind(_assertThisInitialized(_this));
     _this.addScoreToFilm = _this.addScoreToFilm.bind(_assertThisInitialized(_this));
     _this.openAddScoreForm = _this.openAddScoreForm.bind(_assertThisInitialized(_this));
     _this.closeAddScoreForm = _this.closeAddScoreForm.bind(_assertThisInitialized(_this));
@@ -3059,6 +3030,17 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
   }
 
   _createClass(ComposerView, [{
+    key: "refreshFilmFeed",
+    value: function refreshFilmFeed() {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_5___default().get('/getAllFilms').then(function (allFilms) {
+        _this2.setState({
+          allFilms: allFilms.data
+        });
+      });
+    }
+  }, {
     key: "onFileChange",
     value: function onFileChange(e) {
       this.setState({
@@ -3098,7 +3080,7 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "addScoreToFilm",
     value: function addScoreToFilm(e) {
-      var _this2 = this;
+      var _this3 = this;
 
       e.preventDefault();
       var username = this.props.userData.username;
@@ -3124,16 +3106,14 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
         return axios__WEBPACK_IMPORTED_MODULE_5___default().post('/postScoreInfo', addScoreFields);
       }).then(function (res) {
         var id = res.data._id;
-        var scoreFile = _this2.state.scoreFile;
+        var scoreFile = _this3.state.scoreFile;
         var formData = new FormData();
         formData.append('scoreFile', scoreFile);
         axios__WEBPACK_IMPORTED_MODULE_5___default().post('/postScoreFile', formData, {});
       }).then(function (_) {
         return axios__WEBPACK_IMPORTED_MODULE_5___default().get("/getAllScores?username=".concat(username));
       }).then(function (allScores) {
-        console.log(allScores);
-
-        _this2.setState({
+        _this3.setState({
           myScores: allScores.data,
           addScoreFormIsOpen: false
         });
@@ -3144,7 +3124,7 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this3 = this;
+      var _this4 = this;
 
       var username = this.props.userData.username;
       var getAllFilms = axios__WEBPACK_IMPORTED_MODULE_5___default().get("/getAllFilms");
@@ -3154,7 +3134,7 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
             allFilms = _allFilmsAndScores[0],
             myScores = _allFilmsAndScores[1];
 
-        _this3.setState({
+        _this4.setState({
           allFilms: allFilms.data,
           myScores: myScores.data
         });
@@ -3175,6 +3155,7 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
       var closeAddScoreForm = this.closeAddScoreForm;
       var onChangeTextField = this.onChangeTextField;
       var onFileChange = this.onFileChange;
+      var refreshFilmFeed = this.refreshFilmFeed;
       var rightPanel;
 
       if (addScoreFormIsOpen) {
@@ -3206,7 +3187,9 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
         id: "all-films-wrapper"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "film-feed-title"
-      }, "Film Feed"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_FilmsDisplay_jsx__WEBPACK_IMPORTED_MODULE_3__.default, {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        onClick: refreshFilmFeed
+      }, "Film Feed")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_FilmsDisplay_jsx__WEBPACK_IMPORTED_MODULE_3__.default, {
         allFilms: allFilms,
         addScoreFormIsOpen: addScoreFormIsOpen,
         formFilmTitle: formFilmTitle,
@@ -3226,10 +3209,10 @@ var ComposerView = /*#__PURE__*/function (_React$Component) {
 
 /***/ }),
 
-/***/ "./client/src/components/body/signedIn/userProfileViews/composerView/components/AddScoreForm.jsx":
-/*!*******************************************************************************************************!*\
-  !*** ./client/src/components/body/signedIn/userProfileViews/composerView/components/AddScoreForm.jsx ***!
-  \*******************************************************************************************************/
+/***/ "./client/src/components/body/signedInViews/composerView/components/AddScoreForm.jsx":
+/*!*******************************************************************************************!*\
+  !*** ./client/src/components/body/signedInViews/composerView/components/AddScoreForm.jsx ***!
+  \*******************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3248,7 +3231,6 @@ var AddScoreForm = function AddScoreForm(_ref) {
       onChangeTextField = _ref.onChangeTextField,
       closeAddScoreForm = _ref.closeAddScoreForm,
       onFileChange = _ref.onFileChange;
-  console.log();
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     id: "add-score-view"
   }, "Add Score to ", filmTitle, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
@@ -3291,10 +3273,10 @@ var AddScoreForm = function AddScoreForm(_ref) {
 
 /***/ }),
 
-/***/ "./client/src/components/body/signedIn/userProfileViews/composerView/components/FilmsDisplay.jsx":
-/*!*******************************************************************************************************!*\
-  !*** ./client/src/components/body/signedIn/userProfileViews/composerView/components/FilmsDisplay.jsx ***!
-  \*******************************************************************************************************/
+/***/ "./client/src/components/body/signedInViews/composerView/components/FilmsDisplay.jsx":
+/*!*******************************************************************************************!*\
+  !*** ./client/src/components/body/signedInViews/composerView/components/FilmsDisplay.jsx ***!
+  \*******************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3303,8 +3285,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _SingleFilmComposerDisplay_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SingleFilmComposerDisplay.jsx */ "./client/src/components/body/signedIn/userProfileViews/composerView/components/SingleFilmComposerDisplay.jsx");
-/* harmony import */ var _AddScoreForm_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AddScoreForm.jsx */ "./client/src/components/body/signedIn/userProfileViews/composerView/components/AddScoreForm.jsx");
+/* harmony import */ var _SingleFilmComposerDisplay_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SingleFilmComposerDisplay.jsx */ "./client/src/components/body/signedInViews/composerView/components/SingleFilmComposerDisplay.jsx");
+/* harmony import */ var _AddScoreForm_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AddScoreForm.jsx */ "./client/src/components/body/signedInViews/composerView/components/AddScoreForm.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3343,10 +3325,18 @@ var FilmsComposerDisplay = /*#__PURE__*/function (_React$Component) {
 
     _this = _super.call(this, props);
     _this.state = {};
+    _this.getMediaElement = _this.getMediaElement.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(FilmsComposerDisplay, [{
+    key: "getMediaElement",
+    value: function getMediaElement(e) {
+      var checkThis = document.getElementById(e.target.id + 'vid');
+      checkThis.currentTime = 20;
+      checkThis.play();
+    }
+  }, {
     key: "render",
     value: function render() {
       var fields = this.props.fields;
@@ -3355,6 +3345,7 @@ var FilmsComposerDisplay = /*#__PURE__*/function (_React$Component) {
       var allFilms = this.props.allFilms;
       var openAddScoreForm = this.props.openAddScoreForm;
       var addScoreToFilm = this.props.addScoreToFilm;
+      var getMediaElement = this.getMediaElement;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "all-films-composer-display"
       }, allFilms.map(function (film, i) {
@@ -3365,7 +3356,8 @@ var FilmsComposerDisplay = /*#__PURE__*/function (_React$Component) {
           title: film.filmTitle,
           link: film.filmLink,
           description: film.filmDescription,
-          openAddScoreForm: openAddScoreForm
+          openAddScoreForm: openAddScoreForm,
+          getMediaElement: getMediaElement
         });
       })));
     }
@@ -3378,20 +3370,20 @@ var FilmsComposerDisplay = /*#__PURE__*/function (_React$Component) {
 
 /***/ }),
 
-/***/ "./client/src/components/body/signedIn/userProfileViews/composerView/components/MyScores.jsx":
-/*!***************************************************************************************************!*\
-  !*** ./client/src/components/body/signedIn/userProfileViews/composerView/components/MyScores.jsx ***!
-  \***************************************************************************************************/
+/***/ "./client/src/components/body/signedInViews/composerView/components/MyScores.jsx":
+/*!***************************************************************************************!*\
+  !*** ./client/src/components/body/signedInViews/composerView/components/MyScores.jsx ***!
+  \***************************************************************************************/
 /***/ (() => {
 
 
 
 /***/ }),
 
-/***/ "./client/src/components/body/signedIn/userProfileViews/composerView/components/Score.jsx":
-/*!************************************************************************************************!*\
-  !*** ./client/src/components/body/signedIn/userProfileViews/composerView/components/Score.jsx ***!
-  \************************************************************************************************/
+/***/ "./client/src/components/body/signedInViews/composerView/components/Score.jsx":
+/*!************************************************************************************!*\
+  !*** ./client/src/components/body/signedInViews/composerView/components/Score.jsx ***!
+  \************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3460,10 +3452,10 @@ var Score = function Score(_ref) {
 
 /***/ }),
 
-/***/ "./client/src/components/body/signedIn/userProfileViews/composerView/components/SingleFilmComposerDisplay.jsx":
-/*!********************************************************************************************************************!*\
-  !*** ./client/src/components/body/signedIn/userProfileViews/composerView/components/SingleFilmComposerDisplay.jsx ***!
-  \********************************************************************************************************************/
+/***/ "./client/src/components/body/signedInViews/composerView/components/SingleFilmComposerDisplay.jsx":
+/*!********************************************************************************************************!*\
+  !*** ./client/src/components/body/signedInViews/composerView/components/SingleFilmComposerDisplay.jsx ***!
+  \********************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3481,7 +3473,8 @@ var SingleFilmComposerDisplay = function SingleFilmComposerDisplay(_ref) {
       link = _ref.link,
       description = _ref.description,
       addScoreToFilm = _ref.addScoreToFilm,
-      openAddScoreForm = _ref.openAddScoreForm;
+      openAddScoreForm = _ref.openAddScoreForm,
+      getMediaElement = _ref.getMediaElement;
   var filmData = JSON.stringify({
     id: id,
     title: title
@@ -3500,11 +3493,15 @@ var SingleFilmComposerDisplay = function SingleFilmComposerDisplay(_ref) {
   }, description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "film-video-wrapper"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("video", {
+    id: id + 'vid',
     className: "film-video",
     controls: true
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("source", {
     src: filmFile
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+    id: id,
+    onClick: getMediaElement
+  }, "get Media Element"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
     id: filmData,
     className: "score-it-button",
     onClick: openAddScoreForm
@@ -3515,10 +3512,10 @@ var SingleFilmComposerDisplay = function SingleFilmComposerDisplay(_ref) {
 
 /***/ }),
 
-/***/ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/FilmmakerView.jsx":
-/*!**********************************************************************************************!*\
-  !*** ./client/src/components/body/signedIn/userProfileViews/filmmakerView/FilmmakerView.jsx ***!
-  \**********************************************************************************************/
+/***/ "./client/src/components/body/signedInViews/filmmakerView/FilmmakerView.jsx":
+/*!**********************************************************************************!*\
+  !*** ./client/src/components/body/signedInViews/filmmakerView/FilmmakerView.jsx ***!
+  \**********************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3527,7 +3524,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _components_MyFilms_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/MyFilms.jsx */ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/MyFilms.jsx");
+/* harmony import */ var _components_MyFilms_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/MyFilms.jsx */ "./client/src/components/body/signedInViews/filmmakerView/components/MyFilms.jsx");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -3573,6 +3570,7 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
       filmFile: '',
       myFilms: []
     };
+    _this.refreshMyFilmsFeed = _this.refreshMyFilmsFeed.bind(_assertThisInitialized(_this));
     _this.handleFavorite = _this.handleFavorite.bind(_assertThisInitialized(_this));
     _this.handleEmailComposer = _this.handleEmailComposer.bind(_assertThisInitialized(_this));
     _this.handleSubmitAddFilm = _this.handleSubmitAddFilm.bind(_assertThisInitialized(_this));
@@ -3583,6 +3581,20 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
   }
 
   _createClass(FilmmakerView, [{
+    key: "refreshMyFilmsFeed",
+    value: function refreshMyFilmsFeed(e) {
+      var _this2 = this;
+
+      var username = this.props.userData.username;
+      axios__WEBPACK_IMPORTED_MODULE_2___default().get("/getAllFilms?username=".concat(username)).then(function (myFilms) {
+        _this2.setState({
+          myFilms: myFilms.data
+        });
+      })["catch"](function (err) {
+        console.erro(new Error(err));
+      });
+    }
+  }, {
     key: "handleEmailComposer",
     value: function handleEmailComposer(e) {
       var email = e.target.id;
@@ -3591,7 +3603,7 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "handleFavorite",
     value: function handleFavorite(e) {
-      var _this2 = this;
+      var _this3 = this;
 
       var id = e.target.id;
       var myFilms = this.state.myFilms;
@@ -3616,7 +3628,7 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
         // .then(_ => {
 
 
-        _this2.setState({
+        _this3.setState({
           myFilms: myFilms
         });
       })["catch"](function (err) {
@@ -3642,7 +3654,7 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "handleSubmitAddFilm",
     value: function handleSubmitAddFilm(e) {
-      var _this3 = this;
+      var _this4 = this;
 
       e.preventDefault();
       var username = this.props.userData.username;
@@ -3656,14 +3668,14 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
       };
       return axios__WEBPACK_IMPORTED_MODULE_2___default().post('/postFilmInfo', addFilmFields).then(function (res) {
         var id = res.data._id;
-        var filmFile = _this3.state.filmFile;
+        var filmFile = _this4.state.filmFile;
         var formData = new FormData();
         formData.append('filmFile', filmFile);
         axios__WEBPACK_IMPORTED_MODULE_2___default().post('/postFilmFile', formData, {});
       }).then(function (_) {
         return axios__WEBPACK_IMPORTED_MODULE_2___default().get("/getAllFilms?username=".concat(username));
       }).then(function (myFilms) {
-        _this3.setState({
+        _this4.setState({
           myFilms: myFilms.data,
           filmTitle: '',
           filmDescription: '',
@@ -3676,7 +3688,7 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "deleteFilmButtonHandler",
     value: function deleteFilmButtonHandler(e) {
-      var _this4 = this;
+      var _this5 = this;
 
       var id = e.target.id;
       axios__WEBPACK_IMPORTED_MODULE_2___default().delete('/deleteFilm', {
@@ -3684,11 +3696,9 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
           id: id
         }
       }).then(function (_) {
-        return axios__WEBPACK_IMPORTED_MODULE_2___default().get("/getAllFilms?username=".concat(_this4.props.userData.username));
+        return axios__WEBPACK_IMPORTED_MODULE_2___default().get("/getAllFilms?username=".concat(_this5.props.userData.username));
       }).then(function (myFilms) {
-        console.log(myFilms.data);
-
-        _this4.setState({
+        _this5.setState({
           myFilms: myFilms.data
         });
       });
@@ -3696,11 +3706,11 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this5 = this;
+      var _this6 = this;
 
       var username = this.props.userData.username;
       return axios__WEBPACK_IMPORTED_MODULE_2___default().get("/getAllFilms?username=".concat(username)).then(function (myFilms) {
-        _this5.setState({
+        _this6.setState({
           myFilms: myFilms.data
         });
       });
@@ -3713,6 +3723,7 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
       var fields = this.state;
       var myFilms = this.state.myFilms;
       var handleFavorite = this.handleFavorite;
+      var refreshMyFilmsFeed = this.refreshMyFilmsFeed;
       var handleEmailComposer = this.handleEmailComposer;
       var onFileChange = this.onFileChange;
       var handleSubmitAddFilm = this.handleSubmitAddFilm;
@@ -3720,7 +3731,11 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
       var deleteFilmButtonHandler = this.deleteFilmButtonHandler;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "filmmaker-view-wrapper"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_MyFilms_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "my-films-title"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        onClick: refreshMyFilmsFeed
+      }, "My Films")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_MyFilms_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
         fields: fields,
         myFilms: myFilms,
         onFileChange: onFileChange,
@@ -3740,10 +3755,10 @@ var FilmmakerView = /*#__PURE__*/function (_React$Component) {
 
 /***/ }),
 
-/***/ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/AddFilmForm.jsx":
-/*!*******************************************************************************************************!*\
-  !*** ./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/AddFilmForm.jsx ***!
-  \*******************************************************************************************************/
+/***/ "./client/src/components/body/signedInViews/filmmakerView/components/AddFilmForm.jsx":
+/*!*******************************************************************************************!*\
+  !*** ./client/src/components/body/signedInViews/filmmakerView/components/AddFilmForm.jsx ***!
+  \*******************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3797,10 +3812,10 @@ var AddFilmForm = function AddFilmForm(_ref) {
 
 /***/ }),
 
-/***/ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/Film.jsx":
-/*!************************************************************************************************!*\
-  !*** ./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/Film.jsx ***!
-  \************************************************************************************************/
+/***/ "./client/src/components/body/signedInViews/filmmakerView/components/Film.jsx":
+/*!************************************************************************************!*\
+  !*** ./client/src/components/body/signedInViews/filmmakerView/components/Film.jsx ***!
+  \************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3820,7 +3835,6 @@ var Film = function Film(_ref) {
   var title = filmData.filmTitle;
   var description = filmData.filmDescription;
   var filmScores = filmData.filmScores;
-  console.log('IS THIS EMAIL???', filmScores);
   var filmFile = './uploads/' + id + '.mp4';
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "my-film-wrapper"
@@ -3884,10 +3898,10 @@ var Film = function Film(_ref) {
 
 /***/ }),
 
-/***/ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/MyFilms.jsx":
-/*!***************************************************************************************************!*\
-  !*** ./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/MyFilms.jsx ***!
-  \***************************************************************************************************/
+/***/ "./client/src/components/body/signedInViews/filmmakerView/components/MyFilms.jsx":
+/*!***************************************************************************************!*\
+  !*** ./client/src/components/body/signedInViews/filmmakerView/components/MyFilms.jsx ***!
+  \***************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -3896,8 +3910,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _Film_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Film.jsx */ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/Film.jsx");
-/* harmony import */ var _AddFilmForm_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AddFilmForm.jsx */ "./client/src/components/body/signedIn/userProfileViews/filmmakerView/components/AddFilmForm.jsx");
+/* harmony import */ var _Film_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Film.jsx */ "./client/src/components/body/signedInViews/filmmakerView/components/Film.jsx");
+/* harmony import */ var _AddFilmForm_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AddFilmForm.jsx */ "./client/src/components/body/signedInViews/filmmakerView/components/AddFilmForm.jsx");
 
 
 
@@ -4084,7 +4098,6 @@ var SignInArea = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "signInOrUpClickHandler",
     value: function signInOrUpClickHandler(e) {
-      console.log(e.target.id);
       this.props.changePageState(e.target.id);
     }
   }, {

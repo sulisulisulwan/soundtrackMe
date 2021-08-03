@@ -50,7 +50,6 @@ const postScoreInfo = ({username, scoreTitle, scoreDescription, filmId, filmmake
         }
         Promise.all([result, updateFilmWithNewScore(filmId, scoreInfo)])
         .then(allData => {
-          console.log(allData[1])
           resolve(allData[0]);
         })
         .catch(err => {

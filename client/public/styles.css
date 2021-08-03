@@ -1,8 +1,6 @@
 html {
   margin: auto;
   font-family: Arial, Helvetica, sans-serif;
-  height: 100px;
-  max-width: 1300px;
 }
 
 label {
@@ -100,87 +98,90 @@ body #sign-in-page #sign-in-form #password {
   font-size: 15px;
   margin-bottom: 30px;
 }
-body #filmmaker-view {
+body #filmmaker-view-wrapper #my-films-title {
+  font-size: 40px;
+}
+body #filmmaker-view-wrapper #filmmaker-view {
   display: flex;
   flex-direction: row;
 }
-body #filmmaker-view #my-films {
+body #filmmaker-view-wrapper #filmmaker-view #my-films {
   padding-top: 30px;
 }
-body #filmmaker-view #my-films .my-film-wrapper {
+body #filmmaker-view-wrapper #filmmaker-view #my-films .my-film-wrapper {
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
 }
-body #filmmaker-view #my-films .my-film-wrapper .film-wrapper {
+body #filmmaker-view-wrapper #filmmaker-view #my-films .my-film-wrapper .film-wrapper {
   display: flex;
   flex-direction: row;
 }
-body #filmmaker-view #my-films .my-film-wrapper .film-wrapper .film-info-wrapper {
+body #filmmaker-view-wrapper #filmmaker-view #my-films .my-film-wrapper .film-wrapper .film-info-wrapper {
   width: 510px;
   display: flex;
   flex-direction: column;
 }
-body #filmmaker-view #my-films .my-film-wrapper .film-wrapper .film-info-wrapper .film-title {
+body #filmmaker-view-wrapper #filmmaker-view #my-films .my-film-wrapper .film-wrapper .film-info-wrapper .film-title {
   font-size: 30px;
   font-family: Arial;
   color: black;
   margin-bottom: 10px;
 }
-body #filmmaker-view #my-films .my-film-wrapper .film-wrapper .film-info-wrapper .film-description {
+body #filmmaker-view-wrapper #filmmaker-view #my-films .my-film-wrapper .film-wrapper .film-info-wrapper .film-description {
   font-size: 15px;
   font-family: Arial;
   color: gray;
   margin-bottom: 20px;
 }
-body #filmmaker-view #my-films .my-film-wrapper .film-wrapper .film-info-wrapper .film-video-wrapper .film-video {
+body #filmmaker-view-wrapper #filmmaker-view #my-films .my-film-wrapper .film-wrapper .film-info-wrapper .film-video-wrapper .film-video {
   width: 500px;
 }
-body #filmmaker-view #my-films .my-film-wrapper .scores-wrapper {
+body #filmmaker-view-wrapper #filmmaker-view #my-films .my-film-wrapper .scores-wrapper {
   max-height: 366.25px;
   margin-left: 20px;
   display: flex;
   flex-direction: column;
   overflow: scroll;
 }
-body #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .candidate-composer {
+body #filmmaker-view-wrapper #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .candidate-composer {
   font-size: 20px;
 }
-body #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .candidate-score-title {
+body #filmmaker-view-wrapper #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .candidate-score-title {
   margin-top: 5px;
   font-size: 20px;
 }
-body #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .candidate-score-description {
+body #filmmaker-view-wrapper #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .candidate-score-description {
   font-size: 15px;
   color: gray;
 }
-body #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .interact-with-candidate {
+body #filmmaker-view-wrapper #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .interact-with-candidate {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
 }
-body #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .interact-with-candidate .favorite {
+body #filmmaker-view-wrapper #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .interact-with-candidate .favorite {
   opacity: 0.5;
   width: 30px;
 }
-body #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .interact-with-candidate .favorite:hover {
+body #filmmaker-view-wrapper #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .interact-with-candidate .favorite:hover {
   transform: scale(1.2);
   opacity: 1;
   transition: 250ms;
 }
-body #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .interact-with-candidate .contact {
+body #filmmaker-view-wrapper #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .interact-with-candidate .contact {
   margin-left: 12px;
   margin-right: 12px;
   width: 30px;
   opacity: 0.5;
 }
-body #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .interact-with-candidate .contact:hover {
+body #filmmaker-view-wrapper #filmmaker-view #my-films .my-film-wrapper .scores-wrapper .candidate-score .interact-with-candidate .contact:hover {
   margin-left: 12px;
   transform: scale(1.2);
   transition: 250ms;
   opacity: 1;
 }
-body #filmmaker-view #add-film-form {
+body #filmmaker-view-wrapper #filmmaker-view #add-film-form {
   transform: translate(250%, 30%);
   position: fixed;
   margin-top: 20px;
@@ -191,27 +192,27 @@ body #filmmaker-view #add-film-form {
   flex-direction: column;
   text-align: center;
 }
-body #filmmaker-view #add-film-form #film-title {
+body #filmmaker-view-wrapper #filmmaker-view #add-film-form #film-title {
   margin-top: 10px;
   font-size: 15px;
 }
-body #filmmaker-view #add-film-form #film-description {
+body #filmmaker-view-wrapper #filmmaker-view #add-film-form #film-description {
   margin-top: 10px;
   font-size: 15px;
 }
-body #filmmaker-view #add-film-form #film-file {
+body #filmmaker-view-wrapper #filmmaker-view #add-film-form #film-file {
   margin-top: 10px;
   font-size: 15px;
 }
-body #filmmaker-view #add-film-form #add-film-submit #close-add-film-form {
+body #filmmaker-view-wrapper #filmmaker-view #add-film-form #add-film-submit #close-add-film-form {
   margin-right: 5px;
   font-size: 15px;
 }
-body #filmmaker-view #add-film-form #add-film-submit #submit-add-film-form {
+body #filmmaker-view-wrapper #filmmaker-view #add-film-form #add-film-submit #submit-add-film-form {
   margin-left: 5px;
   font-size: 15px;
 }
-body #filmmaker-view #open-add-film-form-button-inner-wrapper #open-add-film-form-button-inner-wrapper {
+body #filmmaker-view-wrapper #filmmaker-view #open-add-film-form-button-inner-wrapper #open-add-film-form-button-inner-wrapper {
   position: fixed;
   margin: 0;
   text-align: center;

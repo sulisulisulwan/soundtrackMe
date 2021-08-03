@@ -3,7 +3,6 @@ const {UserInfo} = require('../db/db.js')
 
 const checkUsernameExists = (username) => {
   return new Promise ((resolve, reject) => {
-    console.log('username is', username)
     UserInfo.findOne({username: username})
     .then(result => {
       let response = result === null ? false : true;

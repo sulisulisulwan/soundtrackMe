@@ -20,10 +20,12 @@ class App extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      pageState: 'changeToSignedOut',
-      // pageState: 'changeToSignedIn',
+      // pageState: 'changeToSignedOut',
+      pageState: 'changeToSignedIn',
       failedSignInValidationStatus: '',
       userData: {
+        username: 'sulisulisulwan',
+        signedUpAs: 'composer'
       }
     }
     this.changePageState = this.changePageState.bind(this);
@@ -52,7 +54,6 @@ class App extends React.Component {
       password: password
     })
     .then(result => {
-      console.log('made it here')
       return axios.get(`/signIn/loadProfile?username=${username}`)
     })
     .then(userData => {
@@ -60,7 +61,6 @@ class App extends React.Component {
       this.changePageState('changeToSignedIn');
     })
     .catch(err => {
-      console.log(err.toString().split())
       if (err.toString() === 'Error: Request failed with status code 401' || "Error: Request failed with status code 500") {
         let validationStatus = err.toString() === 'Error: Request failed with status code 401' ? 'Username and password did not match' : 'Oops!  Something went wrong on our end!  Try again.';
         this.setState({

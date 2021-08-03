@@ -40,7 +40,6 @@ class SignUp extends React.Component {
   }
 
   textInputHandler (e) {
-    console.log(e.target.id)
     let newState = {}
     newState[e.target.id] = e.target.value;
     this.setState(newState)
@@ -60,7 +59,6 @@ class SignUp extends React.Component {
 
         [usernameExists, emailExists] = results;
         if (usernameExists.data || emailExists.data) {
-          console.log(usernameExists.data, emailExists.data)
           usernameExists = usernameExists.data ? 'Username already exists' : '';
           emailExists = emailExists.data ? 'Email already exists' : '';
           results = [usernameExists, emailExists]
@@ -128,12 +126,11 @@ class SignUp extends React.Component {
       }
       createNewUserInDB(userInfo)
       .then(result => {
-        console.log(result)
         signIn(this.state.username, this.state.password);
         changePageState(changeTo)
       })
       .catch(err => {
-        console.log(new Error(err))
+        console.error(new Error(err))
       })
     }
   }

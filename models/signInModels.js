@@ -19,7 +19,6 @@ const verifyAccount = (username, password) => {
 
 const loadProfile = (username) => {
   return new Promise ((resolve, reject) => {
-    console.log('MADE IT THIS FAR!')
     UserInfo.findOne({
       username: username
     })

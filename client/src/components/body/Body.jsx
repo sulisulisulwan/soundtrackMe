@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import SignIn from './SignIn.jsx';
-import SignedInView from './signedIn/SignedInView.jsx';
+import SignIn from './signInView/SignIn.jsx';
 import SignUp from './signUpForms/SignUp.jsx';
+import ComposerView from './signedInViews/composerView/ComposerView.jsx'
+import FilmmakerView from './signedInViews/filmmakerView/FilmmakerView.jsx'
 const Body = ({changePageState, pageState, checkIfUsernameAlreadyExists, checkIfEmailAlreadyExists, signIn, failedSignInValidationStatus, userData}) => {
   if (pageState === 'changeToSignIn') {
     return (
@@ -19,9 +20,11 @@ const Body = ({changePageState, pageState, checkIfUsernameAlreadyExists, checkIf
     )
 
   } else if (pageState === 'changeToSignedIn') {
+    let signedInView = userData.signedUpAs === 'composer' ? <ComposerView userData={userData}/>
+      : <FilmmakerView userData={userData}/>
     return (
       <main>
-        <SignedInView userData={userData}/>
+        {signedInView}
       </main>
     )
   }

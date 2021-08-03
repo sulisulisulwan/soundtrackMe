@@ -26,7 +26,6 @@ class SignInArea extends React.Component {
   }
 
   signInOrUpClickHandler (e) {
-    console.log(e.target.id)
     this.props.changePageState(e.target.id)
   }
   render () {

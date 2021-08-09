@@ -2,10 +2,10 @@
   "name": "soundtrackme",
   "version": "1.0.0",
   "description": "A web platform connecting filmmakers with composers to bring film/scores to life",
-  "main": "index.js",
+  "main": "backend/server.js",
   "scripts": {
     "compile": "webpack --watch",
-    "start": "nodemon server.js",
+    "start": "nodemon backend/server.js",
     "sass": "sass --watch client/sass_styles/styles.scss client/public/styles.css"
   },
   "repository": {

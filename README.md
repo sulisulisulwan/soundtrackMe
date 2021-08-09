@@ -25,8 +25,15 @@ Welcome to _**soundTrackMe**_ !  A webplatform that brings together filmmakers a
 
 # Frontend
 
-## Composer UI
+## **Composer UI**
+
+### Film Feed
+### My Scored Films
+
 ## Filmmaker UI
+
+Add Score
+Film Feed
 
 # Backend
 
@@ -36,10 +43,11 @@ Welcome to _**soundTrackMe**_ !  A webplatform that brings together filmmakers a
 
 ## File upload middleware
 
-soundTrackMe uses Multer to allow users to upload either mp3s or mp4s
+soundTrackMe uses the middleware [Multer](https://www.npmjs.com/package/multer) to allow users to upload either mp3s or mp4s.
+
 ## Database
 
-soundTrackMe uses a mongoDB database, which stores all user information as well as references to user file uploads.
+soundTrackMe uses a mongoDB database, which stores all user information as well as references to user uploads.
 
 # Future Plans
 

@@ -1,22 +1,22 @@
 const nodemailer = require('nodemailer');
+require('dotenv').config({ path: __dirname + '/.env' })
 
 const sendEmail = async (username, email) => {
-  let senderMail = 'sulitestsulitest@gmail.com'
   let transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    service: 'gmail',
+    host: process.env.MAIL_HOST,
+    port: process.env.MAIL_PORT,
+    service: process.env.MAIL_SERVICE,
     secure: false,
     auth: {
-      user: senderMail,
-      pass: 'cacbo6-qehkyR-soxboc'
+      user: process.env.AUTH_USER,
+      pass: process.env.AUTH_PW
     },
     logger: true
   })
 
   let info = await transporter.sendMail({
     from: '"SoundtrackMe" <soundtrackMe@soundtrackMe.com>',
-    to: 'sulimantekalli@gmail.com',
+    to: process.env.SENDTO_TEST,
     html: `
       <div>
         <p>Hi ${username}! You are receiving this email as you've forgotten your password for SoundtrackMe.</p>

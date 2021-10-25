@@ -1,2 +1,4 @@
 node_modules
 frontend/client/public/uploads
+backend/middleware/.env
+backend/db/.env

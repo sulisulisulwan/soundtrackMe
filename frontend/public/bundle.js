@@ -1,6 +1,155 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./frontend/src/password-forms-options.js":
+/*!************************************************!*\
+  !*** ./frontend/src/password-forms-options.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+
+const createUser = {
+  form: {
+    className: 'create-user',
+    onSubmitHandler: async (e) => {
+      e.preventDefault();
+      try {
+        await axios__WEBPACK_IMPORTED_MODULE_0___default().post('/users', {
+          username: e.target[0].value,
+          password: e.target[1].value,
+          email: e.target[2].value
+        })
+        console.log('created');
+      } catch(err) {
+        console.log(err);
+      }
+    }
+  },
+  inputFields: [
+    {
+      key: 'create-user-username',
+      id: 'create-user-username',
+      label: 'Username: ',
+      type: 'text',
+      placeholder: 'username',
+      disabled: false,
+    },
+    {
+      key: 'create-user-password',
+      id: 'create-user-password',
+      label: 'Password: ',
+      type: 'password',
+      placeholder: '',
+      disabled: false,
+    },
+    {
+      key: 'create-user-email',
+      id: 'create-user-email',
+      label: 'Email: ',
+      type: 'email',
+      placeholder: 'email@email.com',
+      disabled: false,
+    }
+  ],
+  submitButton: {
+    value: 'Create User'
+  }
+}
+
+const signInUser = {
+  form: {
+    className: 'signin-user',
+    onSubmitHandler: async (e) => {
+      e.preventDefault();
+      try {
+        let result = await axios__WEBPACK_IMPORTED_MODULE_0___default().post('/users/verify', {
+          username: e.target[0].value,
+          password: e.target[1].value
+        })
+        console.log(result);
+      } catch(err) {
+        console.log(err);
+      }
+    }
+  },
+  inputFields: [
+    {
+      key: 'create-user-username',
+      id: 'create-user-username',
+      label: 'Username: ',
+      type: 'text',
+      placeholder: 'username',
+      disabled: false,
+    },
+    {
+      key: 'create-user-password',
+      id: 'create-user-password',
+      label: 'Password: ',
+      type: 'password',
+      placeholder: '',
+      disabled: false,
+    }
+  ],
+  submitButton: {
+    value: 'Sign In'
+  }
+}
+
+const forgotUserPW = {
+  form: {
+    className: 'forgot-user-password',
+    onSubmitHandler: async (e) => {
+      e.preventDefault();
+      try {
+        let result = await axios__WEBPACK_IMPORTED_MODULE_0___default().post('/users/forgot', {
+          username: e.target[0].value,
+          email: e.target[1].value
+        })
+        console.log(result)
+      } catch(err) {
+        console.error(err);
+      }
+    }
+  },
+  inputFields: [
+    {
+      key: 'forgot-user-username',
+      id: 'forgot-user-username',
+      label: 'Username: ',
+      type: 'text',
+      placeholder: 'username',
+      disabled: false,
+    },
+    {
+      key: 'forgot-user-email',
+      id: 'forgot-user-email',
+      label: 'Email: ',
+      type: 'email',
+      placeholder: 'email@email.com',
+      disabled: false,
+    }
+  ],
+  submitButton: {
+    value: 'Send reset link'
+  }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  createUser,
+  signInUser,
+  forgotUserPW,
+});
+
+/***/ }),
+
 /***/ "./node_modules/@babel/polyfill/lib/noConflict.js":
 /*!********************************************************!*\
   !*** ./node_modules/@babel/polyfill/lib/noConflict.js ***!
@@ -2115,162 +2264,66 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+/* harmony import */ var _PasswordForm_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PasswordForm.jsx */ "./frontend/src/PasswordForm.jsx");
+/* harmony import */ var _password_forms_options_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./password-forms-options.js */ "./frontend/src/password-forms-options.js");
 
 
 
 
 var App = function App() {
-  var handleCreateOnSubmit = /*#__PURE__*/function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
-      return regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              e.preventDefault();
-              _context.prev = 1;
-              _context.next = 4;
-              return axios__WEBPACK_IMPORTED_MODULE_1___default().post('/users', {
-                username: e.target[0].value,
-                password: e.target[1].value,
-                email: e.target[2].value
-              });
-
-            case 4:
-              console.log('created');
-              _context.next = 10;
-              break;
-
-            case 7:
-              _context.prev = 7;
-              _context.t0 = _context["catch"](1);
-              console.log(_context.t0);
-
-            case 10:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee, null, [[1, 7]]);
-    }));
-
-    return function handleCreateOnSubmit(_x) {
-      return _ref.apply(this, arguments);
-    };
-  }();
-
-  var handleSignInOnSubmit = /*#__PURE__*/function () {
-    var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(e) {
-      var result;
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              e.preventDefault();
-              _context2.prev = 1;
-              _context2.next = 4;
-              return axios__WEBPACK_IMPORTED_MODULE_1___default().post('/users/verify', {
-                username: e.target[0].value,
-                password: e.target[1].value
-              });
-
-            case 4:
-              result = _context2.sent;
-              console.log(result);
-              _context2.next = 11;
-              break;
-
-            case 8:
-              _context2.prev = 8;
-              _context2.t0 = _context2["catch"](1);
-              console.log(_context2.t0);
-
-            case 11:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2, null, [[1, 8]]);
-    }));
-
-    return function handleSignInOnSubmit(_x2) {
-      return _ref2.apply(this, arguments);
-    };
-  }();
-
-  var handleForgotPwOnSubmit = /*#__PURE__*/function () {
-    var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(e) {
-      var result;
-      return regeneratorRuntime.wrap(function _callee3$(_context3) {
-        while (1) {
-          switch (_context3.prev = _context3.next) {
-            case 0:
-              e.preventDefault();
-              _context3.prev = 1;
-              _context3.next = 4;
-              return axios__WEBPACK_IMPORTED_MODULE_1___default().post('/users/forgot', {
-                username: e.target[0].value,
-                email: e.target[1].value
-              });
-
-            case 4:
-              result = _context3.sent;
-              console.log(result);
-              _context3.next = 11;
-              break;
-
-            case 8:
-              _context3.prev = 8;
-              _context3.t0 = _context3["catch"](1);
-              console.error(_context3.t0);
-
-            case 11:
-            case "end":
-              return _context3.stop();
-          }
-        }
-      }, _callee3, null, [[1, 8]]);
-    }));
-
-    return function handleForgotPwOnSubmit(_x3) {
-      return _ref3.apply(this, arguments);
-    };
-  }();
-
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Create New User"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
-    onSubmit: handleCreateOnSubmit
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Username:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-    type: "text"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Password:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-    type: "text"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Email:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-    type: "text"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-    type: "submit"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Existing Users Sign In"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
-    onSubmit: handleSignInOnSubmit
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Username:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-    type: "text"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Password:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-    type: "text"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-    type: "submit"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Forgot Password"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
-    onSubmit: handleForgotPwOnSubmit
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Username:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-    type: "text"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Email:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-    type: "text"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-    type: "submit"
-  })));
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Create New User"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_PasswordForm_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
+    options: _password_forms_options_js__WEBPACK_IMPORTED_MODULE_2__.default.createUser
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Existing Users Sign In"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_PasswordForm_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
+    options: _password_forms_options_js__WEBPACK_IMPORTED_MODULE_2__.default.signInUser
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Forgot Password"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_PasswordForm_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
+    options: _password_forms_options_js__WEBPACK_IMPORTED_MODULE_2__.default.forgotUserPW
+  }));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
+
+/***/ }),
+
+/***/ "./frontend/src/PasswordForm.jsx":
+/*!***************************************!*\
+  !*** ./frontend/src/PasswordForm.jsx ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+
+var PasswordForm = function PasswordForm(_ref) {
+  var options = _ref.options;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
+    className: options.form.className,
+    onSubmit: options.form.onSubmitHandler
+  }, options.inputFields.map(function (input, i) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(InputField, {
+      key: "".concat(input.key, "-").concat(i),
+      options: input
+    });
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+    type: "submit",
+    value: options.submitButton.value
+  }));
+};
+
+var InputField = function InputField(_ref2) {
+  var options = _ref2.options;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, options.label, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+    type: options.type,
+    placeholder: options.placeholder,
+    disabled: options.disabled
+  }));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PasswordForm);
 
 /***/ }),
 

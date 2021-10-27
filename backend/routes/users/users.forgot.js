@@ -1,4 +1,7 @@
 const router = require('./users.js')
+const path = require('path')
+const { Auth, Nodemailer } = require('../../middleware/index.js');
+const { Users } = require('../../models/index.js');
 
 //User sends request for password change:
 router.post('/forgot', async(req, res) => {

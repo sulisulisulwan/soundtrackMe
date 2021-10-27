@@ -2103,10 +2103,10 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 
 /***/ }),
 
-/***/ "./frontend/client/src/App.jsx":
-/*!*************************************!*\
-  !*** ./frontend/client/src/App.jsx ***!
-  \*************************************/
+/***/ "./frontend/src/App.jsx":
+/*!******************************!*\
+  !*** ./frontend/src/App.jsx ***!
+  \******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -42001,13 +42001,13 @@ _global["default"]._babelPolyfill = true;
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-/*!***************************************!*\
-  !*** ./frontend/client/src/index.jsx ***!
-  \***************************************/
+/*!********************************!*\
+  !*** ./frontend/src/index.jsx ***!
+  \********************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var _App_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./App.jsx */ "./frontend/client/src/App.jsx");
+/* harmony import */ var _App_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./App.jsx */ "./frontend/src/App.jsx");
 
 
 

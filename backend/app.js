@@ -3,7 +3,7 @@ const path = require('path')
 const app = express();
 const PORT = 1337;
 
-app.use(express.static(path.resolve('frontend/client/public')))
+app.use(express.static(path.resolve('frontend/public')))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 

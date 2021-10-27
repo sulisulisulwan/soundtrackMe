@@ -1,10 +1,10 @@
 module.exports = {
   mode: 'development',
   devtool: 'source-map',
-  entry: ['@babel/polyfill', __dirname + '/frontend/client/src/index.jsx'],
+  entry: ['@babel/polyfill', __dirname + '/frontend/src/reset-password.jsx'],
   output: {
-    filename: 'bundle.js',
-    path: __dirname + '/frontend/client/public'
+    filename: 'reset-password.js',
+    path: __dirname + '/frontend/public'
   },
   module: {
     rules: [

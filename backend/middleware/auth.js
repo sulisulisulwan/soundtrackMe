@@ -7,7 +7,6 @@ const encryptPassword = async(req, res, next) => {
     let salt = await bcrypt.genSalt(saltRounds);
     let hash = await bcrypt.hash(password, salt);
     req.saltAndHash = { salt, hash };
-    return;
   } catch(err) {
     console.error(err);
   }

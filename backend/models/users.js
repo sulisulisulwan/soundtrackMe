@@ -29,8 +29,8 @@ const updateSaltAndHash = async(username, salt, hash) => {
 
 const getUsernameByEmail = async(email) => {
   try {
-    let result = await db.query(`SELECT username FROM Users WHERE email = '${email}'`)
-    return result[0][0].username;
+    let result = await db.query(`SELECT username FROM Users WHERE email = '${email}'`);
+    return result[0].length ? result[0][0].username : null;
   } catch(err) {
     console.error(err);
   }

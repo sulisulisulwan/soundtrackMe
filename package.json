@@ -6,7 +6,7 @@
   "scripts": {
     "compile": "webpack --watch",
     "start": "nodemon backend/app.js",
-    "sass": "sass --watch client/sass_styles/styles.scss client/public/styles.css"
+    "sass": "sass --watch frontend/sass_styles/styles.scss frontend/public/styles.css"
   },
   "repository": {
     "type": "git",

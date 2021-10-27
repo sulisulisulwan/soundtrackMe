@@ -1,15 +1,13 @@
 const router = require('express').Router();
+const path = require('path');
 const { Auth, Nodemailer } = require('../middleware/index.js');
 const { Users } = require('../models/index.js');
-
-
-router.use('/', async (req, res, next) => {
-  await Auth.encryptPassword(req, res)
-  next();
-})
+const ReactDOMServer = require('react-dom/server');
+// const ResetPassword = require('../../frontend/client/src/ResetPassword.jsx');
 
 router.post('/',  async (req, res, next) => {
   await Auth.encryptPassword(req, res)
+  console.log(req.saltAndHash)
   next();
 }, async (req, res) => {
   try {
@@ -62,13 +60,12 @@ router.post('/forgot', async(req, res) => {
 router.get('/forgot/reset/:username', async(req, res) => {
   let { username } = req.params;
   try {
-    console.log(username)
-    //when this returns, we should serve up a whole new page which specifically deals with changing the password.
-    res.status(200).json(username);
+    res.status(200).sendFile(path.resolve(__dirname, '../../frontend/public/reset-password.html'))
   } catch(err) {
     res.sendStatus(500)
   }
 })
+
 
 //User changes and submits password to database:
 router.post('/forgot/reset',  async (req, res, next) => {

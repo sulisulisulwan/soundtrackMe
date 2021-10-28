@@ -10,6 +10,8 @@ app.use(express.urlencoded({extended: false}))
 
 app.use('/users', require('./routes/index.js').users);
 
+app.use('/dev', require('./routes/dev/dev.js'));
+
 app.listen(PORT, () => {
   console.log(`listening on ${PORT}`)
 })

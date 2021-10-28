@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const path = require('path');
-const { Auth, Nodemailer } = require('../../middleware/index.js');
 const { Users } = require('../../models/index.js');
 
 router.post('/',  async (req, res, next) => {

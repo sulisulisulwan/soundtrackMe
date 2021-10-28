@@ -1,9 +1,9 @@
 module.exports = {
   mode: 'development',
   devtool: 'source-map',
-  entry: ['@babel/polyfill', __dirname + '/frontend/src/index.jsx'],
+  entry: ['@babel/polyfill', __dirname + '/frontend/src/dev/Dev.jsx'],
   output: {
-    filename: 'bundle.js',
+    filename: 'dev.js',
     path: __dirname + '/frontend/public'
   },
   module: {

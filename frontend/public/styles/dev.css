@@ -1,0 +1,18 @@
+
+.video-audio-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.video-tool {
+  width: 500px;
+}
+.audio-tool {
+  width: 500px;
+}
+.sync-controls {
+  position: relative;
+  left: 10%;
+}
+input[type="number"] {
+  width: 35px;
+}

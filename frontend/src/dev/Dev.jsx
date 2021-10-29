@@ -13,7 +13,6 @@ const VideoAudioSyncTool = () => {
   let minutesElement = document.getElementById('input-minutes')
   let secondsElement = document.getElementById('input-seconds')
 
-
   const syncAudioToVideoByStartTime = () => {
     if (video.currentTime > startTime) {
       if (video.seeking) {
@@ -26,20 +25,23 @@ const VideoAudioSyncTool = () => {
     }
   }
 
+  const onVideoPause = () => {
+    audio.pause();
+  }
+
+  const onVideoDurationChange = () => {
+    let duration = Math.floor(video.duration);
+    let maxMinutes = Math.floor(duration / 60);
+    let maxSeconds =duration % 60
+    setMaxDuration([maxMinutes, maxSeconds]);
+  }
+
+
   useEffect(() => {
     video = document.getElementById('video'); //this needs to be changed
     audio = document.getElementById('audio'); //this needs to be changed
-
-    video.addEventListener('durationchange', () => {
-      let duration = Math.floor(video.duration);
-      let maxMinutes = Math.floor(duration / 60);
-      let maxSeconds =duration % 60
-      setMaxDuration([maxMinutes, maxSeconds]);
-    })
-
-    video.addEventListener('pause', () => {
-      audio.pause();
-    })
+    video.addEventListener('durationchange', onVideoDurationChange)
+    video.addEventListener('pause', onVideoPause)
   })
 
   useEffect(() => {
@@ -51,8 +53,6 @@ const VideoAudioSyncTool = () => {
     }
   }, [inputSeconds, inputMinutes])
 
-
-
   useEffect(() => {
     video = document.getElementById('video'); //this needs to be changed
     video.addEventListener('timeupdate', syncAudioToVideoByStartTime)
@@ -60,7 +60,6 @@ const VideoAudioSyncTool = () => {
       video.removeEventListener('timeupdate', syncAudioToVideoByStartTime)
     }
   }, [startTime])
-
 
 
   const numberInputOnChangeHandler = (e) => {
@@ -87,9 +86,9 @@ const VideoAudioSyncTool = () => {
 
   const setStarttimeClickHandler = () => {
     let totalSeconds = (Number(inputMinutes) * 60) + Number(inputSeconds);
-    console.log('start time should be', totalSeconds)
     setStartTime(totalSeconds);
   }
+
 
   return (
     <>
@@ -120,6 +119,7 @@ const VideoAudioSyncTool = () => {
     </>
   )
 }
+
 
 ReactDom.render(<VideoAudioSyncTool/>, document.getElementById('dev'))
 

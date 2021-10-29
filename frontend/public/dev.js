@@ -39800,20 +39800,24 @@ var VideoAudioSyncTool = function VideoAudioSyncTool() {
     }
   };
 
+  var onVideoPause = function onVideoPause() {
+    audio.pause();
+  };
+
+  var onVideoDurationChange = function onVideoDurationChange() {
+    var duration = Math.floor(video.duration);
+    var maxMinutes = Math.floor(duration / 60);
+    var maxSeconds = duration % 60;
+    setMaxDuration([maxMinutes, maxSeconds]);
+  };
+
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     video = document.getElementById('video'); //this needs to be changed
 
     audio = document.getElementById('audio'); //this needs to be changed
 
-    video.addEventListener('durationchange', function () {
-      var duration = Math.floor(video.duration);
-      var maxMinutes = Math.floor(duration / 60);
-      var maxSeconds = duration % 60;
-      setMaxDuration([maxMinutes, maxSeconds]);
-    });
-    video.addEventListener('pause', function () {
-      audio.pause();
-    });
+    video.addEventListener('durationchange', onVideoDurationChange);
+    video.addEventListener('pause', onVideoPause);
   });
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (Number(inputSeconds) > 59) {
@@ -39864,7 +39868,6 @@ var VideoAudioSyncTool = function VideoAudioSyncTool() {
 
   var setStarttimeClickHandler = function setStarttimeClickHandler() {
     var totalSeconds = Number(inputMinutes) * 60 + Number(inputSeconds);
-    console.log('start time should be', totalSeconds);
     setStartTime(totalSeconds);
   };
 

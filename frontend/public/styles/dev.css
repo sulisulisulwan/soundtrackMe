@@ -9,10 +9,17 @@
 .audio-tool {
   width: 500px;
 }
-.sync-controls {
+.sync-controls-wrapper {
+  display: flex;
+  flex-direction: column;
   position: relative;
   left: 10%;
 }
+
+.current-starttime-display {
+
+}
+
 input[type="number"] {
   width: 35px;
 }

@@ -39776,19 +39776,34 @@ var VideoAudioSyncTool = function VideoAudioSyncTool() {
       inputSeconds = _useState6[0],
       setInputSeconds = _useState6[1];
 
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
+      _useState8 = _slicedToArray(_useState7, 2),
+      startTime = _useState8[0],
+      setStartTime = _useState8[1];
+
   var video;
+  var audio;
   var minutesElement = document.getElementById('input-minutes');
   var secondsElement = document.getElementById('input-seconds');
+
+  var syncAudioToVideoByStartTime = function syncAudioToVideoByStartTime() {
+    if (video.currentTime > startTime) {
+      if (video.seeking) {
+        audio.currentTime = video.currentTime + startTime;
+      }
+
+      audio.play();
+    }
+
+    if (video.currentTime < startTime) {
+      audio.currentTime = 0;
+    }
+  };
+
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    video = document.querySelector('video');
+    video = document.getElementById('video'); //this needs to be changed
 
-    if (Number(inputSeconds) > 59) {
-      setInputSeconds(59);
-    }
-
-    if (Number(inputMinutes) > 59) {
-      setInputMinutes(59);
-    }
+    audio = document.getElementById('audio'); //this needs to be changed
 
     video.addEventListener('durationchange', function () {
       var duration = Math.floor(video.duration);
@@ -39796,7 +39811,27 @@ var VideoAudioSyncTool = function VideoAudioSyncTool() {
       var maxSeconds = duration % 60;
       setMaxDuration([maxMinutes, maxSeconds]);
     });
+    video.addEventListener('pause', function () {
+      audio.pause();
+    });
   });
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (Number(inputSeconds) > 59) {
+      setInputSeconds(59);
+    }
+
+    if (Number(inputMinutes) > 59) {
+      setInputMinutes(59);
+    }
+  }, [inputSeconds, inputMinutes]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    video = document.getElementById('video'); //this needs to be changed
+
+    video.addEventListener('timeupdate', syncAudioToVideoByStartTime);
+    return function () {
+      video.removeEventListener('timeupdate', syncAudioToVideoByStartTime);
+    };
+  }, [startTime]);
 
   var numberInputOnChangeHandler = function numberInputOnChangeHandler(e) {
     var _maxDuration = _slicedToArray(maxDuration, 2),
@@ -39827,11 +39862,18 @@ var VideoAudioSyncTool = function VideoAudioSyncTool() {
     }
   };
 
+  var setStarttimeClickHandler = function setStarttimeClickHandler() {
+    var totalSeconds = Number(inputMinutes) * 60 + Number(inputSeconds);
+    console.log('start time should be', totalSeconds);
+    setStartTime(totalSeconds);
+  };
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Video Title"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "@Filmmaker"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "video-audio-wrapper"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "video-wrapper"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("video", {
+    id: "video",
     className: "video-tool",
     controls: true,
     width: "500px"
@@ -39842,29 +39884,40 @@ var VideoAudioSyncTool = function VideoAudioSyncTool() {
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "audio-wrapper"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("audio", {
+    id: "audio",
     className: "audio-tool",
     controls: true
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("source", {
     src: "/uploads/audio.mp3"
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "sync-controls-wrapper"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "sync-controls"
   }, "Start score at:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
     id: "input-minutes",
     className: "audio-start-input",
     type: "number",
     max: maxDuration[0],
+    min: 0,
     placeholder: "00",
-    value: inputMinutes,
+    value: "".concat(inputMinutes < 10 ? 0 : '').concat(inputMinutes),
     onChange: numberInputOnChangeHandler
   }), ":", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
     id: "input-seconds",
     className: "audio-start-input",
     type: "number",
     max: 59,
+    min: 0,
     placeholder: "00",
     onChange: numberInputOnChangeHandler,
-    value: inputSeconds
-  })))); //
+    value: "".concat(inputSeconds < 10 ? 0 : '').concat(inputSeconds)
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+    id: "set-starttime",
+    type: "button",
+    onClick: setStarttimeClickHandler
+  }, "Set Start Time"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
+    className: "current-starttime-display"
+  }, "Start set at ", Math.floor(startTime / 60), ":", "".concat(startTime % 60 < 10 ? 0 : '').concat(startTime % 60))))));
 };
 
 react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(VideoAudioSyncTool, null), document.getElementById('dev'));

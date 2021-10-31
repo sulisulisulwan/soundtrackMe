@@ -3,17 +3,21 @@ import axios from 'axios';
 const createUser = {
   form: {
     className: 'create-user',
-    onSubmitHandler: async (e) => {
+    onSubmitHandler: async (e, setUser) => {
       e.preventDefault();
+      let username = e.target[0].value
+      let password = e.target[1].value
+      let email = e.target[2].value
       try {
         await axios.post('/users', {
           username: e.target[0].value,
           password: e.target[1].value,
           email: e.target[2].value
         })
-        console.log('created');
+        await axios.get('/users/created', { params: { username, email } })
+        console.log('user created');
       } catch(err) {
-        console.log(err);
+        console.error(err);
       }
     }
   },
@@ -51,16 +55,19 @@ const createUser = {
 const signInUser = {
   form: {
     className: 'signin-user',
-    onSubmitHandler: async (e) => {
+    onSubmitHandler: async (e, setUser) => {
       e.preventDefault();
+      let username = e.target[0].value;
+      let password = e.target[1].value;
       try {
-        let result = await axios.post('/users/verify', {
-          username: e.target[0].value,
-          password: e.target[1].value
-        })
-        console.log(result);
+        let result = await axios.post('/users/verify', { username, password })
+        if (result.data === 'isNotValid') {
+          return;
+        } else {
+          setUser(username)
+        }
       } catch(err) {
-        console.log(err);
+        console.error(err);
       }
     }
   },
@@ -93,11 +100,10 @@ const forgotUserPW = {
     onSubmitHandler: async (e) => {
       e.preventDefault();
       try {
-        let result = await axios.post('/users/forgot', {
+        let result = await axios.post('/users/reset-password', {
           username: e.target[0].value,
           email: e.target[1].value
         })
-        console.log(result)
       } catch(err) {
         console.error(err);
       }
@@ -105,16 +111,16 @@ const forgotUserPW = {
   },
   inputFields: [
     {
-      key: 'forgot-user-username',
-      id: 'forgot-user-username',
+      key: 'reset-password-username',
+      id: 'reset-password-username',
       label: 'Username: ',
       type: 'text',
       placeholder: 'username',
       disabled: false,
     },
     {
-      key: 'forgot-user-email',
-      id: 'forgot-user-email',
+      key: 'reset-password-email',
+      id: 'reset-password-email',
       label: 'Email: ',
       type: 'email',
       placeholder: 'email@email.com',

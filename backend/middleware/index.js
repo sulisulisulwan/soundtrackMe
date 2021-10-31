@@ -1,5 +1,5 @@
 module.exports = {
-  Auth: require('./auth.js'),
-  Multer: require('./multer.js'),
-  Nodemailer: require('./nodemailer.js')
+  Auth: require('./mw.auth.js'),
+  Multer: require('./mw.multer.js'),
+  Nodemailer: require('./mw.nodemailer.js')
 }

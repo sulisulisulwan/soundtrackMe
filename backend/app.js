@@ -7,7 +7,6 @@ app.use(express.static(path.resolve('frontend/public')))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
-
 app.use('/users', require('./routes/index.js').users);
 
 app.use('/dev', require('./routes/dev/dev.js'));

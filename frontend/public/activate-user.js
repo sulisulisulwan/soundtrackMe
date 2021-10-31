@@ -1,161 +1,6 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./frontend/src/password-forms-options.js":
-/*!************************************************!*\
-  !*** ./frontend/src/password-forms-options.js ***!
-  \************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-
-
-const createUser = {
-  form: {
-    className: 'create-user',
-    onSubmitHandler: async (e, setUser) => {
-      e.preventDefault();
-      let username = e.target[0].value
-      let password = e.target[1].value
-      let email = e.target[2].value
-      try {
-        await axios__WEBPACK_IMPORTED_MODULE_0___default().post('/users', {
-          username: e.target[0].value,
-          password: e.target[1].value,
-          email: e.target[2].value
-        })
-        await axios__WEBPACK_IMPORTED_MODULE_0___default().get('/users/created', { params: { username, email } })
-        console.log('user created');
-      } catch(err) {
-        console.error(err);
-      }
-    }
-  },
-  inputFields: [
-    {
-      key: 'create-user-username',
-      id: 'create-user-username',
-      label: 'Username: ',
-      type: 'text',
-      placeholder: 'username',
-      disabled: false,
-    },
-    {
-      key: 'create-user-password',
-      id: 'create-user-password',
-      label: 'Password: ',
-      type: 'password',
-      placeholder: '',
-      disabled: false,
-    },
-    {
-      key: 'create-user-email',
-      id: 'create-user-email',
-      label: 'Email: ',
-      type: 'email',
-      placeholder: 'email@email.com',
-      disabled: false,
-    }
-  ],
-  submitButton: {
-    value: 'Create User'
-  }
-}
-
-const signInUser = {
-  form: {
-    className: 'signin-user',
-    onSubmitHandler: async (e, setUser) => {
-      e.preventDefault();
-      let username = e.target[0].value;
-      let password = e.target[1].value;
-      try {
-        let result = await axios__WEBPACK_IMPORTED_MODULE_0___default().post('/users/verify', { username, password })
-        if (result.data === 'isNotValid') {
-          return;
-        } else {
-          setUser(username)
-        }
-      } catch(err) {
-        console.error(err);
-      }
-    }
-  },
-  inputFields: [
-    {
-      key: 'create-user-username',
-      id: 'create-user-username',
-      label: 'Username: ',
-      type: 'text',
-      placeholder: 'username',
-      disabled: false,
-    },
-    {
-      key: 'create-user-password',
-      id: 'create-user-password',
-      label: 'Password: ',
-      type: 'password',
-      placeholder: '',
-      disabled: false,
-    }
-  ],
-  submitButton: {
-    value: 'Sign In'
-  }
-}
-
-const forgotUserPW = {
-  form: {
-    className: 'forgot-user-password',
-    onSubmitHandler: async (e) => {
-      e.preventDefault();
-      try {
-        let result = await axios__WEBPACK_IMPORTED_MODULE_0___default().post('/users/reset-password', {
-          username: e.target[0].value,
-          email: e.target[1].value
-        })
-      } catch(err) {
-        console.error(err);
-      }
-    }
-  },
-  inputFields: [
-    {
-      key: 'reset-password-username',
-      id: 'reset-password-username',
-      label: 'Username: ',
-      type: 'text',
-      placeholder: 'username',
-      disabled: false,
-    },
-    {
-      key: 'reset-password-email',
-      id: 'reset-password-email',
-      label: 'Email: ',
-      type: 'email',
-      placeholder: 'email@email.com',
-      disabled: false,
-    }
-  ],
-  submitButton: {
-    value: 'Send reset link'
-  }
-}
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  createUser,
-  signInUser,
-  forgotUserPW,
-});
-
-/***/ }),
-
 /***/ "./node_modules/@babel/polyfill/lib/noConflict.js":
 /*!********************************************************!*\
   !*** ./node_modules/@babel/polyfill/lib/noConflict.js ***!
@@ -2255,114 +2100,6 @@ module.exports = {
 
 "use strict";
 module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"Promise based HTTP client for the browser and node.js","main":"index.js","scripts":{"test":"grunt test","start":"node ./sandbox/server.js","build":"NODE_ENV=production grunt build","preversion":"npm test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json","postversion":"git push && git push --tags","examples":"node ./examples/server.js","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","fix":"eslint --fix lib/**/*.js"},"repository":{"type":"git","url":"https://github.com/axios/axios.git"},"keywords":["xhr","http","ajax","promise","node"],"author":"Matt Zabriskie","license":"MIT","bugs":{"url":"https://github.com/axios/axios/issues"},"homepage":"https://axios-http.com","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"jsdelivr":"dist/axios.min.js","unpkg":"dist/axios.min.js","typings":"./index.d.ts","dependencies":{"follow-redirects":"^1.14.0"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}]}');
-
-/***/ }),
-
-/***/ "./frontend/src/App.jsx":
-/*!******************************!*\
-  !*** ./frontend/src/App.jsx ***!
-  \******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _PasswordForm_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PasswordForm.jsx */ "./frontend/src/PasswordForm.jsx");
-/* harmony import */ var _password_forms_options_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./password-forms-options.js */ "./frontend/src/password-forms-options.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-
-var App = function App() {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
-      _useState2 = _slicedToArray(_useState, 2),
-      user = _useState2[0],
-      setUser = _useState2[1];
-
-  var logOutClickHandler = function logOutClickHandler() {
-    setUser(null);
-  };
-
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, user ? "Signed in as: ".concat(user) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
-    onClick: logOutClickHandler,
-    disabled: user === null
-  }, "Logout"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Create New User"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_PasswordForm_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
-    options: _password_forms_options_js__WEBPACK_IMPORTED_MODULE_2__.default.createUser,
-    setUser: setUser
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Existing Users Sign In"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_PasswordForm_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
-    options: _password_forms_options_js__WEBPACK_IMPORTED_MODULE_2__.default.signInUser,
-    setUser: setUser
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Forgot Password"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_PasswordForm_jsx__WEBPACK_IMPORTED_MODULE_1__.default, {
-    options: _password_forms_options_js__WEBPACK_IMPORTED_MODULE_2__.default.forgotUserPW
-  }));
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
-
-/***/ }),
-
-/***/ "./frontend/src/PasswordForm.jsx":
-/*!***************************************!*\
-  !*** ./frontend/src/PasswordForm.jsx ***!
-  \***************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-
-var PasswordForm = function PasswordForm(_ref) {
-  var options = _ref.options,
-      setUser = _ref.setUser;
-
-  var submitHandlerWrapper = function submitHandlerWrapper(e) {
-    options.form.onSubmitHandler(e, setUser);
-  };
-
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
-    className: options.form.className,
-    onSubmit: submitHandlerWrapper
-  }, options.inputFields.map(function (input, i) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(InputField, {
-      key: "".concat(input.key, "-").concat(i),
-      options: input
-    });
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-    type: "submit",
-    value: options.submitButton.value
-  }));
-};
-
-var InputField = function InputField(_ref2) {
-  var options = _ref2.options;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, options.label, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-    type: options.type,
-    placeholder: options.placeholder,
-    disabled: options.disabled
-  }));
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PasswordForm);
 
 /***/ }),
 
@@ -42093,19 +41830,79 @@ _global["default"]._babelPolyfill = true;
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-/*!********************************!*\
-  !*** ./frontend/src/index.jsx ***!
-  \********************************/
+/*!*****************************************************!*\
+  !*** ./frontend/src/activate_user/ActivateUser.jsx ***!
+  \*****************************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var _App_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./App.jsx */ "./frontend/src/App.jsx");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_App_jsx__WEBPACK_IMPORTED_MODULE_2__.default, null), document.getElementById('app'));
+
+
+
+var ActivateUser = function ActivateUser() {
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+      _useState2 = _slicedToArray(_useState, 2),
+      activateState = _useState2[0],
+      setActivateState = _useState2[1];
+
+  var handleRedirect = /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              axios__WEBPACK_IMPORTED_MODULE_2___default().put();
+
+            case 1:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function handleRedirect() {
+      return _ref.apply(this, arguments);
+    };
+  }();
+
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (activateState === 'activated') {
+      try {
+        handleRedirect;
+      } catch (err) {
+        setActivateState('manualRedirect');
+      }
+    }
+  }, [activateState]);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, activateState === 'manualRedirect' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Click ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+    href: "/"
+  }, "this link"), " if not redirected;") : null);
+};
+
+react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ActivateUser, null), document.getElementById('activate-user'));
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle.js.map
+//# sourceMappingURL=activate-user.js.map

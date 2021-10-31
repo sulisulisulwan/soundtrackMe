@@ -23,7 +23,7 @@ const PasswordReset = () => {
     }
     setPasswordsMatch(true)
     try {
-      await axios.post('/users/forgot/reset', { username, password })
+      await axios.post('/users/reset-password/reset', { username, password })
       setPasswordReset(true);
     } catch(err) {
       console.error(err);

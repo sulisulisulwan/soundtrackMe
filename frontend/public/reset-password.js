@@ -2196,7 +2196,7 @@ var PasswordReset = function PasswordReset() {
               setPasswordsMatch(true);
               _context.prev = 17;
               _context.next = 20;
-              return axios__WEBPACK_IMPORTED_MODULE_1___default().post('/users/forgot/reset', {
+              return axios__WEBPACK_IMPORTED_MODULE_1___default().post('/users/reset-password/reset', {
                 username: username,
                 password: password
               });
@@ -41969,17 +41969,17 @@ _global["default"]._babelPolyfill = true;
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-/*!*****************************************!*\
-  !*** ./frontend/src/reset-password.jsx ***!
-  \*****************************************/
+/*!********************************************************!*\
+  !*** ./frontend/src/reset_password/reset-password.jsx ***!
+  \********************************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var _reset_password_PasswordReset_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./reset_password/PasswordReset.jsx */ "./frontend/src/reset_password/PasswordReset.jsx");
+/* harmony import */ var _PasswordReset_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PasswordReset.jsx */ "./frontend/src/reset_password/PasswordReset.jsx");
 
 
 
-react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_reset_password_PasswordReset_jsx__WEBPACK_IMPORTED_MODULE_2__.default, null), document.getElementById('app'));
+react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_PasswordReset_jsx__WEBPACK_IMPORTED_MODULE_2__.default, null), document.getElementById('app'));
 })();
 
 /******/ })()

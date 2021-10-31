@@ -10,8 +10,17 @@ const create = async(username, email, salt, hash)  => {
 
 const get = async(username) => {
   try {
-    let result = await db.query(`SELECT * FROM Users WHERE username = '${username}'`)
+    let result = await db.query(`SELECT * FROM Users WHERE username = '${username}'  AND confirmed = true`)
     return result[0][0];
+  } catch(err) {
+    console.error(err);
+  }
+}
+
+const getUsernameByEmail = async(email) => {
+  try {
+    let result = await db.query(`SELECT username FROM Users WHERE email = '${email}' AND confirmed = true`);
+    return result[0].length ? result[0][0].username : null;
   } catch(err) {
     console.error(err);
   }
@@ -27,10 +36,11 @@ const updateSaltAndHash = async(username, salt, hash) => {
   }
 }
 
-const getUsernameByEmail = async(email) => {
+
+
+const updateUserConfirmation = async(username) => {
   try {
-    let result = await db.query(`SELECT username FROM Users WHERE email = '${email}'`);
-    return result[0].length ? result[0][0].username : null;
+    let result = await db.query(`UPDATE Users SET confirmed = true WHERE username = '${username}'`)
   } catch(err) {
     console.error(err);
   }
@@ -40,5 +50,6 @@ module.exports = {
   create,
   get,
   getUsernameByEmail,
-  updateSaltAndHash
+  updateSaltAndHash,
+  updateUserConfirmation
 }

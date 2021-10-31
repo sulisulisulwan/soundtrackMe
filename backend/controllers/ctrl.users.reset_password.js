@@ -1,6 +1,6 @@
 const { Users } = require('../models/index.js');
 const path = require('path')
-const { Nodemailer } = require('../middleware/index.js');
+const { SendEmail } = require('../middleware/index.js');
 
 const requestPasswordChange = async(req, res) => {
   try {
@@ -9,10 +9,10 @@ const requestPasswordChange = async(req, res) => {
     if (!(username === usernameFromDb)) {
       res.status(200).json('Sorry, username or email is invalid');
     } else {
-      await Nodemailer.sendResetPassword(username, email);
+      await SendEmail.resetPassword(username, email);
       console.log(`sent and email to ${email}`)
+      res.sendStatus(200);
     }
-
   } catch(err) {
     console.error(err.message);
     res.sendStatus(500);

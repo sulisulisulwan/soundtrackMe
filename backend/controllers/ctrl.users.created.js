@@ -1,11 +1,11 @@
 const { Users } = require('../models/index.js');
-const { Nodemailer } = require('../middleware/index.js')
+const { SendEmail } = require('../middleware/index.js')
 const path = require('path');
 
 const getUserCreatedEmailConfirmation = async (req, res) => {
   let { username, email } = req.query
   try {
-    await Nodemailer.sendUserCreatedConfirmation(username, email);
+    await SendEmail.confirmUserCreated(username, email);
     res.sendStatus(200)
   } catch(err) {
     console.error(err)

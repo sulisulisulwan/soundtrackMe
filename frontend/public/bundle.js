@@ -30,7 +30,7 @@ const createUser = {
           password: e.target[1].value,
           email: e.target[2].value
         })
-        await axios__WEBPACK_IMPORTED_MODULE_0___default().get('/users/created', { params: { username, email } })
+        await axios__WEBPACK_IMPORTED_MODULE_0___default().get('/users/create', { params: { username, email } })
         console.log('user created');
       } catch(err) {
         console.error(err);

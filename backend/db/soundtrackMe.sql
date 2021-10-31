@@ -10,6 +10,8 @@ CREATE TABLE Users (
   email VARCHAR(60),
   salt VARCHAR(60),
   hash VARCHAR(60),
+  resetSalt VARCHAR(60),
+  resetToken VARCHAR(60),
   confirmed BOOLEAN,
   PRIMARY KEY (id),
   UNIQUE(username, salt, hash)

@@ -14,16 +14,20 @@ const PasswordReset = () => {
       return
     }
     let currentUrl = window.location.href;
-    let username = ''
+    let queries = ''
     for (let i = currentUrl.length - 1; i >= 0; i--) {
-      if (currentUrl[i] === '/') {
+      if (currentUrl[i] === '?') {
         break;
       }
-      username = currentUrl[i] + username;
+      queries = currentUrl[i] + queries;
     }
+    let [ username, token ] = queries.split('&');
+    username = username.split('=')[1]
+    token = token.split('=')[1]
+    console.log(username, password, token)
     setPasswordsMatch(true)
     try {
-      await axios.post('/users/reset-password/reset', { username, password })
+      await axios.post('/users/reset-password/reset', { username, password, token })
       setPasswordReset(true);
     } catch(err) {
       console.error(err);

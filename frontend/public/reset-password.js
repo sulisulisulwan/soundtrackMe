@@ -2149,7 +2149,8 @@ var PasswordReset = function PasswordReset() {
 
   var onSubmitHandler = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
-      var password, confirmPassword, currentUrl, username, i;
+      var password, confirmPassword, currentUrl, queries, i, _queries$split, _queries$split2, username, token;
+
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -2168,7 +2169,7 @@ var PasswordReset = function PasswordReset() {
 
             case 6:
               currentUrl = window.location.href;
-              username = '';
+              queries = '';
               i = currentUrl.length - 1;
 
             case 9:
@@ -2177,7 +2178,7 @@ var PasswordReset = function PasswordReset() {
                 break;
               }
 
-              if (!(currentUrl[i] === '/')) {
+              if (!(currentUrl[i] === '?')) {
                 _context.next = 12;
                 break;
               }
@@ -2185,7 +2186,7 @@ var PasswordReset = function PasswordReset() {
               return _context.abrupt("break", 16);
 
             case 12:
-              username = currentUrl[i] + username;
+              queries = currentUrl[i] + queries;
 
             case 13:
               i--;
@@ -2193,30 +2194,35 @@ var PasswordReset = function PasswordReset() {
               break;
 
             case 16:
+              _queries$split = queries.split('&'), _queries$split2 = _slicedToArray(_queries$split, 2), username = _queries$split2[0], token = _queries$split2[1];
+              username = username.split('=')[1];
+              token = token.split('=')[1];
+              console.log(username, password, token);
               setPasswordsMatch(true);
-              _context.prev = 17;
-              _context.next = 20;
+              _context.prev = 21;
+              _context.next = 24;
               return axios__WEBPACK_IMPORTED_MODULE_1___default().post('/users/reset-password/reset', {
                 username: username,
-                password: password
+                password: password,
+                token: token
               });
 
-            case 20:
+            case 24:
               setPasswordReset(true);
-              _context.next = 26;
+              _context.next = 30;
               break;
 
-            case 23:
-              _context.prev = 23;
-              _context.t0 = _context["catch"](17);
+            case 27:
+              _context.prev = 27;
+              _context.t0 = _context["catch"](21);
               console.error(_context.t0);
 
-            case 26:
+            case 30:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[17, 23]]);
+      }, _callee, null, [[21, 27]]);
     }));
 
     return function onSubmitHandler(_x) {

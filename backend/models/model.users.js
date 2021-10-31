@@ -2,9 +2,9 @@ const db = require('../db/db');
 
 const create = async(username, email, salt, hash)  => {
   try {
-    return db.query(`INSERT INTO Users SET ?`, { username, email, salt, hash })
+    return await db.query(`INSERT INTO Users SET ?`, { username, email, salt, hash })
   } catch (err) {
-    console.error(err)
+    return Promise.reject(err)
   }
 }
 
@@ -14,6 +14,18 @@ const getUsernameExists = async(username) => {
     return !!result[0][0];
   } catch(err) {
     console.error(err);
+    return Promise.reject(err)
+
+  }
+}
+
+const getUsernameByEmail = async(email) => {
+  try {
+    let result = await db.query(`SELECT username FROM users WHERE email = '${email}'`);
+    return result[0][0];
+  } catch (err) {
+    console.error(err);
+    return Promise.reject(err);
   }
 }
 
@@ -23,15 +35,38 @@ const get = async(username) => {
     return result[0][0];
   } catch(err) {
     console.error(err);
+    return Promise.reject(err)
   }
 }
 
-const getUsernameByEmail = async(email) => {
+const getUsernameByEmailIfConfirmed = async(email) => {
   try {
     let result = await db.query(`SELECT username FROM Users WHERE email = '${email}' AND confirmed = true`);
     return result[0].length ? result[0][0].username : null;
   } catch(err) {
     console.error(err);
+    return Promise.reject(err)
+  }
+}
+
+const getResetSaltAndHash = async(username) => {
+  try {
+    let result = await db.query(`SELECT resetToken FROM Users WHERE username = '${username}'`)
+    return result[0][0];
+  } catch(err) {
+    console.error(err);
+    return Promise.reject(err)
+  }
+}
+
+const updateResetSaltAndHash = async(username, resetSalt, resetToken) => {
+  let v = { resetSalt, resetToken };
+  try {
+    await db.query(`UPDATE Users SET ? WHERE username = '${username}'`, v)
+    return;
+  } catch (err) {
+    console.error(err);
+    return Promise.reject(err)
   }
 }
 
@@ -41,7 +76,7 @@ const updateSaltAndHash = async(username, salt, hash) => {
     await db.query(`UPDATE Users SET ? WHERE username = '${username}'`, v)
     return;
   } catch(err) {
-    console.error(err);
+    return Promise.reject(err)
   }
 }
 
@@ -60,6 +95,9 @@ module.exports = {
   get,
   getUsernameExists,
   getUsernameByEmail,
+  getUsernameByEmailIfConfirmed,
+  getResetSaltAndHash,
   updateSaltAndHash,
+  updateResetSaltAndHash,
   updateUserConfirmation
 }

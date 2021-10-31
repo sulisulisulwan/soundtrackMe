@@ -14,7 +14,7 @@ const createUser = {
           password: e.target[1].value,
           email: e.target[2].value
         })
-        await axios.get('/users/created', { params: { username, email } })
+        await axios.get('/users/create', { params: { username, email } })
         console.log('user created');
       } catch(err) {
         console.error(err);

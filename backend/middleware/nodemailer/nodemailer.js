@@ -14,14 +14,19 @@ const sendEmail = async (username, toEmail, fromEmail, html) => {
     logger: true
   })
 
-  let info = await transporter.sendMail({
-    from: fromEmail,
-    to: process.env.SENDTO_TEST,
-    html: html
-  })
+  try {
+    let info = await transporter.sendMail({
+      from: fromEmail,
+      to: toEmail,
+      html: html
+    })
 
-  console.log('Message sent: %s', info.accepted);
-  console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+    console.log('Message sent: %s', info.accepted);
+    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+  } catch(err) {
+    console.error(err)
+  }
+
 }
 
 module.exports = sendEmail;

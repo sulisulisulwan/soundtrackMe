@@ -8,6 +8,15 @@ const create = async(username, email, salt, hash)  => {
   }
 }
 
+const getUsernameExists = async(username) => {
+  try {
+    let result = await db.query(`SELECT * FROM users WHERE username = '${username}'`);
+    return !!result[0][0];
+  } catch(err) {
+    console.error(err);
+  }
+}
+
 const get = async(username) => {
   try {
     let result = await db.query(`SELECT * FROM Users WHERE username = '${username}'  AND confirmed = true`)
@@ -49,6 +58,7 @@ const updateUserConfirmation = async(username) => {
 module.exports = {
   create,
   get,
+  getUsernameExists,
   getUsernameByEmail,
   updateSaltAndHash,
   updateUserConfirmation

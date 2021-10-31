@@ -1,4 +1,4 @@
 node_modules
 frontend/public/uploads
 backend/db/db.env
-backend/middleware/nodemailer.env
+backend/middleware/nodemailer/nodemailer.env

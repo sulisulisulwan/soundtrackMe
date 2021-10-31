@@ -1,4 +1,9 @@
 const bcrypt = require('bcrypt')
+const crypto = require('crypto');
+
+const generateToken = async(req, res, next) => {
+
+}
 
 const encryptPassword = async(req, res, next) => {
   let { password } = req.body;

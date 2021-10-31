@@ -9,6 +9,7 @@ const requestPasswordChange = async(req, res) => {
     if (!(username === usernameFromDb)) {
       res.status(200).json('Sorry, username or email is invalid');
     } else {
+
       await SendEmail.resetPassword(username, email);
       console.log(`sent and email to ${email}`)
       res.sendStatus(200);

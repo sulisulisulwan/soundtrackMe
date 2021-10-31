@@ -1,4 +1,4 @@
-const router = require('./rte.users.created.js')
+const router = require('./rte.users.create.js')
 const ctrl = require('../controllers/')
 const { Auth } = require('../middleware/index.js');
 

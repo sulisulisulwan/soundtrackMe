@@ -9,7 +9,7 @@ const createUser = {
       let password = e.target[1].value
       let email = e.target[2].value
       try {
-        await axios.post('/users', {
+        await axios.post('/users/create', {
           username: e.target[0].value,
           password: e.target[1].value,
           email: e.target[2].value
@@ -73,16 +73,16 @@ const signInUser = {
   },
   inputFields: [
     {
-      key: 'create-user-username',
-      id: 'create-user-username',
+      key: 'signin-user-username',
+      id: 'signin-user-username',
       label: 'Username: ',
       type: 'text',
       placeholder: 'username',
       disabled: false,
     },
     {
-      key: 'create-user-password',
-      id: 'create-user-password',
+      key: 'signin-user-password',
+      id: 'signin-user-password',
       label: 'Password: ',
       type: 'password',
       placeholder: '',

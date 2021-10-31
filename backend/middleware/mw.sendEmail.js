@@ -9,7 +9,7 @@ const resetPassword = async (username, userEmail) => {
     </div>
   `;
   try {
-    sendEmail(username, userEmail, )
+    sendEmail(username, userEmail, fromEmail, html)
   } catch (err) {
     console.error(err);
   }
@@ -24,7 +24,7 @@ const confirmUserCreated = async (username, userEmail) => {
     </div>
   `;
   try {
-    sendEmail(username, userEmail)
+    sendEmail(username, userEmail, fromEmail, html)
 
   } catch(err) {
     console.error(err)

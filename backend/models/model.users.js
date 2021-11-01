@@ -1,6 +1,7 @@
 const db = require('../db/db');
 
 const create = async(username, email, salt, hash)  => {
+  console.log(salt, hash)
   try {
     return await db.query(`INSERT INTO Users SET ?`, { username, email, salt, hash })
   } catch (err) {

@@ -7,7 +7,7 @@ const resetPassword = async (req, res, next) => {
   let html = `
     <div>
       <p>Hi ${username}! You are receiving this email as you've forgotten your password for SoundtrackMe.</p>
-      <p>Click <a href="${process.env.APP_PATH}users/reset-password/reset/${username}?username=${username}&token=${resetToken}">here</a> to reset your password.</p>
+      <p>Click <a href="${process.env.APP_PATH}users/reset-password/reset/${username}?username=${username}&token=${resetToken}&email=${email}">here</a> to reset your password.</p>
       <p>This link will be valid for 60 seconds</p>
     </div>
   `;
@@ -15,7 +15,7 @@ const resetPassword = async (req, res, next) => {
     sendEmail(username, email, fromEmail, html)
     next()
   } catch (err) {
-    next(err)
+    return next(err)
   }
 }
 
@@ -32,8 +32,7 @@ const confirmUserCreated = async (req, res, next) => {
     sendEmail(username, email, fromEmail, html);
     next();
   } catch(err) {
-    console.error(err)
-    next(err);
+    return next(err)
   }
 }
 
@@ -50,8 +49,7 @@ const notifyUserCreated = async(req, res, next) => {
     sendEmail(username, email, fromEmail, html);
     next();
   } catch(err) {
-    console.error(err)
-    next(err);
+    return next(err)
   }
 }
 

@@ -1,7 +1,1 @@
-const { Users } = require('../models/index.js');
-
-
-
-module.exports = {
-
-}
+const { Users } = require('../models');

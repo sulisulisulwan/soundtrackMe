@@ -1,6 +1,6 @@
 const router = require('./rte.users.create.js')
-const ctrl = require('../controllers/')
-const { Auth, SendEmail } = require('../middleware/index.js');
+const ctrl = require('../controllers')
+const { Auth, SendEmail } = require('../middleware');
 
 
 router.post('/reset-password', Auth.compareUsernameAndEmail, Auth.updateResetPasswordToken, SendEmail.resetPassword, ctrl.users_reset_password.requestPasswordChange)

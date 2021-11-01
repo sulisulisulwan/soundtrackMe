@@ -1,17 +1,14 @@
 const path = require('path')
-const { Users } = require('../models/index.js');
-const { SendEmail } = require('../middleware/index.js');
+
+const { Users } = require('../models');
+const { SendEmail } = require('../middleware');
 
 const requestPasswordChange = async(req, res) => {
   try {
     res.sendStatus(200);
   } catch(err) {
-    console.log('HELLLOOOOOOO')
-    if (err.message === 'username or email is invalid') {
-      res.sendStatus(400).json('username or email is invalid')
-    } else {
-      res.sendStatus(500);
-    }
+    console.error(err)
+    res.sendStatus(500);
   }
 }
 
@@ -19,6 +16,7 @@ const  sendPasswordChangePage = async(req, res) => {
   try {
     res.status(200).sendFile(path.resolve(__dirname, '../../frontend/public/reset-password.html'))
   } catch(err) {
+    console.error(err)
     res.sendStatus(500)
   }
 }

@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt')
 const crypto = require('crypto')
 
 const compare = async(password, hash) => {
-  return await crypto.compare(password, hash)
+  return await bcrypt.compare(password, hash)
 }
 
 const generateRandomHash = () => {

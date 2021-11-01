@@ -1,5 +1,5 @@
-const { Users } = require('../models/index.js');
-const { SendEmail } = require('../middleware/index.js')
+const { Users } = require('../models');
+const { SendEmail } = require('../middleware')
 const path = require('path');
 
 const createUser = async (req, res) => {
@@ -21,11 +21,13 @@ const sendRequestConfirmationEmail = async (req, res) => {
 }
 
 const updateUserConfirmationStatus = async(req, res) => {
-  let { username, email } = req.params
+  let { username, email } = req.query
+  console.log('username is', username, 'email', email)
   try {
-    Users.updateUserConfirmation(username, resetToken);
-    res.status(204).redirect(`/users/create/confirmed/${username}?username=${username}&email=${email}`)
+    await Users.updateUserConfirmation(username);
+    res.status(204).redirect(`/users/create/confirmed/${username}/notify?username=${username}&email=${email}`)
   } catch(err) {
+    console.error(err)
     res.sendStatus(500);
   }
 }

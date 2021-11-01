@@ -1,12 +1,9 @@
-const { Users } = require('../models/index.js');
-const { Auth } = require('../middleware/index.js');
+const { Users } = require('../models');
+const { Auth } = require('../middleware');
 
 const verifyUser = async(req, res) => {
   try {
-    let { username, password } = req.body;
-    let { salt, hash } = await Users.get(username);
-    let isValid = await Auth.verifyUser(password, hash);
-    if (isValid) {
+    if (req.isValid) {
       res.status(200).json('isValid')
     } else {
       res.status(200).json('isNotValid')

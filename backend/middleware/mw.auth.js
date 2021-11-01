@@ -6,12 +6,14 @@ const checkUserExists = async(req, res, next) => {
   try {
     let userExists = await Users.getUsernameExists(username);
     if (userExists) {
-      throw new Error('username already exists')
+      console.error('username already exists')
+      res.sendStatus(400);
+      return;
     }
     next();
   } catch (err) {
     console.error(err);
-    next(err);
+    return next(err)
   }
 }
 
@@ -19,12 +21,14 @@ const compareUsernameAndEmail = async(req, res, next) => {
   let { username, email } = req.body;
   try {
     let usernameFromDB = await Users.getUsernameByEmail(email)
-    if (!(username === usernameFromDB.username)) {
-      throw new Error('username or email is invalid')
+    if (usernameFromDB === undefined || !username === usernameFromDB.username) {
+      console.error('username or email is invalid')
+      res.sendStatus(400);
+      return;
     }
     next()
   } catch(err) {
-    next(err);
+    return next(err)
   }
 
 }
@@ -38,8 +42,7 @@ const compareResetTokens = async(req, res, next) => {
     }
     next();
   } catch(err) {
-    console.error(err);
-    next(err);
+    return next(err)
   }
 }
 
@@ -52,28 +55,34 @@ const updateResetPasswordToken = async(req, res, next) => {
     await Users.updateResetSaltAndHash(username, resetSalt, resetToken);
     next();
   } catch(err) {
-    next(err);
+    return next(err)
   }
 }
 
 const encryptAndStorePassword = async(req, res, next) => {
   let { username, email, password } = req.body;
   try {
-    let { salt, hash } = await cryptoUtils.encryptSaltAndHash(password)
+    let [ salt, hash ] = await cryptoUtils.encryptSaltAndHash(password)
     req.saltAndHash = { salt, hash };
     await Users.create(username, email, salt, hash)
     next();
   } catch(err) {
-    console.error(err);
-    next(err)
+    return next(err)
   }
 }
 
-const verifyUser = async(password, hash) => {
+const verifyUser = async(req, res, next) => {
+
+  let { username, password } = req.body;
+  let results = await Users.get(username);
+  let salt = results.salt
+  let hash = results.hash
   try {
-    return await cryptoUtils.compare(password, hash);
+    let isValid = await cryptoUtils.compare(password, hash);
+    req.isValid = isValid;
+    next();
   } catch(err) {
-    console.error(err);
+    return next(err)
   }
 }
 

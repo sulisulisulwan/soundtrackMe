@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const ctrl = require('../controllers/')
-const { Users } = require('../models/index.js');
-const { Auth } = require('../middleware/index.js')
+const ctrl = require('../controllers')
+const { Users } = require('../models');
+const { Auth } = require('../middleware')
 
 
 
